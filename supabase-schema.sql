@@ -1,0 +1,5 @@
+-- Maria Perfumes Supabase schema
+-- The live schema is managed in Supabase migrations. This file documents the production model.
+-- Tables: owner_profiles, categories, products, product_images, product_variants, customers, orders, order_items, event_enquiries.
+-- Storage bucket: product-images.
+-- RLS is enabled for all business tables; public users can only read active catalogue data, while authenticated owners manage inventory and orders.
