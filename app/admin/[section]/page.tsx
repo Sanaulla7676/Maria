@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { ArrowLeft, CheckCircle2, Clock3, FileText, Package, Search, ShieldCheck, Users } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, FileText, Search, ShieldCheck } from 'lucide-react'
+import '../admin.css'
 
 const sections: Record<string, { title: string; description: string; columns: string[]; rows: string[][] }> = {
   payments: { title: 'UPI verification', description: 'Review customer-submitted UTRs before marking orders or bookings as paid.', columns: ['Reference', 'Customer', 'Amount', 'Status'], rows: [['MAR-1024', 'Customer #527', '₹1,800', 'Pending'], ['WS-204', 'Workshop booking', '₹2,400', 'Pending']] },
