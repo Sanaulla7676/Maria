@@ -8,30 +8,32 @@ import { rejectPayment, verifyPayment } from './actions'
 type Payment = { id: string; customer: string; amount: number; utr: string; submitted: string }
 
 export default function PaymentQueue({ payments }: { payments: Payment[] }) {
-  const [rows, setRows] = useState(payments)
+  const [rows, setRows] = useState<Payment[]>(payments)
   const [pending, startTransition] = useTransition()
   const [message, setMessage] = useState('')
 
-  const handleVerify = (payment: Payment) => {
+  const run = (action: () => Promise<{ ok: boolean; error?: string }>, success: string) => {
     startTransition(async () => {
-      setMessage('Verifying payment…')
-      const result = await verifyPayment({ orderId: payment.id, utr: payment.utr })
-      if (!result.ok) return setMessage(result.error)
-      setRows((current) => current.filter((row) => row.id !== payment.id))
-      setMessage(`${payment.id} verified and moved to processing.`)
+      setMessage('Working…')
+      const result = await action()
+      setMessage(result.ok ? success : (result.error ?? 'Something went wrong.'))
     })
   }
+
+  const handleVerify = (payment: Payment) => run(async () => {
+    const result = await verifyPayment({ orderId: payment.id, utr: payment.utr })
+    if (result.ok) setRows((current) => current.filter((row) => row.id !== payment.id))
+    return result
+  }, `${payment.id} verified and moved to processing.`)
 
   const handleReject = (payment: Payment) => {
     const reason = window.prompt('Reason for rejecting this payment:')?.trim()
     if (!reason) return
-    startTransition(async () => {
-      setMessage('Rejecting payment…')
+    run(async () => {
       const result = await rejectPayment({ orderId: payment.id, reason })
-      if (!result.ok) return setMessage(result.error)
-      setRows((current) => current.filter((row) => row.id !== payment.id))
-      setMessage(`${payment.id} rejected. Customer can resubmit payment reference.`)
-    })
+      if (result.ok) setRows((current) => current.filter((row) => row.id !== payment.id))
+      return result
+    }, `${payment.id} rejected. Customer can resubmit payment reference.`)
   }
 
   return <>
