@@ -15,13 +15,10 @@ export const checkoutRequestSchema = z.object({
 
 export type CheckoutRequest = z.infer<typeof checkoutRequestSchema>
 
-export function buildUpiIntent({ upiId, payeeName, amount, orderId }: { upiId: string; payeeName: string; amount: number; orderId: string }) {
-  const params = new URLSearchParams({
-    pa: upiId,
-    pn: payeeName,
-    am: amount.toFixed(2),
-    cu: 'INR',
-    tn: `Maria Order ${orderId}`,
-  })
+type UpiIntentInput = { upiId?: string; merchantUpiId?: string; payeeName: string; amount: number; orderId: string }
+export function buildUpiIntent({ upiId, merchantUpiId, payeeName, amount, orderId }: UpiIntentInput) {
+  const pa = upiId || merchantUpiId || ''
+  if (!pa) return '#'
+  const params = new URLSearchParams({ pa, pn: payeeName, am: amount.toFixed(2), cu: 'INR', tn: `Maria Order ${orderId}` })
   return `upi://pay?${params.toString()}`
 }
