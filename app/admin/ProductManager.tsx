@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Check, ChevronDown, ChevronUp, ImagePlus, Loader2, Pencil, Play, Search, Star, Trash2, Upload, Video, X } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, ImagePlus, Loader2, Search, Star, Trash2, Upload, Video } from 'lucide-react'
 import { supabaseBrowser } from '@/lib/supabase/browser'
 
 type Product = {
@@ -32,7 +32,6 @@ export default function ProductManager() {
   const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
-  const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -56,9 +55,8 @@ export default function ProductManager() {
 
   async function updateProduct(patch: Partial<Product>) {
     if (!selected) return
-    setSaving(true); setMessage('')
+    setMessage('')
     const { data, error } = await supabase.from('products').update(patch).eq('id', selected.id).select('id,name,slug,description,family,gender,badge,active,featured').single()
-    setSaving(false)
     if (error) return setMessage(error.message)
     setProducts((all) => all.map((p) => p.id === selected.id ? { ...p, ...(data as Product) } : p))
     setMessage('Saved')
@@ -86,9 +84,8 @@ export default function ProductManager() {
   }
 
   async function deleteMedia(item: MediaRow) {
-    const url = item.media_url
     const marker = `/storage/v1/object/public/${BUCKET}/`
-    const path = url.includes(marker) ? decodeURIComponent(url.split(marker)[1]) : ''
+    const path = item.media_url.includes(marker) ? decodeURIComponent(item.media_url.split(marker)[1]) : ''
     if (path) await supabase.storage.from(BUCKET).remove([path])
     await supabase.from('product_media').delete().eq('id', item.id)
     if (item.media_type === 'image') await supabase.from('product_images').delete().eq('product_id', item.product_id).eq('image_url', item.media_url)
