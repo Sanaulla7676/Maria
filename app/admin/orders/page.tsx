@@ -1,35 +1,18 @@
-import Link from 'next/link'
-import { ArrowRight, PackageCheck, Search, Truck } from 'lucide-react'
+'use client'
 
-const demoOrders = [
-  { id: 'MAR-10021', customer: 'Customer', total: '₹1,800', status: 'Processing', payment: 'Verified', tracking: 'Not assigned' },
-  { id: 'MAR-10020', customer: 'Customer', total: '₹1,000', status: 'Shipped', payment: 'Verified', tracking: 'Awaiting carrier' },
-  { id: 'MAR-10019', customer: 'Customer', total: '₹600', status: 'Payment Pending', payment: 'Submitted', tracking: '—' },
-]
+import { useEffect, useMemo, useState } from 'react'
+import { CheckCircle2, Loader2, Search, Truck, XCircle } from 'lucide-react'
+import { supabaseBrowser } from '@/lib/supabase/browser'
 
-export default function AdminOrdersPage() {
-  return (
-    <main className="container admin-page">
-      <section className="admin-header">
-        <div><span className="kicker">Maria Operations</span><h1>Orders</h1><p>Search, review and move customer orders through fulfilment.</p></div>
-        <Link className="button" href="/admin">Admin dashboard</Link>
-      </section>
-      <section className="admin-toolbar">
-        <label className="search-box"><Search size={17} /><input placeholder="Search order, customer or UTR" /></label>
-        <select defaultValue="all"><option value="all">All statuses</option><option>Payment Pending</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option></select>
-      </section>
-      <section className="order-table" aria-label="Orders">
-        <div className="order-row order-head"><span>Order</span><span>Customer</span><span>Total</span><span>Payment</span><span>Fulfilment</span><span>Tracking</span><span /></div>
-        {demoOrders.map((order) => (
-          <article className="order-row" key={order.id}>
-            <strong>{order.id}</strong><span>{order.customer}</span><span>{order.total}</span><span className="status success">{order.payment}</span><span className="status">{order.status}</span><span>{order.tracking}</span><Link href={`/admin/orders/${order.id}`} aria-label={`Open ${order.id}`}><ArrowRight size={17} /></Link>
-          </article>
-        ))}
-      </section>
-      <section className="ops-cards">
-        <article><PackageCheck size={22} /><h2>Fulfilment queue</h2><p>Process verified orders, add packing notes and move orders to shipping.</p></article>
-        <article><Truck size={22} /><h2>Shipping</h2><p>Add carrier and tracking details, then notify the customer.</p></article>
-      </section>
-    </main>
-  )
+type Order = { id:string; order_code:string; customer_name:string; total:number; payment_status:string; payment_reference:string|null; status:string; created_at:string }
+const statuses = ['new','confirmed','preparing','ready','completed','cancelled']
+export default function AdminOrdersPage(){
+ const supabase=supabaseBrowser(); const [orders,setOrders]=useState<Order[]>([]); const [query,setQuery]=useState(''); const [busy,setBusy]=useState<string|null>(null); const [error,setError]=useState('');
+ async function load(){const {data,error}=await supabase.rpc('admin_list_orders',{p_query:query||null,p_payment_status:null}); if(error){setError(error.message);return} setOrders((data??[]) as Order[])}
+ useEffect(()=>{load()},[])
+ const filtered=useMemo(()=>orders.filter(o=>`${o.order_code} ${o.customer_name} ${o.payment_reference??''}`.toLowerCase().includes(query.toLowerCase())),[orders,query])
+ async function verify(o:Order){const ref=o.payment_reference?.trim(); if(!ref)return setError('No UTR/payment reference submitted for this order.'); setBusy(o.id); setError(''); const {error}=await supabase.rpc('admin_verify_order_payment',{p_order_id:o.id,p_reference:ref}); if(error)setError(error.message); await load(); setBusy(null)}
+ async function reject(o:Order){const reason=window.prompt('Reason for rejecting this payment?'); if(!reason)return; setBusy(o.id); setError(''); const {error}=await supabase.rpc('admin_reject_order_payment',{p_order_id:o.id,p_reason:reason}); if(error)setError(error.message); await load(); setBusy(null)}
+ async function setStatus(o:Order,status:string){setBusy(o.id);setError('');const {error}=await supabase.rpc('admin_update_order_status',{p_order_id:o.id,p_status:status});if(error)setError(error.message);await load();setBusy(null)}
+ return <main className="container admin-page"><section className="admin-header"><div><span className="kicker">Maria Operations</span><h1>Orders & payments</h1><p>Live orders from Supabase. Verify UPI references and move fulfilment forward.</p></div><a className="button" href="/admin">Admin dashboard</a></section><section className="admin-toolbar"><label className="search-box"><Search size={17}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search order, customer or UTR"/></label><button className="button" onClick={load}>Refresh</button></section>{error&&<div className="error-note">{error}</div>}<section className="order-table" aria-label="Orders"><div className="order-row order-head"><span>Order</span><span>Customer</span><span>Total</span><span>Payment</span><span>Fulfilment</span><span>UTR</span><span>Actions</span></div>{filtered.map(o=><article className="order-row" key={o.id}><strong>{o.order_code}</strong><span>{o.customer_name}</span><span>₹{Number(o.total).toLocaleString('en-IN')}</span><span className={`status ${o.payment_status}`}>{o.payment_status}</span><select value={o.status} onChange={e=>setStatus(o,e.target.value)}>{statuses.map(s=><option key={s}>{s}</option>)}</select><span>{o.payment_reference||'—'}</span><div className="order-actions">{busy===o.id?<Loader2 className="spin" size={17}/>:o.payment_status!=='verified'?<><button className="button small" onClick={()=>verify(o)}><CheckCircle2 size={15}/> Verify</button><button className="icon-button danger" onClick={()=>reject(o)} aria-label="Reject payment"><XCircle size={17}/></button></>:<span className="verified"><CheckCircle2 size={15}/> Paid</span>}<Truck size={16}/></div></article>)}</section>{!filtered.length&&<div className="empty-state"><h2>No orders found</h2></div>}</main>
 }
