@@ -1,0 +1,62 @@
+import Link from 'next/link'
+import { eventTypes, mariaServices } from '@/lib/maria-business'
+
+export default function EventsPage() {
+  return (
+    <main className="container event-page">
+      <section className="event-hero">
+        <div>
+          <span className="kicker">Maria Events & Gifting</span>
+          <h1>Make your celebration smell unforgettable.</h1>
+          <p>Premium return gifts, customized fragrances and dedicated perfume stalls for weddings, Haldi, birthdays and corporate events.</p>
+          <div className="hero-actions">
+            <Link className="button primary" href="#event-enquiry">Plan an Event</Link>
+            <Link className="button" href="/shop">Shop Signature Perfumes</Link>
+          </div>
+        </div>
+        <div className="event-panel">
+          <span className="kicker">Event experience</span>
+          <strong>Return-gift perfume stalls</strong>
+          <small>Tell Maria your date, venue, guest count and vision. The team handles the gifting experience and quotation.</small>
+        </div>
+      </section>
+
+      <section className="service-grid">
+        {mariaServices.map((service) => (
+          <article key={service.title}>
+            <span>MARIA SERVICE</span>
+            <h2>{service.title}</h2>
+            <p>{service.description}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="event-types">
+        <span className="kicker">Choose your occasion</span>
+        <div className="event-type-grid">
+          {eventTypes.map((type) => <div className="event-type" key={type}>{type}</div>)}
+        </div>
+      </section>
+
+      <section id="event-enquiry" className="enquiry">
+        <div>
+          <span className="kicker">Request a quotation</span>
+          <h2>Let's design the gifting around your event.</h2>
+          <p>Share the essentials. Maria can follow up with product, customization, stall and bulk-order options.</p>
+        </div>
+        <form action="/api/events/enquiry" method="post">
+          <label>Name<input name="name" required placeholder="Your name" /></label>
+          <label>WhatsApp / Phone<input name="phone" required placeholder="+91" /></label>
+          <label>Email<input name="email" type="email" placeholder="you@example.com" /></label>
+          <label>Event Type<select name="eventType" defaultValue="Wedding">{eventTypes.map((type) => <option key={type}>{type}</option>)}</select></label>
+          <label>Event Date<input name="eventDate" type="date" /></label>
+          <label>Guest Count<input name="guestCount" type="number" min="1" placeholder="Approx. guests" /></label>
+          <label>Venue / City<input name="venue" placeholder="Event location" /></label>
+          <label>Customization<input name="customization" placeholder="Bottle, label, logo, packaging..." /></label>
+          <label>Tell us more<textarea name="message" rows={5} placeholder="What are you looking for?" /></label>
+          <button className="button primary" type="submit">Request Quote</button>
+        </form>
+      </section>
+    </main>
+  )
+}
