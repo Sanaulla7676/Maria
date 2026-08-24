@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle2, Loader2, Search, Truck, XCircle } from 'lucide-react'
 import { supabaseBrowser } from '@/lib/supabase/browser'
 
-type Order = { id:string; order_code:string; customer_name:string; total:number; payment_status:string; payment_reference:string|null; status:string; created_at:string }
+type Order = { id:string; order_code:string; customer_name:string; total:number; payment_status:string; payment_reference:string|null; status:string; created_at:string; notes?:string|null }
 const statuses = ['new','confirmed','preparing','ready','completed','cancelled']
 export default function AdminOrdersPage(){
  const supabase=supabaseBrowser(); const [orders,setOrders]=useState<Order[]>([]); const [query,setQuery]=useState(''); const [busy,setBusy]=useState<string|null>(null); const [error,setError]=useState('');

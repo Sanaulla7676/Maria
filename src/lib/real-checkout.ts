@@ -2,6 +2,10 @@ import { z } from 'zod'
 
 export type UpiIntentInput = {
   amount: number
+  upiId?: string
+  merchantUpiId?: string
+  payeeName?: string
+  orderId?: string
   orderCode?: string
   note?: string
 }

@@ -15,7 +15,7 @@ export const checkoutRequestSchema = z.object({
 
 export type CheckoutRequest = z.infer<typeof checkoutRequestSchema>
 
-type UpiIntentInput = { upiId?: string; merchantUpiId?: string; payeeName: string; amount: number; orderId: string }
+export type UpiIntentInput = { upiId?: string; merchantUpiId?: string; payeeName: string; amount: number; orderId: string }
 export function buildUpiIntent({ upiId, merchantUpiId, payeeName, amount, orderId }: UpiIntentInput) {
   const pa = upiId || merchantUpiId || ''
   if (!pa) return '#'

@@ -2,7 +2,7 @@
   "name": "maria-perfumes",
   "version": "1.0.0",
   "private": true,
-  "scripts": {"dev":"next dev","build":"next build","start":"next start","lint":"next lint","typecheck":"tsc --noEmit"},
+  "scripts": {"dev":"next dev","build":"next build","start":"next start","lint":"next lint .","typecheck":"tsc --noEmit"},
   "dependencies": {
     "@hookform/resolvers":"^5.2.1",
     "@radix-ui/react-dialog":"^1.1.15",
