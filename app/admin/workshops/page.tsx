@@ -1,21 +1,3 @@
-import Link from 'next/link'
-import { ArrowLeft, CalendarDays, Users, WalletCards } from 'lucide-react'
-import { createClient } from '@/lib/supabase/server'
-
-export default async function AdminWorkshopsPage() {
-  const supabase = await createClient()
-  const { data: sessions } = await supabase.from('workshop_sessions').select('*').order('session_date', { ascending: true }).limit(20)
-  const { data: bookings } = await supabase.from('workshop_bookings').select('id, session_id, customer_name, phone, participants, total_amount, payment_status, status, created_at').order('created_at', { ascending: false }).limit(100)
-  const activeBookings = bookings ?? []
-  const totalSeats = activeBookings.reduce((sum, booking) => sum + Number(booking.participants || 0), 0)
-  const revenue = activeBookings.filter((b) => b.payment_status === 'verified').reduce((sum, booking) => sum + Number(booking.total_amount || 0), 0)
-  return <main className="container admin-page">
-    <Link className="back-link" href="/admin"><ArrowLeft size={16}/> Operations</Link>
-    <section className="admin-header"><div><span className="kicker">Workshop operations</span><h1>Sunday workshops</h1><p>Manage sessions, reservations and manual UPI verification.</p></div></section>
-    <section className="payment-stats"><div><CalendarDays size={18}/><span>Upcoming sessions</span><strong>{sessions?.length ?? 0}</strong></div><div><Users size={18}/><span>Reserved seats</span><strong>{totalSeats}</strong></div><div><WalletCards size={18}/><span>Verified revenue</span><strong>₹{revenue.toLocaleString('en-IN')}</strong></div></section>
-    <section className="order-table"><div className="order-row order-head"><span>Booking</span><span>Customer</span><span>Participants</span><span>Total</span><span>Payment</span><span>Status</span></div>
-      {activeBookings.map((booking) => <article className="order-row" key={booking.id}><strong>{String(booking.id).slice(0, 8)}</strong><span>{booking.customer_name}<br/>{booking.phone}</span><span>{booking.participants}</span><span>₹{Number(booking.total_amount || 0).toLocaleString('en-IN')}</span><span className="status">{booking.payment_status}</span><span className="status">{booking.status}</span></article>)}
-      {!activeBookings.length && <div className="empty-state"><Users size={38}/><h2>No workshop bookings yet</h2><p>Sunday seat reservations will appear here.</p></div>}
-    </section>
-  </main>
-}
+'use client'
+import { useState } from 'react'
+export default function AdminWorkshopPage(){const [active,setActive]=useState(true);return <main className="min-h-screen bg-neutral-950 text-white"><section className="mx-auto max-w-7xl px-6 py-16"><p className="text-xs uppercase tracking-[.3em] text-amber-300">Admin · Workshop</p><h1 className="mt-3 text-4xl">Sunday workshop control</h1><div className="mt-10 grid gap-5 md:grid-cols-3"><article className="rounded-2xl border border-white/10 p-6"><span className="text-sm text-neutral-400">Price / person</span><strong className="mt-3 block text-3xl">₹1,200</strong></article><article className="rounded-2xl border border-white/10 p-6"><span className="text-sm text-neutral-400">Schedule</span><strong className="mt-3 block text-3xl">Every Sunday</strong></article><article className="rounded-2xl border border-white/10 p-6"><span className="text-sm text-neutral-400">Status</span><button onClick={()=>setActive(!active)} className="mt-3 block rounded-full bg-white px-5 py-2 text-black">{active?'Published':'Hidden'}</button></article></div><div className="mt-10 rounded-2xl border border-white/10 p-6"><h2 className="text-xl">Workshop curriculum</h2><ol className="mt-5 grid gap-3 md:grid-cols-5">{['Perfume basics','Fragrance notes','Blending','Create personal fragrance','Take perfume home'].map((x,i)=><li key={x} className="rounded-xl bg-white/5 p-4"><span className="text-amber-300">0{i+1}</span><p className="mt-4">{x}</p></li>)}</ol><p className="mt-6 text-sm text-neutral-400">Media can be added later from the dashboard after uploading workshop photos/videos to Storage.</p></div></section></main>}
