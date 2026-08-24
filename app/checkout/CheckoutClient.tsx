@@ -17,54 +17,24 @@ export default function CheckoutClient() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [verifiedSubmission, setVerifiedSubmission] = useState(false)
-
-  useEffect(() => {
-    fetch('/api/cart').then(async (r) => { const data = await r.json(); if (!r.ok) throw new Error(data.error); setItems(data.items ?? []) }).catch(() => setError('Unable to load your cart.'))
-  }, [])
-
+  useEffect(() => { fetch('/api/cart').then(async (r) => { const data = await r.json(); if (!r.ok) throw new Error(data.error); setItems(data.items ?? []) }).catch(() => setError('Unable to load your cart.')) }, [])
   const total = useMemo(() => items.reduce((sum, item) => sum + Number(item.unit_price) * item.quantity, 0), [items])
   const requiredAddress = ['recipient_name', 'phone', 'line1', 'city', 'state', 'postal_code'] as const
-
   const createOrder = async () => {
     setError('')
     if (requiredAddress.some((key) => !address[key].trim())) return setError('Please complete your delivery details.')
     if (!/^\d{6}$/.test(address.postal_code.trim())) return setError('Enter a valid 6-digit PIN code.')
-    if (!/^\+?[0-9\s-]{10,15}$/.test(address.phone.trim())) return setError('Enter a valid phone number.')
+    if (!/^[6-9]\d{9}$/.test(address.phone.trim())) return setError('Enter a valid 10-digit Indian mobile number.')
     setBusy(true)
-    try {
-      const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ shippingAddress: address }) })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error ?? 'Unable to create order.')
-      setOrder({ id: data.order.id, total: Number(data.order.total) })
-    } catch (e) { setError(e instanceof Error ? e.message : 'Unable to create order.') } finally { setBusy(false) }
+    try { const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ shippingAddress: address }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error ?? 'Unable to create order.'); setOrder({ id: data.order.id, total: Number(data.order.total) }) } catch (e) { setError(e instanceof Error ? e.message : 'Unable to create order.') } finally { setBusy(false) }
   }
-
   const submitUtr = async () => {
     if (!order || utr.trim().length < 6) return setError('Enter a valid UTR / transaction reference.')
     setBusy(true); setError('')
-    try {
-      const response = await fetch('/api/payments/reference', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orderId: order.id, reference: utr.trim() }) })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error ?? 'Unable to submit payment reference.')
-      setVerifiedSubmission(true)
-    } catch (e) { setError(e instanceof Error ? e.message : 'Unable to submit payment reference.') } finally { setBusy(false) }
+    try { const response = await fetch('/api/payments/reference', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orderId: order.id, reference: utr.trim() }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error ?? 'Unable to submit payment reference.'); setVerifiedSubmission(true) } catch (e) { setError(e instanceof Error ? e.message : 'Unable to submit payment reference.') } finally { setBusy(false) }
   }
-
   const upiId = process.env.NEXT_PUBLIC_MARIA_UPI_ID || ''
   const upiLink = order && upiId ? buildUpiIntent({ upiId, payeeName: 'Maria Perfumes', amount: order.total, orderId: order.id }) : '#'
-
   if (!items.length && !order) return <main className="container checkout-page"><Link href="/cart" className="back-link"><ArrowLeft size={16}/> Back to cart</Link><div className="empty-state"><h2>Your cart is empty</h2><Link className="button primary" href="/shop">Explore fragrances</Link></div></main>
-
-  return <main className="container checkout-page">
-    <Link href="/cart" className="back-link"><ArrowLeft size={16}/> Back to cart</Link>
-    <section className="checkout-layout">
-      <div>
-        <span className="kicker">Secure checkout</span><h1>Complete your Maria order.</h1>
-        {!order && <div className="checkout-card"><h2>Delivery details</h2><div className="form-grid">{(Object.keys(address) as (keyof Address)[]).filter((key) => key !== 'country').map((key) => <label key={key}>{key.replaceAll('_',' ')}<input value={address[key]} onChange={(e) => setAddress((current) => ({ ...current, [key]: e.target.value }))} placeholder={key === 'postal_code' ? '6-digit PIN code' : key === 'phone' ? 'Phone number' : key.replaceAll('_',' ')} inputMode={key === 'phone' || key === 'postal_code' ? 'numeric' : undefined} /></label>)}</div><button className="button primary" onClick={createOrder} disabled={busy}>{busy ? <Loader2 className="spin" size={16}/> : <CreditCard size={16}/>} Create order & continue</button></div>}
-        {order && <div className="checkout-card"><h2>UPI payment</h2><p>Order <strong>{order.id}</strong> has been created. Inventory is reserved while payment is pending.</p>{upiId ? <a className="button primary" href={upiLink}><CreditCard size={17}/> Pay ₹{order.total.toLocaleString('en-IN')} via UPI</a> : <div className="error-note">UPI payment is temporarily unavailable. Configure NEXT_PUBLIC_MARIA_UPI_ID in Vercel.</div>}<div className="payment-reference"><label htmlFor="utr">After payment, enter your UTR / transaction ID</label><input id="utr" value={utr} onChange={(e) => setUtr(e.target.value)} placeholder="UTR / transaction ID" inputMode="numeric"/><button className="button" onClick={submitUtr} disabled={utr.trim().length < 6 || busy || verifiedSubmission}>{busy ? 'Submitting…' : verifiedSubmission ? 'Submitted' : 'Submit payment reference'}</button></div>{verifiedSubmission && <div className="success-note"><Check size={17}/> Payment reference submitted for manual verification.</div>}</div>}
-        {error && <div className="error-note">{error}</div>}
-      </div>
-      <aside className="order-summary"><span className="kicker">Order summary</span>{items.map((item) => <div className="summary-item" key={item.id}><span>{item.product_name} · {item.variant_name} × {item.quantity}</span><strong>₹{(Number(item.unit_price) * item.quantity).toLocaleString('en-IN')}</strong></div>)}<div className="summary-total"><span>Total</span><strong>₹{(order?.total ?? total).toLocaleString('en-IN')}</strong></div><div className="trust-note"><ShieldCheck size={18}/> UPI opens your banking app. Maria never sees your UPI PIN.</div></aside>
-    </section>
-  </main>
+  return <main className="container checkout-page"><Link href="/cart" className="back-link"><ArrowLeft size={16}/> Back to cart</Link><section className="checkout-layout"><div><span className="kicker">Secure checkout</span><h1>Complete your Maria order.</h1>{!order && <div className="checkout-card"><h2>Delivery details</h2><div className="form-grid">{(Object.keys(address) as (keyof Address)[]).filter((key) => key !== 'country').map((key) => <label key={key}>{key.replaceAll('_',' ')}<input value={address[key]} onChange={(e) => setAddress((current) => ({ ...current, [key]: e.target.value }))} placeholder={key === 'postal_code' ? '6-digit PIN code' : key === 'phone' ? '10-digit mobile number' : key.replaceAll('_',' ')} inputMode={key === 'phone' || key === 'postal_code' ? 'numeric' : undefined} /></label>)}</div><button className="button primary" onClick={createOrder} disabled={busy}>{busy ? <Loader2 className="spin" size={16}/> : <CreditCard size={16}/>} Create order & continue</button></div>}{order && <div className="checkout-card"><h2>UPI payment</h2><p>Order <strong>{order.id}</strong> has been created. Inventory is reserved while payment is pending.</p>{upiId ? <a className="button primary" href={upiLink}><CreditCard size={17}/> Pay ₹{order.total.toLocaleString('en-IN')} via UPI</a> : <div className="error-note">UPI payment is unavailable until NEXT_PUBLIC_MARIA_UPI_ID is configured in Vercel.</div>}<div className="payment-reference"><label htmlFor="utr">After payment, enter your UTR / transaction ID</label><input id="utr" value={utr} onChange={(e) => setUtr(e.target.value)} placeholder="UTR / transaction ID" inputMode="numeric"/><button className="button" onClick={submitUtr} disabled={utr.trim().length < 6 || busy || verifiedSubmission}>{busy ? 'Submitting…' : verifiedSubmission ? 'Submitted' : 'Submit payment reference'}</button></div>{verifiedSubmission && <div className="success-note"><Check size={17}/> Payment reference submitted for manual verification.</div>}</div>}{error && <div className="error-note">{error}</div>}</div><aside className="order-summary"><span className="kicker">Order summary</span>{items.map((item) => <div className="summary-item" key={item.id}><span>{item.product_name} · {item.variant_name} × {item.quantity}</span><strong>₹{(Number(item.unit_price) * item.quantity).toLocaleString('en-IN')}</strong></div>)}<div className="summary-total"><span>Total</span><strong>₹{(order?.total ?? total).toLocaleString('en-IN')}</strong></div><div className="trust-note"><ShieldCheck size={18}/> UPI opens your banking app. Maria never sees your UPI PIN.</div></aside></section></main>
 }
