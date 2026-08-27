@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
   const { data, error } = await supabase
     .from('customer_orders')
-    .update({ payment_status: 'submitted', payment_reference: parsed.data.reference.trim(), updated_at: new Date().toISOString() })
+    .update({ payment_status: 'submitted', payment_reference: parsed.data.reference.trim(), payment_submitted_at: new Date().toISOString() })
     .eq('id', parsed.data.orderId)
     .eq('user_id', user.id)
     .in('payment_status', ['pending', 'submitted'])

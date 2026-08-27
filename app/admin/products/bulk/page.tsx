@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { ArrowLeft, Minus, Plus, Save } from 'lucide-react'
 import { useState } from 'react'
+import '../../admin.css'
 
 const initialRows = [
   { name: 'Fucking Fabulous', variant: '30ml', price: 600, stock: 12 },

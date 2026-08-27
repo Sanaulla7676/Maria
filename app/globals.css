@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", serif;
+  --font-sans: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+
+  --color-wine-50: #faf5f5;
+  --color-wine-100: #f4ecec;
+  --color-wine-500: #6b1d2f;
+  --color-wine-800: #3d0c18;
+  --color-wine-900: #26050e;
+  --color-wine-950: #150106;
+
+  --color-champagne-100: #fdfbf7;
+  --color-champagne-200: #f7f0e3;
+  --color-champagne-300: #eedcb8;
+  --color-champagne-400: #e5c388;
+  --color-champagne-500: #d4af37;
+  --color-champagne-600: #b88e28;
+  --color-champagne-700: #8c6819;
+}
+
+:root {
+  --ink: #17120f;
+  --paper: #f8f8fa;
+  --line: #ddd3c5;
+  /* Legacy tokens kept for pages outside the redesigned homepage (admin, account,
+     checkout, shop, events...) that still use the .container/.btn/.glass utility
+     classes below. */
+  --wine: #4d101b;
+  --gold: #b48a52;
+  --btn-radius: 9999px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+.font-display {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+/* Legacy utility classes (pre-redesign pages) */
+.container {
+  width: min(1180px, calc(100% - 40px));
+  margin: auto;
+}
+.glass {
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(18px);
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+.shadow-luxe {
+  box-shadow: 0 24px 80px rgba(41, 22, 11, 0.1);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--btn-radius);
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 650;
+  transition: 0.2s;
+}
+.btn-primary {
+  background: var(--wine);
+  color: white;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(77, 16, 27, 0.22);
+}
+.btn-ghost {
+  border: 1px solid var(--line);
+  background: transparent;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #806b60;
+}
+.placeholder {
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(145deg, #e9dfd0, #cfc0ae);
+  display: grid;
+  place-items: center;
+  color: #725f50;
+}
+.placeholder span {
+  letter-spacing: 0.2em;
+  font-size: 11px;
+}
+.input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 14px;
+  padding: 12px 14px;
+  outline: none;
+}
+.input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(180, 138, 82, 0.12);
+}
+
+@layer utilities {
+  .wine-gradient {
+    background: linear-gradient(135deg, #3d0c18 0%, #150106 100%);
+  }
+  .gold-button-gradient {
+    background: linear-gradient(135deg, #f7f0e3 0%, #d4af37 50%, #b88e28 100%);
+    border-radius: var(--btn-radius) !important;
+  }
+  .gold-text-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #f7f0e3 30%, #d4af37 70%, #e5c388 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .glass-nav {
+    background: rgba(15, 1, 4, 0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+  .glass-dark {
+    background: rgba(21, 1, 6, 0.78);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .nav-link-glow {
+    position: relative;
+  }
+  .nav-link-glow::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    width: 0%;
+    height: 2px;
+    background: #d4af37;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(-50%);
+    border-radius: 999px;
+    box-shadow: 0 0 10px #d4af37;
+  }
+  .nav-link-glow:hover::after,
+  .nav-link-glow.active::after {
+    width: 100%;
+  }
+  .custom-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scroll::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 9999px;
+  }
+}
+
+body.modal-active {
+  overflow: hidden !important;
+}

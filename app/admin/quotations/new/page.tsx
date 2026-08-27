@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { ArrowLeft, Plus, Trash2, Save, Share2, Printer } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import '../../admin.css'
 import { calculateQuotationTotal } from '@/lib/quotation'
 
 export default function NewQuotationPage(){

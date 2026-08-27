@@ -3,14 +3,11 @@ import { ArrowLeft, CheckCircle2, FileText, Search, ShieldCheck } from 'lucide-r
 import '../admin.css'
 import ProductManager from '../ProductManager'
 
+// Only genuinely unbuilt sections stay here — payments, events, workshops, products,
+// orders and customers all have real dedicated pages under app/admin/*/page.tsx now,
+// which Next.js routes to in preference to this catch-all.
 const sections: Record<string, { title: string; description: string; columns: string[]; rows: string[][] }> = {
-  payments: { title: 'UPI verification', description: 'Review customer-submitted UTRs before marking orders or bookings as paid.', columns: ['Reference', 'Customer', 'Amount', 'Status'], rows: [['MAR-1024', 'Customer #527', '₹1,800', 'Pending'], ['WS-204', 'Workshop booking', '₹2,400', 'Pending']] },
-  events: { title: 'Event enquiries', description: 'Manage return-gift stalls, bulk orders, customizations and quotation requests.', columns: ['Lead', 'Event', 'Date', 'Status'], rows: [['Wedding enquiry', 'Wedding', '18 Sep', 'New'], ['Corporate gifting', 'Corporate', '04 Oct', 'Quote needed']] },
-  inventory: { title: 'Inventory', description: 'Keep variant-level stock visible across the Maria catalogue.', columns: ['SKU', 'Product', 'Variant', 'Stock'], rows: [['MAR-FF-30', 'Fucking Fabulous', '30ml', '24'], ['MAR-OW-50', 'Oud Wood', '50ml', '8']] },
-  workshops: { title: 'Workshop bookings', description: 'Track Sunday registrations, attendees, payment verification and certificates.', columns: ['Booking', 'People', 'Payment', 'Certificate'], rows: [['WS-204', '2', 'Pending', 'Not issued'], ['WS-205', '1', 'Paid', 'Not issued']] },
-  products: { title: 'Products', description: 'Manage fragrance intelligence, variants, pricing and product media.', columns: ['Product', 'Collection', 'Variants', 'Status'], rows: [] },
-  orders: { title: 'Orders', description: 'Review purchases, payment status, fulfilment and customer details.', columns: ['Order', 'Customer', 'Total', 'Status'], rows: [['MAR-1024', 'Customer #527', '₹1,800', 'Processing'], ['MAR-1023', 'Customer #491', '₹1,000', 'Paid']] },
-  customers: { title: 'Customers', description: 'Customer profiles, addresses, orders, event leads and workshop history.', columns: ['Customer', 'Orders', 'Events', 'Last active'], rows: [['Customer #527', '4', '1', 'Today'], ['Customer #491', '2', '0', 'Yesterday']] },
+  inventory: { title: 'Inventory', description: 'Keep variant-level stock visible across the Maria catalogue. Use Products for full stock editing.', columns: ['SKU', 'Product', 'Variant', 'Stock'], rows: [] },
   analytics: { title: 'Analytics', description: 'The next layer will connect these cards to live Supabase aggregates.', columns: ['Metric', 'Current', 'Target', 'Trend'], rows: [['Conversion', '—', '—', 'Connect data'], ['Average order value', '—', '—', 'Connect data']] },
 }
 
@@ -19,7 +16,7 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
   if (section === 'products') {
     return <main className="admin-shell"><header className="admin-header compact"><div><Link className="back-link" href="/admin"><ArrowLeft size={16} /> Admin dashboard</Link><span className="kicker">Maria Operations</span><h1>Product control centre</h1><p>Upload media, manage merchandising, edit variants, pricing, inventory and storefront visibility.</p></div></header><ProductManager /></main>
   }
-  const data = sections[section] ?? sections.orders
+  const data = sections[section] ?? sections.inventory
   return (
     <main className="admin-shell">
       <header className="admin-header compact"><div><Link className="back-link" href="/admin"><ArrowLeft size={16} /> Admin dashboard</Link><span className="kicker">Maria Operations</span><h1>{data.title}</h1><p>{data.description}</p></div></header>

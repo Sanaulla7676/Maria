@@ -1,3 +1,0 @@
-export type Product = { id:string; slug:string; name:string; category_id:string|null; gender:string|null; family:string|null; badge:string|null; description:string|null; notes:string[]; active:boolean; featured:boolean; rating:number; review_count:number; product_images?:{id:string;image_url:string;alt_text:string|null;sort_order:number}[]; product_variants?:Variant[] };
-export type Variant = { id:string; product_id:string; label:string; sku:string|null; price:number; stock:number; active:boolean; size_ml:number|null; name?:string|null };
-export type CartItem = { productId:string; variantId:string; productName:string; variantLabel:string; price:number; quantity:number; imageUrl?:string };

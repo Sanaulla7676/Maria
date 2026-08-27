@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowLeft, FileDown, MessageCircle } from 'lucide-react'
 import { createServerClient } from '@/lib/supabase/server'
 import { buildWhatsAppShareUrl } from '@/lib/quotation'
+import '../../admin.css'
 
 export default async function QuotationDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Package, Plus, Search, SlidersHorizontal } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import '../admin.css'
 
 export default async function AdminProductsPage() {
   const supabase = await createClient()
@@ -12,7 +13,10 @@ export default async function AdminProductsPage() {
     <main className="container admin-page">
       <section className="admin-header">
         <div><span className="kicker">Maria catalog operations</span><h1>Products & inventory</h1><p>Manage fragrances, variants, prices and stock from one workspace.</p></div>
-        <Link className="button primary" href="/admin/products/new"><Plus size={16}/> New product</Link>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <Link className="button" href="/admin/categories">Categories</Link>
+          <Link className="button primary" href="/admin/products/new"><Plus size={16}/> New product</Link>
+        </div>
       </section>
       <section className="admin-toolbar">
         <label className="search-box"><Search size={17}/><input placeholder="Search product or SKU" /></label>

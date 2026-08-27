@@ -10,20 +10,13 @@ export async function POST(request: Request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
 
-  const { data: orderId, error } = await supabase.rpc('create_order_from_cart', {
-    p_user_id: user.id,
+  const { data: order, error } = await supabase.rpc('create_order_from_cart', {
     p_shipping_address: parsed.data.shippingAddress,
+    p_upi_id: process.env.MARIA_UPI_ID || process.env.NEXT_PUBLIC_MARIA_UPI_ID || null,
   })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
-  if (!orderId) return NextResponse.json({ error: 'Unable to create order' }, { status: 400 })
-
-  const { data: order } = await supabase
-    .from('customer_orders')
-    .select('id,total,status,payment_status')
-    .eq('id', orderId)
-    .eq('user_id', user.id)
-    .single()
+  if (!order) return NextResponse.json({ error: 'Unable to create order' }, { status: 400 })
 
   return NextResponse.json({ order })
 }

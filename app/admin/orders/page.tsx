@@ -1,18 +1,47 @@
-'use client'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
+import OrdersTable from './OrdersTable'
+import '../admin.css'
 
-import { useEffect, useMemo, useState } from 'react'
-import { CheckCircle2, Loader2, Search, Truck, XCircle } from 'lucide-react'
-import { supabaseBrowser } from '@/lib/supabase/browser'
+export type AdminOrder = {
+  id: string
+  total: number
+  payment_status: string
+  payment_reference: string | null
+  status: string
+  created_at: string
+  notes: string | null
+  profiles: { full_name: string | null; phone: string | null } | null
+}
 
-type Order = { id:string; order_code:string; customer_name:string; total:number; payment_status:string; payment_reference:string|null; status:string; created_at:string; notes?:string|null }
-const statuses = ['new','confirmed','preparing','ready','completed','cancelled']
-export default function AdminOrdersPage(){
- const supabase=supabaseBrowser(); const [orders,setOrders]=useState<Order[]>([]); const [query,setQuery]=useState(''); const [busy,setBusy]=useState<string|null>(null); const [error,setError]=useState('');
- async function load(){const {data,error}=await supabase.rpc('admin_list_orders',{p_query:query||null,p_payment_status:null}); if(error){setError(error.message);return} setOrders((data??[]) as Order[])}
- useEffect(()=>{load()},[])
- const filtered=useMemo(()=>orders.filter(o=>`${o.order_code} ${o.customer_name} ${o.payment_reference??''}`.toLowerCase().includes(query.toLowerCase())),[orders,query])
- async function verify(o:Order){const ref=o.payment_reference?.trim(); if(!ref)return setError('No UTR/payment reference submitted for this order.'); setBusy(o.id); setError(''); const {error}=await supabase.rpc('admin_verify_order_payment',{p_order_id:o.id,p_reference:ref}); if(error)setError(error.message); await load(); setBusy(null)}
- async function reject(o:Order){const reason=window.prompt('Reason for rejecting this payment?'); if(!reason)return; setBusy(o.id); setError(''); const {error}=await supabase.rpc('admin_reject_order_payment',{p_order_id:o.id,p_reason:reason}); if(error)setError(error.message); await load(); setBusy(null)}
- async function setStatus(o:Order,status:string){setBusy(o.id);setError('');const {error}=await supabase.rpc('admin_update_order_status',{p_order_id:o.id,p_status:status});if(error)setError(error.message);await load();setBusy(null)}
- return <main className="container admin-page"><section className="admin-header"><div><span className="kicker">Maria Operations</span><h1>Orders & payments</h1><p>Live orders from Supabase. Verify UPI references and move fulfilment forward.</p></div><a className="button" href="/admin">Admin dashboard</a></section><section className="admin-toolbar"><label className="search-box"><Search size={17}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search order, customer or UTR"/></label><button className="button" onClick={load}>Refresh</button></section>{error&&<div className="error-note">{error}</div>}<section className="order-table" aria-label="Orders"><div className="order-row order-head"><span>Order</span><span>Customer</span><span>Total</span><span>Payment</span><span>Fulfilment</span><span>UTR</span><span>Actions</span></div>{filtered.map(o=><article className="order-row" key={o.id}><strong>{o.order_code}</strong><span>{o.customer_name}</span><span>₹{Number(o.total).toLocaleString('en-IN')}</span><span className={`status ${o.payment_status}`}>{o.payment_status}</span><select value={o.status} onChange={e=>setStatus(o,e.target.value)}>{statuses.map(s=><option key={s}>{s}</option>)}</select><span>{o.payment_reference||'—'}</span><div className="order-actions">{busy===o.id?<Loader2 className="spin" size={17}/>:o.payment_status!=='verified'?<><button className="button small" onClick={()=>verify(o)}><CheckCircle2 size={15}/> Verify</button><button className="icon-button danger" onClick={()=>reject(o)} aria-label="Reject payment"><XCircle size={17}/></button></>:<span className="verified"><CheckCircle2 size={15}/> Paid</span>}<Truck size={16}/></div></article>)}</section>{!filtered.length&&<div className="empty-state"><h2>No orders found</h2></div>}</main>
+export default async function AdminOrdersPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/')
+  const { data: owner } = await supabase.rpc('is_owner')
+  if (!owner) redirect('/')
+
+  const { data, error } = await supabase
+    .from('customer_orders')
+    .select('id, total, payment_status, payment_reference, status, created_at, notes, profiles(full_name, phone)')
+    .order('created_at', { ascending: false })
+
+  const orders = (error ? [] : (data ?? [])) as unknown as AdminOrder[]
+
+  return (
+    <main className="container admin-page">
+      <Link className="back-link" href="/admin"><ArrowLeft size={16} /> Admin dashboard</Link>
+      <section className="admin-header">
+        <div>
+          <span className="kicker">Maria Operations</span>
+          <h1>Orders &amp; payments</h1>
+          <p>Live orders from Supabase. Verify UPI references and move fulfilment forward.</p>
+        </div>
+      </section>
+      {error && <div className="error-note">{error.message}</div>}
+      <OrdersTable initialOrders={orders} />
+    </main>
+  )
 }

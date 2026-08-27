@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Check, ChevronDown, ChevronUp, ImagePlus, Loader2, Search, Star, Trash2, Upload, Video } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, ImagePlus, Loader2, Plus, Search, Star, Trash2, Upload, Video } from 'lucide-react'
 import { supabaseBrowser } from '@/lib/supabase/browser'
+
+type MainAccord = { name: string; color: string; percent: number }
 
 type Product = {
   id: string
@@ -14,25 +16,37 @@ type Product = {
   badge: string | null
   active: boolean
   featured: boolean
+  notes: string[] | null
+  main_accords: MainAccord[] | null
+  longevity_hours: number | null
+  sillage: string | null
+  best_daytime: string | null
+  best_season: string[] | null
   product_images?: ImageRow[]
   product_variants?: Variant[]
 }
 
+const seasonOptions = ['Winter', 'Spring', 'Summer', 'Autumn']
+
 type ImageRow = { id: string; image_url: string; alt_text: string | null; sort_order: number }
 type MediaRow = { id: string; product_id: string; media_type: 'image' | 'video'; media_url: string; alt_text: string | null; sort_order: number; is_primary: boolean }
-type Variant = { id: string; size_ml: number; price: number; stock: number; active: boolean; label: string }
+type Variant = { id: string; size_ml: number | null; price: number; stock: number; active: boolean; label: string; sku: string | null; image_url: string | null }
 
 const BUCKET = 'product-images'
 
-export default function ProductManager() {
+export default function ProductManager({ initialProductId }: { initialProductId?: string }) {
   const supabase = supabaseBrowser()
   const [products, setProducts] = useState<Product[]>([])
   const [media, setMedia] = useState<MediaRow[]>([])
-  const [selectedId, setSelectedId] = useState('')
+  const [selectedId, setSelectedId] = useState(initialProductId ?? '')
   const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [message, setMessage] = useState('')
+  const [noteInput, setNoteInput] = useState('')
+  const [accordName, setAccordName] = useState('')
+  const [accordColor, setAccordColor] = useState('#6b1d2f')
+  const [accordPercent, setAccordPercent] = useState(80)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const selected = products.find((p) => p.id === selectedId) ?? products[0]
@@ -42,7 +56,7 @@ export default function ProductManager() {
   async function load() {
     setLoading(true)
     const [{ data: ps }, { data: ms }] = await Promise.all([
-      supabase.from('products').select('id,name,slug,description,family,gender,badge,active,featured,product_images(*),product_variants(*)').order('name'),
+      supabase.from('products').select('id,name,slug,description,family,gender,badge,active,featured,notes,main_accords,longevity_hours,sillage,best_daytime,best_season,product_images(*),product_variants(*)').order('name'),
       supabase.from('product_media').select('*').order('sort_order')
     ])
     setProducts((ps ?? []) as Product[])
@@ -60,6 +74,61 @@ export default function ProductManager() {
     if (error) return setMessage(error.message)
     setProducts((all) => all.map((p) => p.id === selected.id ? { ...p, ...(data as Product) } : p))
     setMessage('Saved')
+  }
+
+  async function addNote() {
+    const value = noteInput.trim()
+    if (!value || !selected) return
+    const nextNotes = [...(selected.notes ?? []), value]
+    setNoteInput('')
+    await updateProduct({ notes: nextNotes })
+  }
+
+  async function removeNote(note: string) {
+    if (!selected) return
+    const nextNotes = (selected.notes ?? []).filter((n) => n !== note)
+    await updateProduct({ notes: nextNotes })
+  }
+
+  async function addAccord() {
+    const value = accordName.trim()
+    if (!value || !selected) return
+    const next: MainAccord[] = [...(selected.main_accords ?? []), { name: value, color: accordColor, percent: accordPercent }]
+    setAccordName('')
+    await updateProduct({ main_accords: next })
+  }
+
+  async function removeAccord(name: string) {
+    if (!selected) return
+    const next = (selected.main_accords ?? []).filter((a) => a.name !== name)
+    await updateProduct({ main_accords: next })
+  }
+
+  async function addVariant() {
+    if (!selected) return
+    const count = (selected.product_variants ?? []).length
+    const { error } = await supabase.from('product_variants').insert({
+      product_id: selected.id,
+      label: `New Variant ${count + 1}`,
+      sku: `${selected.slug}-${count + 1}`.toUpperCase(),
+      price: 0,
+      stock: 0,
+      active: false,
+    })
+    if (error) return setMessage(error.message)
+    await load()
+  }
+
+  async function deleteVariant(variantId: string) {
+    await supabase.from('product_variants').delete().eq('id', variantId)
+    await load()
+  }
+
+  async function toggleSeason(season: string) {
+    if (!selected) return
+    const current = selected.best_season ?? []
+    const next = current.includes(season) ? current.filter((s) => s !== season) : [...current, season]
+    await updateProduct({ best_season: next })
   }
 
   async function uploadFiles(files: FileList | null) {
@@ -147,6 +216,59 @@ export default function ProductManager() {
             <label className="switch"><input type="checkbox" checked={selected.featured} onChange={(e) => updateProduct({ featured: e.target.checked })} /><span>Featured product</span></label>
           </div>
 
+          <div className="pm-section-head"><div><span className="kicker">Fragrance notes</span><h3>{(selected.notes ?? []).length} notes</h3></div></div>
+          <div className="pm-notes">
+            {(selected.notes ?? []).map((note) => (
+              <span key={note} className="pm-note-chip">
+                {note}
+                <button type="button" onClick={() => removeNote(note)} aria-label={`Remove ${note}`}>&times;</button>
+              </span>
+            ))}
+            <form
+              className="pm-note-add"
+              onSubmit={(e) => { e.preventDefault(); addNote() }}
+            >
+              <input value={noteInput} onChange={(e) => setNoteInput(e.target.value)} placeholder="Add a note (e.g. Sandalwood)" />
+              <button type="submit"><Plus size={13} /> Add</button>
+            </form>
+          </div>
+
+          <div className="pm-section-head"><div><span className="kicker">Fragrance profile</span><h3>Detail page attributes</h3></div></div>
+          <div className="pm-controls">
+            <label><span>Longevity (hours)</span><input type="number" min="0" step="0.5" value={selected.longevity_hours ?? ''} onChange={(e) => setProducts((all) => all.map((p) => p.id === selected.id ? { ...p, longevity_hours: e.target.value ? Number(e.target.value) : null } : p))} onBlur={() => updateProduct({ longevity_hours: selected.longevity_hours })} /></label>
+            <label><span>Sillage</span><select value={selected.sillage ?? ''} onChange={(e) => updateProduct({ sillage: e.target.value || null })}><option value="">Not set</option><option>Light</option><option>Moderate</option><option>Strong</option><option>Very Strong</option></select></label>
+            <label><span>Best worn</span><select value={selected.best_daytime ?? ''} onChange={(e) => updateProduct({ best_daytime: e.target.value || null })}><option value="">Not set</option><option value="day">Day</option><option value="night">Night</option><option value="both">Both</option></select></label>
+          </div>
+
+          <div className="pm-notes" style={{ marginBottom: 12 }}>
+            {seasonOptions.map((season) => (
+              <button
+                key={season}
+                type="button"
+                onClick={() => toggleSeason(season)}
+                className="pm-note-chip"
+                style={(selected.best_season ?? []).includes(season) ? { background: 'var(--wine)', color: 'white' } : undefined}
+              >
+                {season}
+              </button>
+            ))}
+          </div>
+
+          <div className="pm-notes">
+            {(selected.main_accords ?? []).map((accord) => (
+              <span key={accord.name} className="pm-note-chip" style={{ background: accord.color, color: 'white' }}>
+                {accord.name} · {accord.percent}%
+                <button type="button" onClick={() => removeAccord(accord.name)} aria-label={`Remove ${accord.name}`}>&times;</button>
+              </span>
+            ))}
+            <form className="pm-note-add" onSubmit={(e) => { e.preventDefault(); addAccord() }}>
+              <input value={accordName} onChange={(e) => setAccordName(e.target.value)} placeholder="Accord (e.g. Woody)" style={{ maxWidth: 140 }} />
+              <input type="color" value={accordColor} onChange={(e) => setAccordColor(e.target.value)} style={{ width: 36, padding: 2 }} />
+              <input type="number" min="1" max="100" value={accordPercent} onChange={(e) => setAccordPercent(Number(e.target.value))} style={{ width: 60 }} />
+              <button type="submit"><Plus size={13} /> Add</button>
+            </form>
+          </div>
+
           <div className="pm-section-head"><div><span className="kicker">Media library</span><h3>{selectedMedia.length} assets</h3></div><button className="icon-button" onClick={() => inputRef.current?.click()}><ImagePlus size={18} /></button></div>
           <div className="pm-media-grid">
             {selectedMedia.map((item, index) => <article className={`pm-media ${item.is_primary ? 'primary' : ''}`} key={item.id}>
@@ -157,18 +279,79 @@ export default function ProductManager() {
             {!selectedMedia.length && <button className="pm-dropzone" onClick={() => inputRef.current?.click()}><ImagePlus size={28} /><strong>Upload product photos or videos</strong><span>Multiple files supported · stored in Supabase Storage</span></button>}
           </div>
 
-          <div className="pm-variants"><div className="pm-section-head"><div><span className="kicker">Variants & inventory</span><h3>30 / 50 / 100 ml</h3></div></div><div className="pm-variant-grid">{(selected.product_variants ?? []).sort((a,b) => a.size_ml-b.size_ml).map((v) => <VariantEditor key={v.id} variant={v} supabase={supabase} onSaved={load} />)}</div></div>
+          <div className="pm-variants">
+            <div className="pm-section-head"><div><span className="kicker">Variants & inventory</span><h3>{(selected.product_variants ?? []).length} variant{(selected.product_variants ?? []).length === 1 ? '' : 's'} · unlimited</h3></div><button className="button small" onClick={addVariant}><Plus size={14} /> Add variant</button></div>
+            <div className="pm-variant-grid">
+              {(selected.product_variants ?? []).sort((a, b) => (a.size_ml ?? 0) - (b.size_ml ?? 0)).map((v) => (
+                <VariantEditor key={v.id} variant={v} supabase={supabase} productSlug={selected.slug} onSaved={load} onDeleted={() => deleteVariant(v.id)} />
+              ))}
+              {!(selected.product_variants ?? []).length && (
+                <button className="pm-dropzone" onClick={addVariant}><Plus size={28} /><strong>Add your first variant</strong><span>Size, flavor, edition — anything with its own price, stock &amp; photo</span></button>
+              )}
+            </div>
+          </div>
         </section>}
       </div>
     </div>
   )
 }
 
-function VariantEditor({ variant, supabase, onSaved }: { variant: Variant; supabase: ReturnType<typeof supabaseBrowser>; onSaved: () => void }) {
+function VariantEditor({ variant, supabase, productSlug, onSaved, onDeleted }: { variant: Variant; supabase: ReturnType<typeof supabaseBrowser>; productSlug: string; onSaved: () => void; onDeleted: () => void }) {
+  const [label, setLabel] = useState(variant.label)
+  const [sizeMl, setSizeMl] = useState(variant.size_ml != null ? String(variant.size_ml) : '')
+  const [sku, setSku] = useState(variant.sku ?? '')
   const [price, setPrice] = useState(String(variant.price))
   const [stock, setStock] = useState(String(variant.stock))
   const [active, setActive] = useState(variant.active)
   const [saving, setSaving] = useState(false)
-  async function save() { setSaving(true); await supabase.from('product_variants').update({ price: Number(price), stock: Math.max(0, Number(stock)), active }).eq('id', variant.id); setSaving(false); onSaved() }
-  return <div className="pm-variant"><strong>{variant.size_ml}ml</strong><label>Price<input type="number" min="0" value={price} onChange={(e) => setPrice(e.target.value)} /></label><label>Stock<input type="number" min="0" value={stock} onChange={(e) => setStock(e.target.value)} /></label><label className="mini-switch"><input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} /> Active</label><button className="button small" onClick={save} disabled={saving}>{saving ? <Loader2 size={14} /> : <Check size={14} />} Save</button></div>
+  const [uploading, setUploading] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  async function save() {
+    setSaving(true)
+    await supabase.from('product_variants').update({
+      label,
+      size_ml: sizeMl ? Number(sizeMl) : null,
+      sku: sku || null,
+      price: Number(price),
+      stock: Math.max(0, Number(stock)),
+      active,
+    }).eq('id', variant.id)
+    setSaving(false)
+    onSaved()
+  }
+
+  async function uploadImage(file: File | undefined) {
+    if (!file) return
+    setUploading(true)
+    const safe = file.name.toLowerCase().replace(/[^a-z0-9.-]+/g, '-')
+    const path = `${productSlug}/variants/${variant.id}-${safe}`
+    const { error: uploadError } = await supabase.storage.from(BUCKET).upload(path, file, { upsert: true, cacheControl: '31536000', contentType: file.type })
+    if (!uploadError) {
+      const { data } = supabase.storage.from(BUCKET).getPublicUrl(path)
+      await supabase.from('product_variants').update({ image_url: data.publicUrl }).eq('id', variant.id)
+      onSaved()
+    }
+    setUploading(false)
+  }
+
+  return (
+    <div className="pm-variant pm-variant-card">
+      <div className="pm-variant-image">
+        {variant.image_url ? <img src={variant.image_url} alt={label} /> : <div className="pm-variant-noimage"><ImagePlus size={18} /></div>}
+        <input ref={fileRef} type="file" hidden accept="image/*" onChange={(e) => { uploadImage(e.target.files?.[0]); e.currentTarget.value = '' }} />
+        <button type="button" className="button small" onClick={() => fileRef.current?.click()} disabled={uploading}>{uploading ? <Loader2 size={13} /> : <ImagePlus size={13} />} Photo</button>
+      </div>
+      <label>Label<input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="e.g. Lime Twist, 50ml" /></label>
+      <label>Size (ml, optional)<input type="number" min="0" value={sizeMl} onChange={(e) => setSizeMl(e.target.value)} /></label>
+      <label>SKU<input value={sku} onChange={(e) => setSku(e.target.value)} /></label>
+      <label>Price<input type="number" min="0" value={price} onChange={(e) => setPrice(e.target.value)} /></label>
+      <label>Stock<input type="number" min="0" value={stock} onChange={(e) => setStock(e.target.value)} /></label>
+      <label className="mini-switch"><input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} /> Active</label>
+      <div className="pm-variant-actions">
+        <button className="button small" onClick={save} disabled={saving}>{saving ? <Loader2 size={14} /> : <Check size={14} />} Save</button>
+        <button className="icon-button danger" title="Delete variant" onClick={onDeleted}><Trash2 size={15} /></button>
+      </div>
+    </div>
+  )
 }

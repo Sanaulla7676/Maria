@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowUpRight, BarChart3, Package, ShoppingBag, Users } from 'lucide-react'
+import '../admin.css'
 
 const kpis = [
   { label: 'Revenue', value: '₹0', delta: 'No paid orders yet', icon: BarChart3 },

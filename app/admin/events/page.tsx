@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowLeft, CalendarDays, FileText } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import '../admin.css'
 
 export default async function AdminEventsPage() {
   const supabase = await createClient()
