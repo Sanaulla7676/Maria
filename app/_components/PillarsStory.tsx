@@ -22,7 +22,7 @@ const stages = [
     body: 'A live fragrance bar at your wedding, birthday or corporate event — guests blend and take home their own scent.',
     icon: GlassWater,
     href: '/events',
-    cta: 'Plan Your Event',
+    cta: 'Explore Event Stalls',
     bg: 'from-[#26050e] via-[#3d0c18] to-[#26050e]',
   },
   {
@@ -31,40 +31,49 @@ const stages = [
     body: 'Learn fragrance notes and blending hands-on, then create and take home a fragrance that is entirely yours.',
     icon: GraduationCap,
     href: '/workshops',
-    cta: 'Reserve Your Seat',
+    cta: 'Explore the Workshop',
     bg: 'from-[#150106] via-[#26050e] to-[#150106]',
   },
 ]
 
 export function PillarsStory() {
   const root = useRef<HTMLDivElement>(null)
+  const track = useRef<HTMLDivElement>(null)
   const panelRefs = useRef<HTMLDivElement[]>([])
-  const dotRefs = useRef<HTMLButtonElement[]>([])
+  const smokeRefs = useRef<HTMLDivElement[]>([])
+  const dotRefs = useRef<HTMLSpanElement[]>([])
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     const ctx = gsap.context(() => {
       const panels = panelRefs.current
-      gsap.set(panels.slice(1), { autoAlpha: 0, y: 40 })
-      gsap.set(dotRefs.current.slice(1), { opacity: 0.35 })
+      const count = panels.length
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root.current,
           start: 'top top',
-          end: `+=${panels.length * 100}%`,
-          scrub: 0.6,
+          end: () => `+=${(count - 1) * 100}%`,
+          scrub: 1,
           pin: true,
           anticipatePin: 1,
         },
       })
 
-      panels.forEach((panel, i) => {
-        if (i === 0) return
-        tl.to(panels[i - 1], { autoAlpha: 0, y: -40, duration: 0.4 }, i)
-        tl.to(panel, { autoAlpha: 1, y: 0, duration: 0.4 }, i)
-        tl.to(dotRefs.current[i - 1], { opacity: 0.35, duration: 0.2 }, i)
-        tl.to(dotRefs.current[i], { opacity: 1, duration: 0.2 }, i)
+      // Horizontal march of the whole track
+      tl.to(track.current, { xPercent: -100 * (count - 1), ease: 'none' }, 0)
+
+      // Smoke-puff dissolve at each hand-off: outgoing panel blurs+fades,
+      // a soft champagne "puff" blooms and clears, incoming panel sharpens in.
+      panels.forEach((_, i) => {
+        if (i === count - 1) return
+        const at = i
+        tl.to(panels[i], { filter: 'blur(18px)', opacity: 0.15, scale: 1.06, ease: 'power1.in', duration: 0.5 }, at + 0.55)
+        tl.fromTo(smokeRefs.current[i], { opacity: 0, scale: 0.6 }, { opacity: 0.9, scale: 1.6, ease: 'power1.out', duration: 0.5 }, at + 0.6)
+        tl.to(smokeRefs.current[i], { opacity: 0, scale: 2.1, ease: 'power1.in', duration: 0.45 }, at + 0.95)
+        tl.fromTo(panels[i + 1], { filter: 'blur(18px)', opacity: 0.15, scale: 1.06 }, { filter: 'blur(0px)', opacity: 1, scale: 1, ease: 'power2.out', duration: 0.5 }, at + 0.85)
+        tl.to(dotRefs.current[i], { backgroundColor: 'rgba(212,175,55,0.35)', duration: 0.2 }, at + 0.5)
+        tl.to(dotRefs.current[i + 1], { backgroundColor: 'rgba(212,175,55,1)', duration: 0.2 }, at + 0.9)
       })
     }, root)
 
@@ -72,42 +81,61 @@ export function PillarsStory() {
   }, [])
 
   return (
-    <section ref={root} className="relative h-screen w-full overflow-hidden bg-wine-950">
-      {stages.map((stage, i) => {
-        const Icon = stage.icon
-        return (
-          <div
-            key={stage.title}
-            ref={(el) => { if (el) panelRefs.current[i] = el }}
-            className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${stage.bg}`}
-          >
-            <div className="max-w-2xl text-center px-6">
-              <div className="w-16 h-16 rounded-full gold-button-gradient text-wine-950 flex items-center justify-center mx-auto mb-6 shadow-2xl">
-                <Icon className="h-7 w-7" />
-              </div>
-              <p className="text-champagne-400 text-xs uppercase tracking-[0.35em] font-semibold mb-3">{stage.eyebrow}</p>
-              <h2 className="text-4xl sm:text-6xl font-serif font-bold text-white leading-tight mb-5">{stage.title}</h2>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-8 max-w-lg mx-auto">{stage.body}</p>
-              <Link
-                href={stage.href}
-                className="inline-flex items-center gap-2.5 gold-button-gradient text-wine-950 px-7 py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-xl hover:scale-105 transition"
+    <section ref={root} className="relative h-[100dvh] w-full overflow-hidden bg-wine-950">
+      <div ref={track} className="flex h-full" style={{ width: `${stages.length * 100}%` }}>
+        {stages.map((stage, i) => {
+          const Icon = stage.icon
+          return (
+            <div
+              key={stage.title}
+              ref={(el) => { if (el) panelRefs.current[i] = el }}
+              className={`relative h-full shrink-0 flex items-center justify-center bg-gradient-to-br ${stage.bg}`}
+              style={{ width: `${100 / stages.length}%` }}
+            >
+              <div
+                ref={(el) => { if (el) smokeRefs.current[i] = el }}
+                className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0"
+                style={{ mixBlendMode: 'screen' }}
               >
-                {stage.cta} <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+                <div className="w-[70vw] h-[70vw] max-w-[900px] max-h-[900px] rounded-full bg-champagne-400/40 blur-[80px]" />
+              </div>
+
+              <div className="relative z-10 max-w-2xl text-center px-6">
+                <div className="w-20 h-20 rounded-full gold-button-gradient text-wine-950 flex items-center justify-center mx-auto mb-7 shadow-2xl">
+                  <Icon className="h-9 w-9" />
+                </div>
+                <p className="text-champagne-400 text-xs uppercase tracking-[0.4em] font-semibold mb-4">{stage.eyebrow}</p>
+                <h2 className="text-5xl sm:text-7xl font-serif font-bold text-white leading-tight mb-6">{stage.title}</h2>
+                <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-10 max-w-xl mx-auto">{stage.body}</p>
+                <Link
+                  href={stage.href}
+                  className="inline-flex items-center gap-2.5 gold-button-gradient text-wine-950 px-9 py-4 rounded-full font-bold text-xs uppercase tracking-wider shadow-xl hover:scale-105 transition"
+                >
+                  {stage.cta} <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+
+              <span className="absolute bottom-8 right-8 text-champagne-400/60 font-serif text-sm">
+                {String(i + 1).padStart(2, '0')} / {String(stages.length).padStart(2, '0')}
+              </span>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
         {stages.map((stage, i) => (
-          <button
+          <span
             key={stage.title}
             ref={(el) => { if (el) dotRefs.current[i] = el }}
-            aria-label={stage.title}
-            className="w-8 h-1.5 rounded-full bg-champagne-400"
+            className="w-10 h-1.5 rounded-full"
+            style={{ backgroundColor: i === 0 ? 'rgba(212,175,55,1)' : 'rgba(212,175,55,0.35)' }}
           />
         ))}
+      </div>
+
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-champagne-300/70 text-[10px] uppercase tracking-[0.3em] animate-pulse">
+        Scroll to explore
       </div>
     </section>
   )

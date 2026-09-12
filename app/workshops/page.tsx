@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { ArrowRight, CheckCircle2, Copy, MapPin, ShieldCheck, Loader2 } from 'lucide-react'
 import { workshopCurriculum, upcomingWorkshop } from '@/lib/maria-business'
 import { Reveal } from '@/app/_components/ui/Reveal'
+import { ParallaxHero } from '@/app/_components/ui/ParallaxHero'
+import { HorizontalScrollGallery } from '@/app/_components/ui/HorizontalScrollGallery'
 
 export default function WorkshopPage() {
   const [name, setName] = useState('')
@@ -41,17 +43,13 @@ export default function WorkshopPage() {
 
   return (
     <main className="bg-[#fbf8f3]">
-      {/* HERO */}
-      <section className="relative w-full h-[70vh] min-h-[480px] flex items-center overflow-hidden bg-wine-950">
-        <video autoPlay loop muted playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover opacity-45">
-          <source src="/hero-video.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-wine-950 via-wine-950/85 to-wine-950/50" />
-        <div className="relative z-10 max-w-3xl mx-auto px-6 text-center space-y-5">
+      {/* PARALLAX HERO */}
+      <ParallaxHero video="/hero-video.mp4">
+        <div className="max-w-3xl mx-auto px-6 text-center space-y-5">
           <span className="text-champagne-300 font-semibold text-xs uppercase tracking-[0.3em] glass-dark px-4 py-1.5 rounded-full border border-champagne-400/40 inline-block">
             Every Sunday · Bengaluru
           </span>
-          <h1 className="text-4xl sm:text-6xl font-serif font-normal text-white leading-tight">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-white leading-tight">
             Create a fragrance that is <span className="gold-text-gradient font-semibold">entirely yours</span>
           </h1>
           <p className="text-sm sm:text-base text-slate-300 font-light max-w-xl mx-auto leading-relaxed">
@@ -64,26 +62,28 @@ export default function WorkshopPage() {
             Reserve Your Seat <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </div>
-      </section>
+      </ParallaxHero>
 
-      {/* JOURNEY */}
-      <section className="max-w-5xl mx-auto px-6 lg:px-8 py-20">
-        <Reveal className="text-center max-w-xl mx-auto space-y-3 mb-14">
-          <span className="text-champagne-600 font-semibold text-xs uppercase tracking-[0.2em]">Workshop Journey</span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-wine-950">What you'll experience</h2>
+      {/* JOURNEY — horizontal scroll story */}
+      <section className="bg-wine-950 pt-20">
+        <Reveal className="text-center max-w-xl mx-auto space-y-3 mb-4 px-6">
+          <span className="text-champagne-400 font-semibold text-xs uppercase tracking-[0.2em]">Workshop Journey</span>
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white">What you'll experience</h2>
+          <p className="text-sm text-slate-400 font-light">Scroll through the five stages of your Sunday session.</p>
         </Reveal>
-        <div className="space-y-4">
+        <HorizontalScrollGallery>
           {workshopCurriculum.map((step, i) => (
-            <Reveal key={step} delay={i * 0.08}>
-              <div className="flex items-center gap-5 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
-                <span className="w-10 h-10 rounded-full wine-gradient text-champagne-300 font-serif font-bold flex items-center justify-center shrink-0">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="font-serif font-semibold text-lg text-wine-950">{step}</span>
-              </div>
-            </Reveal>
+            <div
+              key={step}
+              className="w-[78vw] sm:w-[380px] shrink-0 h-[55vh] max-h-[420px] bg-gradient-to-br from-wine-900 to-wine-950 border border-champagne-500/20 rounded-[2.5rem] p-10 flex flex-col justify-between shadow-2xl"
+            >
+              <span className="w-14 h-14 rounded-full wine-gradient border border-champagne-400/40 text-champagne-300 font-serif font-bold text-xl flex items-center justify-center">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 className="font-serif font-bold text-2xl sm:text-3xl text-white leading-tight">{step}</h3>
+            </div>
           ))}
-        </div>
+        </HorizontalScrollGallery>
       </section>
 
       {/* BOOKING */}

@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { Gift, Sparkles, Building2, Wand2, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { eventTypes, mariaServices } from '@/lib/maria-business'
 import { Reveal } from '@/app/_components/ui/Reveal'
+import { ParallaxHero } from '@/app/_components/ui/ParallaxHero'
+import { HorizontalScrollGallery } from '@/app/_components/ui/HorizontalScrollGallery'
 
 const serviceIcons = [Gift, Sparkles, Wand2, Building2]
 
@@ -10,17 +12,13 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
 
   return (
     <main className="bg-[#fbf8f3]">
-      {/* HERO */}
-      <section className="relative w-full h-[70vh] min-h-[480px] flex items-center overflow-hidden bg-wine-950">
-        <video autoPlay loop muted playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover opacity-45">
-          <source src="/hero-video2.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-wine-950 via-wine-950/85 to-wine-950/50" />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center space-y-5">
+      {/* PARALLAX HERO */}
+      <ParallaxHero video="/hero-video2.mp4">
+        <div className="max-w-4xl mx-auto px-6 text-center space-y-5">
           <span className="text-champagne-300 font-semibold text-xs uppercase tracking-[0.3em] glass-dark px-4 py-1.5 rounded-full border border-champagne-400/40 inline-block">
             Maria Events &amp; Gifting
           </span>
-          <h1 className="text-4xl sm:text-6xl font-serif font-normal text-white leading-tight">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-white leading-tight">
             Make your celebration <span className="gold-text-gradient font-semibold">smell unforgettable</span>
           </h1>
           <p className="text-sm sm:text-base text-slate-300 font-light max-w-xl mx-auto leading-relaxed">
@@ -35,31 +33,37 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
             </Link>
           </div>
         </div>
-      </section>
+      </ParallaxHero>
 
-      {/* SERVICES */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
-        <Reveal className="text-center max-w-2xl mx-auto space-y-3 mb-14">
-          <span className="text-champagne-600 font-semibold text-xs uppercase tracking-[0.2em]">Maria Services</span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-wine-950">Return-Gift Perfume Stalls</h2>
-          <p className="text-sm text-slate-500 font-light">Tell us your date, venue, guest count and vision — we handle the gifting experience and quotation.</p>
+      {/* SERVICES — horizontal scroll story */}
+      <section className="bg-wine-950 pt-20">
+        <Reveal className="text-center max-w-2xl mx-auto space-y-3 mb-4 px-6">
+          <span className="text-champagne-400 font-semibold text-xs uppercase tracking-[0.2em]">Maria Services</span>
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white">Return-Gift Perfume Stalls</h2>
+          <p className="text-sm text-slate-400 font-light">Scroll to explore how we bring the fragrance bar to your event.</p>
         </Reveal>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <HorizontalScrollGallery>
           {mariaServices.map((service, i) => {
             const Icon = serviceIcons[i % serviceIcons.length]
             return (
-              <Reveal key={service.title} delay={i * 0.08}>
-                <div className="h-full bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all">
-                  <div className="w-12 h-12 rounded-2xl gold-button-gradient text-wine-950 flex items-center justify-center text-xl shadow-lg mb-4">
-                    <Icon className="h-5 w-5" />
+              <div
+                key={service.title}
+                className="w-[78vw] sm:w-[420px] shrink-0 h-[60vh] max-h-[460px] bg-gradient-to-br from-wine-900 to-wine-950 border border-champagne-500/20 rounded-[2.5rem] p-10 flex flex-col justify-between shadow-2xl"
+              >
+                <div>
+                  <span className="text-champagne-400/70 font-serif text-sm">{String(i + 1).padStart(2, '0')}</span>
+                  <div className="w-14 h-14 rounded-2xl gold-button-gradient text-wine-950 flex items-center justify-center text-xl shadow-lg my-5">
+                    <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="font-serif font-bold text-lg text-wine-950 mb-2">{service.title}</h3>
-                  <p className="text-xs text-slate-500 font-light leading-relaxed">{service.description}</p>
                 </div>
-              </Reveal>
+                <div>
+                  <h3 className="font-serif font-bold text-2xl text-white mb-3">{service.title}</h3>
+                  <p className="text-sm text-slate-300 font-light leading-relaxed">{service.description}</p>
+                </div>
+              </div>
             )
           })}
-        </div>
+        </HorizontalScrollGallery>
       </section>
 
       {/* EVENT TYPES */}
@@ -72,7 +76,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
             {eventTypes.map((type, i) => (
               <Reveal key={type} delay={i * 0.06}>
-                <div className="glass-dark border border-champagne-400/30 rounded-2xl py-6 text-center text-champagne-200 font-serif font-semibold text-lg hover:border-champagne-400 transition">
+                <div className="glass-dark border border-champagne-400/30 rounded-2xl py-6 text-center text-champagne-200 font-serif font-semibold text-lg hover:border-champagne-400 hover:scale-105 transition-all">
                   {type}
                 </div>
               </Reveal>
