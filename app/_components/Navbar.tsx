@@ -43,12 +43,15 @@ export function Navbar({
           </div>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-6 xl:gap-7 text-[12px] font-medium uppercase tracking-[0.12em] text-slate-200 whitespace-nowrap">
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-[11.5px] font-medium uppercase tracking-[0.09em] text-slate-200 whitespace-nowrap">
           <a href="#video-hero" className="nav-link-glow hover:text-champagne-300 transition py-1">Home</a>
           <a href="#about-section" className="nav-link-glow hover:text-champagne-300 transition py-1">Our Store</a>
-          <a href="#event-stalls-section" className="nav-link-glow hover:text-champagne-300 transition py-1 text-champagne-300 font-semibold flex items-center gap-1.5">
-            Event Stalls
-          </a>
+          <Link href="/events" className="nav-link-glow hover:text-champagne-300 transition py-1 text-champagne-300 font-semibold">
+            Events
+          </Link>
+          <Link href="/workshops" className="nav-link-glow hover:text-champagne-300 transition py-1 text-champagne-300 font-semibold">
+            Workshop
+          </Link>
           <a href="#matches-section" className="nav-link-glow active text-white font-bold py-1">Catalog</a>
           <button onClick={() => open({ name: 'scent-matcher' })} className="nav-link-glow hover:text-champagne-300 transition py-1 flex items-center gap-1.5">
             <Wand2 className="h-3 w-3 text-champagne-400" /> Scent Matcher
