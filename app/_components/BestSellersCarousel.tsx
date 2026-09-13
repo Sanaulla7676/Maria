@@ -30,18 +30,17 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
   }
 
   return (
-    <section className="bg-[#fbf8f3] py-20 border-b border-champagne-300/40 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center mb-12">
+    <section className="min-h-[100dvh] flex flex-col justify-center bg-[#fbf8f3] py-20 border-b border-champagne-300/40 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center mb-12 w-full">
         <span className="text-champagne-600 font-semibold text-xs uppercase tracking-[0.3em]">
           Maria Perfumes · {featured.length} Trending
         </span>
-        <h2 className="text-4xl sm:text-5xl font-serif font-bold text-wine-950 mt-3">Best Selling Fragrances</h2>
-        <p className="text-slate-500 text-sm mt-2">The scents Bengaluru keeps coming back for.</p>
+        <h2 className="text-4xl sm:text-6xl font-serif font-bold text-wine-950 mt-3">Best Selling Fragrances</h2>
+        <p className="text-slate-500 text-sm sm:text-base mt-2">The scents Bengaluru keeps coming back for.</p>
       </div>
 
       <div
-        className="relative h-[420px] sm:h-[460px] select-none outline-none"
-        style={{ perspective: 1400 }}
+        className="relative h-[440px] sm:h-[520px] lg:h-[580px] select-none outline-none bg-[#fbf8f3]"
         tabIndex={0}
         onWheel={handleWheel}
         onKeyDown={(e) => {
@@ -50,7 +49,7 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
         }}
       >
         <motion.div
-          className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing"
+          className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing bg-[#fbf8f3]"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.15}
@@ -71,15 +70,12 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
             return (
               <motion.div
                 key={product.id}
-                className="absolute w-[220px] sm:w-[260px] h-[340px] sm:h-[400px] rounded-2xl overflow-hidden shadow-2xl bg-slate-800"
-                style={{ transformStyle: 'preserve-3d' }}
+                className="absolute w-[240px] sm:w-[300px] lg:w-[340px] h-[360px] sm:h-[460px] lg:h-[520px] rounded-2xl overflow-hidden shadow-2xl bg-slate-800"
                 animate={{
-                  x: offset * 150,
+                  x: offset * 190,
                   scale: 1 - abs * 0.14,
-                  rotateY: offset * -22,
                   zIndex: 10 - abs,
                   opacity: abs > 2.5 ? 0 : 1,
-                  filter: abs === 0 ? 'grayscale(0)' : 'grayscale(0.85) brightness(0.75)',
                 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 28 }}
                 onClick={() => (abs === 0 ? open({ name: 'product', product }) : setIndex(i))}
@@ -91,6 +87,11 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
                     <span className="font-serif text-champagne-200 text-lg text-center px-4">{product.name}</span>
                   </div>
                 )}
+                <motion.div
+                  className="absolute inset-0 bg-slate-950 pointer-events-none"
+                  animate={{ opacity: abs === 0 ? 0 : 0.55 }}
+                  transition={{ duration: 0.3 }}
+                />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 pt-10">
                   {abs === 0 && product.badge && (
                     <span className="inline-flex items-center gap-1 gold-button-gradient text-wine-950 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1.5">
