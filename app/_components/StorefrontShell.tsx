@@ -2,15 +2,16 @@
 
 import { UIProvider } from '@/app/_components/ui/UIProvider'
 import { Navbar } from '@/app/_components/Navbar'
-import { Hero } from '@/app/_components/Hero'
-import { PillarsStory } from '@/app/_components/PillarsStory'
-import { BestSellersCarousel } from '@/app/_components/BestSellersCarousel'
-import { AboutCredentials } from '@/app/_components/AboutCredentials'
-import { EventStallsSection } from '@/app/_components/EventStallsSection'
+import { ScrollScrubHero } from '@/app/_components/ScrollScrubHero'
+import { EditorialCollection } from '@/app/_components/EditorialCollection'
+import { EditorialStory } from '@/app/_components/EditorialStory'
+import { EditorialEventsTeaser } from '@/app/_components/EditorialEventsTeaser'
+import { EditorialMatcherTeaser } from '@/app/_components/EditorialMatcherTeaser'
 import { StorefrontMain } from '@/app/_components/StorefrontMain'
 import { SuccessStories } from '@/app/_components/SuccessStories'
-import { Footer } from '@/app/_components/Footer'
+import { EditorialFooter } from '@/app/_components/EditorialFooter'
 import { ChatWidget } from '@/app/_components/ChatWidget'
+import { CursorGlow } from '@/app/_components/ui/CursorGlow'
 import { AuthModal } from '@/app/_components/modals/AuthModal'
 import { ProductModal } from '@/app/_components/modals/ProductModal'
 import { ScentMatcherModal } from '@/app/_components/modals/ScentMatcherModal'
@@ -40,15 +41,16 @@ export function StorefrontShell({
   return (
     <UIProvider>
       <Navbar userEmail={userEmail} isOwnerUser={isOwnerUser} bagCount={cart.length} />
-      <Hero />
-      <PillarsStory />
-      <BestSellersCarousel products={products} />
-      <AboutCredentials />
-      <EventStallsSection />
+      <ScrollScrubHero productCount={products.length} />
+      <EditorialCollection products={products} />
+      <EditorialStory />
+      <EditorialEventsTeaser />
+      <EditorialMatcherTeaser />
       <StorefrontMain products={products} isLoggedIn={isLoggedIn} wishlistIds={wishlistIds} />
       <SuccessStories />
-      <Footer />
+      <EditorialFooter />
       <ChatWidget />
+      <CursorGlow />
 
       <AuthModal />
       <ProductModal isLoggedIn={isLoggedIn} />
