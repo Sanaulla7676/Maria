@@ -59,11 +59,20 @@ export function Hero() {
   }
 
   return (
-    <section id="video-hero" className="relative w-full h-[calc(100vh-64px)] flex items-center overflow-hidden bg-wine-950">
-      <video autoPlay loop muted playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover opacity-50 z-0">
+    <section id="video-hero" className="relative w-full h-screen flex items-center overflow-hidden bg-wine-950">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover opacity-50 z-0"
+      >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
+
       <div className="absolute inset-0 bg-gradient-to-r from-wine-950 via-wine-950/80 to-transparent z-10" />
+      <div className="absolute inset-0 bg-black/10 z-10" />
 
       <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-12 w-full flex flex-col justify-center items-start text-left">
         <div className="max-w-2xl space-y-6">
@@ -107,11 +116,12 @@ export function Hero() {
               <button
                 key={label}
                 onClick={() => setIndex(i)}
-                className={`px-3 py-1 rounded-full border transition ${
-                  i === index
+                className={
+                  'px-3 py-1 rounded-full border transition ' +
+                  (i === index
                     ? 'border-champagne-500 text-champagne-300 bg-white/10'
-                    : 'border-white/10 text-slate-300 hover:text-white'
-                }`}
+                    : 'border-white/10 text-slate-300 hover:text-white')
+                }
               >
                 {String(i + 1).padStart(2, '0')} {label}
               </button>
