@@ -21,13 +21,13 @@ const reviews = [
 
 export function SuccessStories() {
   return (
-    <section id="success-stories" className="bg-slate-100 py-16 border-t border-slate-200">
+    <section id="success-stories" className="editorial-shell py-16 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
-          <span className="text-champagne-600 font-semibold text-xs uppercase tracking-[0.2em]">
+          <span className="text-wine-600 font-semibold text-xs uppercase tracking-[0.2em]">
             Google Reviews • 4.7 Stars
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-wine-950">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#10243a]">
             Loved By Fragrance Lovers in Bengaluru
           </h2>
           <p className="text-xs text-slate-600 font-light">
@@ -40,7 +40,7 @@ export function SuccessStories() {
           {reviews.map((r) => (
             <div key={r.name} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-wine-50 ring-2 ring-champagne-400 flex items-center justify-center font-serif font-bold text-wine-900">
+                <div className="w-12 h-12 rounded-full bg-wine-50 ring-2 ring-wine-400 flex items-center justify-center font-serif font-bold text-wine-700">
                   {r.name.charAt(0)}
                 </div>
                 <div>
