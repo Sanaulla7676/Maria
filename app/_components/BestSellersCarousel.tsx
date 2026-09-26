@@ -30,17 +30,17 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
   }
 
   return (
-    <section className="min-h-[100dvh] flex flex-col justify-center bg-[#fbf8f3] py-20 border-b border-champagne-300/40 overflow-hidden">
+    <section className="min-h-[100dvh] flex flex-col justify-center bg-white py-20 border-b border-champagne-300/40 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center mb-12 w-full">
-        <span className="text-champagne-600 font-semibold text-xs uppercase tracking-[0.3em]">
+        <span className="text-wine-600 font-semibold text-xs uppercase tracking-[0.3em]">
           Maria Perfumes · {featured.length} Trending
         </span>
-        <h2 className="text-4xl sm:text-6xl font-serif font-bold text-wine-950 mt-3">Best Selling Fragrances</h2>
+        <h2 className="text-4xl sm:text-6xl font-serif font-bold text-[#10243a] mt-3">Best Selling Fragrances</h2>
         <p className="text-slate-500 text-sm sm:text-base mt-2">The scents Bengaluru keeps coming back for.</p>
       </div>
 
       <div
-        className="relative h-[440px] sm:h-[520px] lg:h-[580px] select-none outline-none bg-[#fbf8f3]"
+        className="relative h-[440px] sm:h-[520px] lg:h-[580px] select-none outline-none bg-white"
         tabIndex={0}
         onWheel={handleWheel}
         onKeyDown={(e) => {
@@ -49,7 +49,7 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
         }}
       >
         <motion.div
-          className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing bg-[#fbf8f3]"
+          className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing bg-white"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.15}
@@ -70,7 +70,7 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
             return (
               <motion.div
                 key={product.id}
-                className="absolute w-[240px] sm:w-[300px] lg:w-[340px] h-[360px] sm:h-[460px] lg:h-[520px] rounded-2xl overflow-hidden shadow-2xl bg-slate-800"
+                className="absolute w-[240px] sm:w-[300px] lg:w-[340px] h-[360px] sm:h-[460px] lg:h-[520px] rounded-2xl overflow-hidden shadow-2xl bg-white border border-slate-200"
                 animate={{
                   x: offset * 190,
                   scale: 1 - abs * 0.14,
@@ -99,7 +99,7 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
                     </span>
                   )}
                   <h3 className="font-serif font-bold text-white text-base sm:text-lg leading-tight">{product.name}</h3>
-                  <p className="text-champagne-300 text-[11px] mt-0.5">{product.family || 'Signature Perfume'}</p>
+                  <p className="text-wine-500 text-[11px] mt-0.5">{product.family || 'Signature Perfume'}</p>
                   {abs === 0 && variant && (
                     <p className="text-white/90 text-xs font-semibold mt-1">₹{Number(variant.price).toLocaleString('en-IN')}</p>
                   )}
@@ -127,7 +127,7 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
               <span
                 key={i}
                 className={`h-[3px] rounded-full transition-all duration-300 ${
-                  i === index ? 'w-6 bg-champagne-500' : 'w-3 bg-slate-300'
+                  i === index ? 'w-6 bg-wine-500' : 'w-3 bg-slate-300'
                 }`}
               />
             ))}
@@ -135,7 +135,7 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
           <button
             onClick={() => go(1)}
             aria-label="Next"
-            className="w-10 h-10 rounded-full bg-wine-900 flex items-center justify-center text-white hover:bg-wine-950 hover:scale-105 transition"
+            className="w-10 h-10 rounded-full bg-wine-500 flex items-center justify-center text-white hover:bg-wine-800 hover:scale-105 transition"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
