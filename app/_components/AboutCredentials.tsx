@@ -1,24 +1,24 @@
 export function AboutCredentials() {
   return (
-    <section id="about-section" className="wine-gradient text-white py-20 relative overflow-hidden border-b border-champagne-500/20">
+    <section id="about-section" className="editorial-shell text-slate-800 py-20 relative overflow-hidden border-b border-champagne-500/20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
-            <span className="text-champagne-400 font-semibold text-xs tracking-[0.2em] uppercase block">
+            <span className="text-wine-600 font-semibold text-xs tracking-[0.2em] uppercase block">
               Our Fragrance Legacy • Est. 2025
             </span>
-            <h2 className="text-3xl sm:text-5xl font-serif font-normal text-white leading-tight">
+            <h2 className="text-3xl sm:text-5xl font-serif font-normal text-[#10243a] leading-tight">
               Premium Scents &amp; Live Event Fragrance Bars
             </h2>
-            <p className="text-slate-300 text-sm sm:text-base font-light leading-relaxed">
-              <strong className="text-champagne-400 font-normal">Maria Perfumes</strong> is a premier, budget-friendly
+            <p className="text-slate-600 text-sm sm:text-base font-light leading-relaxed">
+              <strong className="text-wine-600 font-normal">Maria Perfumes</strong> is a premier, budget-friendly
               fragrance brand located in Kammanahalli, Bengaluru. Established in 2025, we specialize in luxury
               fragrances, designer-inspired perfumes, pure attars, and custom{' '}
-              <strong className="text-white">Live Fragrance Stalls &amp; Return Gift Counters</strong> for weddings,
+              <strong className="text-[#10243a]">Live Fragrance Stalls &amp; Return Gift Counters</strong> for weddings,
               birthday parties, anniversaries, and corporate celebrations.
             </p>
 
-            <div className="grid grid-cols-3 gap-6 pt-4 border-t border-white/10">
+            <div className="grid grid-cols-3 gap-6 pt-4 border-t border-slate-200">
               <div>
                 <h3 className="text-2xl sm:text-3xl font-serif font-bold text-champagne-400">4.7 ★</h3>
                 <p className="text-xs text-slate-400 font-light mt-1">79 Google Reviews</p>
@@ -72,7 +72,7 @@ export function AboutCredentials() {
               <div className="pt-2 grid grid-cols-2 gap-3">
                 <a
                   href="tel:+919916032291"
-                  className="bg-wine-900 hover:bg-wine-950 text-white font-semibold text-xs py-3 rounded-xl text-center transition"
+                  className="bg-wine-500 hover:bg-wine-800 text-white font-semibold text-xs py-3 rounded-xl text-center transition"
                 >
                   Call Store
                 </a>
@@ -80,7 +80,7 @@ export function AboutCredentials() {
                   href="https://maps.google.com/?q=Maria+Perfumes+Kammanahalli+Bengaluru"
                   target="_blank"
                   rel="noreferrer"
-                  className="border border-slate-300 hover:border-champagne-500 text-slate-800 font-semibold text-xs py-3 rounded-xl text-center transition"
+                  className="border border-slate-300 hover:border-wine-500 text-slate-800 font-semibold text-xs py-3 rounded-xl text-center transition"
                 >
                   Map Route
                 </a>
