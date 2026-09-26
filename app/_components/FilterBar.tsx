@@ -21,17 +21,17 @@ export function FilterBar({
   genders: string[]
 }) {
   return (
-    <section className="bg-wine-950 py-8 border-b border-white/10 shadow-lg">
+    <section className="bg-white py-8 border-b border-slate-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-xs text-slate-800">
           <div>
-            <label className="block text-[10px] uppercase font-semibold text-champagne-400 mb-1.5 tracking-wider">
+            <label className="block text-[10px] uppercase font-semibold text-wine-600 mb-1.5 tracking-wider">
               Fragrance Family
             </label>
             <select
               value={filters.family}
               onChange={(e) => setFilters({ ...filters, family: e.target.value })}
-              className="w-full bg-white text-xs rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-champagne-500 border-none font-medium"
+              className="w-full bg-white text-xs rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-wine-500 border-none font-medium"
             >
               <option value="all">All Fragrances</option>
               {families.map((f) => (
@@ -41,7 +41,7 @@ export function FilterBar({
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase font-semibold text-champagne-400 mb-1.5 tracking-wider">
+            <label className="block text-[10px] uppercase font-semibold text-wine-600 mb-1.5 tracking-wider">
               Price Filter
             </label>
             <select
@@ -57,7 +57,7 @@ export function FilterBar({
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase font-semibold text-champagne-400 mb-1.5 tracking-wider">
+            <label className="block text-[10px] uppercase font-semibold text-wine-600 mb-1.5 tracking-wider">
               Ideal For
             </label>
             <select
@@ -73,7 +73,7 @@ export function FilterBar({
           </div>
 
           <div className="col-span-2 md:col-span-2">
-            <label className="block text-[10px] uppercase font-semibold text-champagne-400 mb-1.5 tracking-wider">
+            <label className="block text-[10px] uppercase font-semibold text-wine-600 mb-1.5 tracking-wider">
               Search Notes or Name
             </label>
             <div className="relative">
@@ -82,7 +82,7 @@ export function FilterBar({
                 value={filters.query}
                 onChange={(e) => setFilters({ ...filters, query: e.target.value })}
                 placeholder="e.g. Oud, Vanilla, Leather..."
-                className="w-full bg-white text-xs rounded-xl p-3 pl-9 focus:outline-none focus:ring-2 focus:ring-champagne-500 font-medium"
+                className="w-full bg-white text-xs rounded-xl p-3 pl-9 focus:outline-none focus:ring-2 focus:ring-wine-500 font-medium"
               />
             </div>
           </div>
