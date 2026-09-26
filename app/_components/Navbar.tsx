@@ -34,36 +34,36 @@ export function Navbar({
             <span className="font-serif text-champagne-300 font-bold text-lg tracking-tighter">MP</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-lg sm:text-xl font-serif font-semibold tracking-wider text-white leading-none group-hover:text-champagne-300 transition">
+            <span className="text-lg sm:text-xl font-serif font-semibold tracking-wider text-[#10243a] leading-none group-hover:text-champagne-300 transition">
               Maria Perfumes
             </span>
-            <span className="text-[9px] uppercase font-bold text-champagne-400 tracking-[0.35em] leading-none mt-1">
+            <span className="text-[9px] uppercase font-bold text-wine-500 tracking-[0.35em] leading-none mt-1">
               Luxury Atelier &amp; Events
             </span>
           </div>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-[11.5px] font-medium uppercase tracking-[0.09em] text-slate-200 whitespace-nowrap">
-          <a href="#video-hero" className="nav-link-glow hover:text-champagne-300 transition py-1">Home</a>
-          <a href="#about-section" className="nav-link-glow hover:text-champagne-300 transition py-1">Our Store</a>
-          <Link href="/events" className="nav-link-glow hover:text-champagne-300 transition py-1 text-champagne-300 font-semibold">
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-[11.5px] font-medium uppercase tracking-[0.09em] text-slate-700 whitespace-nowrap">
+          <a href="#video-hero" className="nav-link-glow hover:text-wine-600 transition py-1">Home</a>
+          <a href="#about-section" className="nav-link-glow hover:text-wine-600 transition py-1">Our Store</a>
+          <Link href="/events" className="nav-link-glow hover:text-wine-600 transition py-1 text-champagne-300 font-semibold">
             Events
           </Link>
-          <Link href="/workshops" className="nav-link-glow hover:text-champagne-300 transition py-1 text-champagne-300 font-semibold">
+          <Link href="/workshops" className="nav-link-glow hover:text-wine-600 transition py-1 text-champagne-300 font-semibold">
             Workshop
           </Link>
-          <a href="#matches-section" className="nav-link-glow active text-white font-bold py-1">Catalog</a>
-          <button onClick={() => open({ name: 'scent-matcher' })} className="nav-link-glow hover:text-champagne-300 transition py-1 flex items-center gap-1.5">
+          <a href="#matches-section" className="nav-link-glow active text-[#10243a] font-bold py-1">Catalog</a>
+          <button onClick={() => open({ name: 'scent-matcher' })} className="nav-link-glow hover:text-wine-600 transition py-1 flex items-center gap-1.5">
             <Wand2 className="h-3 w-3 text-champagne-400" /> Scent Matcher
           </button>
-          <a href="#success-stories" className="nav-link-glow hover:text-champagne-300 transition py-1">Reviews</a>
+          <a href="#success-stories" className="nav-link-glow hover:text-wine-600 transition py-1">Reviews</a>
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <div className="relative">
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              className="text-slate-300 hover:text-champagne-300 transition p-2 flex items-center justify-center"
+              className="text-slate-700 hover:text-wine-500 transition p-2 flex items-center justify-center"
               aria-label="Account"
             >
               <UserRound className="h-5 w-5" />
@@ -107,12 +107,12 @@ export function Navbar({
 
           <button
             onClick={() => open({ name: 'bag' })}
-            className="relative text-slate-300 hover:text-champagne-300 transition p-2 flex items-center justify-center"
+            className="relative text-slate-700 hover:text-wine-500 transition p-2 flex items-center justify-center"
             aria-label="Bag"
           >
             <ShoppingBag className="h-5 w-5" />
             {bagCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-wine-800 border border-champagne-400 text-champagne-300 text-[9px] font-extrabold rounded-full w-4 h-4 flex items-center justify-center shadow-md">
+              <span className="absolute -top-0.5 -right-0.5 bg-wine-800 border border-wine-500 text-wine-600 text-[9px] font-extrabold rounded-full w-4 h-4 flex items-center justify-center shadow-md">
                 {bagCount}
               </span>
             )}
@@ -120,7 +120,7 @@ export function Navbar({
 
           <button
             onClick={() => open({ name: 'booking' })}
-            className="gold-button-gradient text-wine-950 text-[10px] sm:text-[11px] uppercase tracking-wide sm:tracking-widest px-4 sm:px-5 py-2.5 rounded-full font-extrabold shadow-lg hover:shadow-champagne-500/40 hover:scale-105 transition duration-300 whitespace-nowrap"
+            className="gold-button-gradient text-white text-[10px] sm:text-[11px] uppercase tracking-wide sm:tracking-widest px-4 sm:px-5 py-2.5 rounded-full font-extrabold shadow-lg hover:shadow-champagne-500/40 hover:scale-105 transition duration-300 whitespace-nowrap"
           >
             Book Stall / Store
           </button>
