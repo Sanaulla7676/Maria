@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, Copy, Loader2, MapPin, ShieldCheck } from 'lucide-react'
 import { workshopCurriculum, upcomingWorkshop } from '@/lib/maria-business'
@@ -53,6 +53,20 @@ export default function WorkshopPage() {
     }
   }
 
+
+  useEffect(() => {
+    const panels = Array.from(document.querySelectorAll<HTMLElement>('.workshop-story-panel'))
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => entry.target.classList.toggle('is-visible', entry.isIntersecting))
+      },
+      { threshold: 0.28 },
+    )
+
+    panels.forEach((panel) => observer.observe(panel))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <main className="min-h-screen bg-[#120000] text-white">
       <header className="sticky top-0 z-50 border-b border-[#f2cf80]/15 bg-[#120000]/90 backdrop-blur-xl">
@@ -68,6 +82,7 @@ export default function WorkshopPage() {
 
           <nav className="hidden items-center gap-8 md:flex">
             {[
+              ['Home', '/'],
               ['Overview', '#overview'],
               ['Experience', '#experience'],
               ['Workshop', '#workshop'],
@@ -154,6 +169,85 @@ export default function WorkshopPage() {
         </div>
       </section>
 
+
+
+      <section className="bg-[#0d0000]">
+        <div className="mx-auto max-w-6xl px-5 pb-10 pt-16 sm:px-8">
+          <div className="flex items-end justify-between gap-6">
+            <div>
+              <p className="text-[9px] font-bold uppercase tracking-[0.32em] text-[#f3d487]">The workshop in moments</p>
+              <h2 className="mt-3 font-serif text-4xl font-semibold leading-[1.02] text-white sm:text-5xl">
+                Pause. Discover. Create.
+              </h2>
+            </div>
+            <p className="hidden max-w-sm text-right text-xs leading-6 text-white/40 md:block">
+              Scroll through the experience. The story moves, the message changes, and every frame brings you closer to your own scent.
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-4 px-3 pb-16 sm:px-5 lg:px-8">
+          {[
+            {
+              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/af2b5ae8-1c99-426e-92b9-52c746ac4f8a.jpg',
+              label: '01 / Take a break',
+              title: 'Step away from the rush.',
+              copy: 'Leave the noise of the day behind for a while. Sit down, explore fragrance and enjoy a creative experience at your own pace.',
+              position: 'left bottom',
+            },
+            {
+              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/aedac0ed-e506-42a2-95d3-3cb2ef1e6f27.jpg',
+              label: '02 / Learn',
+              title: 'Guided from note to note.',
+              copy: 'Our guidance helps you understand fragrance notes, compare scents and learn how different ingredients work together.',
+              position: 'right top',
+            },
+            {
+              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/81a33ba8-1405-4d03-9aa3-0246e8502889.jpg',
+              label: '03 / Create',
+              title: 'Make your own perfume.',
+              copy: 'Experiment with the notes you love, blend them with guidance and create a fragrance that feels personal to you.',
+              position: 'right bottom',
+            },
+            {
+              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/4622ef49-fafc-4bd5-9145-842ba4048bd5.jpg',
+              label: '04 / Take it home',
+              title: 'A scent you created. Yours to keep.',
+              copy: 'Finish your blend, bottle your creation and take your perfume home so you can enjoy the experience long after the workshop.',
+              position: 'left top',
+            },
+          ].map((scene) => (
+            <article key={scene.label} className="workshop-story-panel group relative min-h-[82svh] overflow-hidden rounded-[30px] border border-[#f3d487]/15 bg-[#180000]">
+              <img
+                src={scene.image}
+                alt=""
+                className="workshop-story-image absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/55" />
+              <div
+                className={
+                  'workshop-story-copy absolute z-10 max-w-[390px] rounded-[24px] border border-[#f3d487]/20 bg-[#160000]/76 p-6 shadow-[0_24px_70px_rgba(0,0,0,.38)] backdrop-blur-md sm:p-7 ' +
+                  (scene.position === 'left bottom'
+                    ? 'left-5 bottom-5 sm:left-10 sm:bottom-10'
+                    : scene.position === 'right top'
+                      ? 'right-5 top-5 sm:right-10 sm:top-10'
+                      : scene.position === 'right bottom'
+                        ? 'right-5 bottom-5 sm:right-10 sm:bottom-10'
+                        : 'left-5 top-5 sm:left-10 sm:top-10')
+                }
+              >
+                <p className="text-[9px] font-bold uppercase tracking-[0.28em] text-[#f3d487]">{scene.label}</p>
+                <h3 className="mt-3 font-serif text-3xl font-semibold leading-[1.02] text-white sm:text-4xl">{scene.title}</h3>
+                <p className="mt-4 text-sm leading-6 text-white/65">{scene.copy}</p>
+              </div>
+              <div className="absolute bottom-5 right-5 z-10 rounded-full border border-white/20 bg-black/25 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.22em] text-white/65 backdrop-blur-md sm:bottom-7 sm:right-7">
+                Maria Perfumes
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="border-y border-[#f3d487]/10 bg-[#140000]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-20">
