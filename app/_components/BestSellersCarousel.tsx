@@ -64,7 +64,7 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
             if (offset < -featured.length / 2) offset += featured.length
             const abs = Math.abs(offset)
             if (abs > 3) return null
-            const image = MARIA_BOTTLE_IMAGE
+            const image = primaryImage(product)
             const variant = cheapestActiveVariant(product)
 
             return (
@@ -80,12 +80,13 @@ export function BestSellersCarousel({ products }: { products: Product[] }) {
                 transition={{ type: 'spring', stiffness: 260, damping: 28 }}
                 onClick={() => (abs === 0 ? open({ name: 'product', product }) : setIndex(i))}
               >
-                <div className="relative h-full w-full overflow-hidden bg-[#f4efe8] pointer-events-none">
-                  <img src={image} alt={product.name} className="absolute inset-0 h-full w-full object-cover" draggable={false} />
-                  <div className="absolute left-[27%] right-[27%] top-[66.5%] h-[8.4%] flex items-center justify-center overflow-hidden px-2">
-                    <span className="max-w-full text-center text-[9px] font-semibold leading-tight text-[#171226] sm:text-[10px]">{product.name}</span>
+                {image ? (
+                  <img src={image} alt={product.name} className="h-full w-full object-cover pointer-events-none" draggable={false} />
+                ) : (
+                  <div className="h-full w-full wine-gradient flex items-center justify-center pointer-events-none">
+                    <span className="font-serif text-champagne-200 text-lg text-center px-4">{product.name}</span>
                   </div>
-                </div>
+                )}
                 <motion.div
                   className="absolute inset-0 bg-slate-950 pointer-events-none"
                   animate={{ opacity: abs === 0 ? 0 : 0.55 }}
