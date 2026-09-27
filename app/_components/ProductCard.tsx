@@ -5,21 +5,27 @@ import { useState, useTransition } from "react"
 import { ArrowRight, Clock, Heart, Radar, Star } from "lucide-react"
 import { toast } from "sonner"
 import type { Product } from "@/lib/types"
-import { primaryImage, cheapestActiveVariant } from "@/lib/product-helpers"
+import { cheapestActiveVariant, MARIA_BOTTLE_IMAGE } from "@/lib/product-helpers"
 import { useUI } from "@/app/_components/ui/UIProvider"
 import { toggleWishlist } from "@/app/account/wishlist/actions"
 
-function ImageStage({ image, name }: { image: string | null; name: string }) {
-  if (image) return <img src={image} alt={name} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]" />
+function ImageStage({ name }: { name: string }) {
   return (
-    <div className="absolute inset-0 overflow-hidden bg-[#eef7ff]">
-      <div className="absolute -left-16 top-10 h-72 w-72 rounded-full border-[64px] border-[#167bd1]/10" />
-      <div className="absolute right-[-12%] top-[-18%] h-[72%] w-[70%] rounded-bl-[55%] rounded-tl-[55%] bg-[#167bd1]" />
-      <div className="absolute right-[10%] top-[7%] h-[36%] w-[42%] rounded-bl-[50%] rounded-tr-[50%] bg-white/75" />
-      <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-white via-white/70 to-transparent" />
-      <div className="absolute inset-x-7 bottom-7">
-        <span className="text-[9px] font-bold uppercase tracking-[0.35em] text-wine-600">Maria Perfumes</span>
-        <div className="mt-2 max-w-[80%] font-display text-2xl font-extrabold uppercase leading-[0.92] tracking-[-0.05em] text-[#10243a] sm:text-3xl">{name}</div>
+    <div className="absolute inset-0 overflow-hidden bg-[#f4efe8]">
+      <div className="absolute inset-0 flex justify-center">
+        <div className="relative h-full aspect-[9/16] max-w-full">
+          <img
+            src={MARIA_BOTTLE_IMAGE}
+            alt={name}
+            className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.018]"
+            draggable={false}
+          />
+          <div className="absolute left-[27%] right-[27%] top-[66.5%] h-[8.4%] flex items-center justify-center overflow-hidden px-2">
+            <span className="max-w-full text-center text-[9px] font-semibold leading-tight tracking-[0.01em] text-[#171226] sm:text-[10px]">
+              {name}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -42,7 +48,6 @@ export function ProductCard({
   const [saved, setSaved] = useState(isWishlisted)
   const [pending, startTransition] = useTransition()
 
-  const image = primaryImage(product)
   const variant = cheapestActiveVariant(product)
   const inStock = !!variant && variant.stock > 0
   const original = variant ? Number(variant.price) * 2 : null
@@ -64,7 +69,7 @@ export function ProductCard({
   return (
     <article className={"group relative overflow-hidden rounded-[28px] border border-[#dbe6f0] bg-white shadow-[0_16px_45px_rgba(16,36,58,.06)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(16,36,58,.12)] " + (featured ? "md:row-span-2" : "")}>
       <div className={"relative overflow-hidden " + (featured ? "h-[360px] sm:h-[440px]" : "h-[260px] sm:h-[310px]")}>
-        <ImageStage image={image} name={product.name} />
+        <ImageStage name={product.name} />
         <div className="absolute left-5 top-5 flex items-center gap-2">
           <span className="font-display text-2xl font-extrabold tracking-[-0.06em] text-white drop-shadow-md">{String(index + 1).padStart(2, "0")}</span>
           {product.badge && <span className="rounded-full bg-[#167bd1] px-3 py-1 text-[8px] font-extrabold uppercase tracking-[0.18em] text-white shadow-lg">{product.badge}</span>}
