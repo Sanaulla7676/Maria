@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 
 const HERO_VIDEO_URL =
-  'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/ea3c6a2a-5a7a-4117-9736-8fe6b535ea00.mp4'
+  'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/86b1bff2-0651-42df-98fc-51815d0a6f2a.mp4'
 
 export function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -31,7 +31,7 @@ export function Hero() {
     <section
       id="video-hero"
       aria-label="Maria Perfumes hero video"
-      className="relative h-[calc(100svh-88px)] min-h-[72svh] w-full overflow-hidden bg-[#0e4f4a] lg:h-[calc(100svh-92px)]"
+      className="relative h-[calc(100svh-88px)] min-h-[72svh] w-full overflow-hidden bg-[#edf5fc] lg:h-[calc(100svh-92px)]"
     >
       <div className="relative h-full w-full">
         <video
