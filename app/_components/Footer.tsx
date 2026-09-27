@@ -4,7 +4,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
-            <h5 className="font-serif font-bold text-lg text-[#10243a] mb-4">Maria Perfumes</h5>
+            <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/68b3ce37-06f1-4cb2-8192-c830549bf3c4.jpg" alt="Maria Perfumes" className="h-24 w-20 object-contain rounded-xl mb-4" draggable={false} />
             <p className="text-slate-400 font-light leading-relaxed">
               Premier fragrance store &amp; live event return gift stall providers in Bengaluru. Specializing in
               luxury perfumes, pure attars, and custom event scent bars.
