@@ -51,14 +51,12 @@ export function Navbar({
             aria-label="Maria Perfumes home"
             className="maria-logo-shell group flex shrink-0 items-center gap-4 rounded-[17px] px-4 py-2 sm:px-5"
           >
-            <div>
-              <span className="block font-display text-[22px] font-extrabold uppercase leading-[.82] tracking-[0.11em] text-[#10243a] sm:text-[25px]">
-                Maria
-              </span>
-              <span className="mt-1 block text-[6px] font-extrabold uppercase tracking-[0.48em] text-[#167bd1] sm:text-[7px]">
-                Perfumes
-              </span>
-            </div>
+            <img
+              src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/68b3ce37-06f1-4cb2-8192-c830549bf3c4.jpg"
+              alt="Maria Perfumes"
+              className="h-[48px] w-[42px] object-contain sm:h-[54px] sm:w-[48px]"
+              draggable={false}
+            />
           </Link>
 
           <nav className="hidden min-w-0 flex-1 items-center justify-center gap-5 lg:flex xl:gap-7">
