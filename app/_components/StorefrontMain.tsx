@@ -62,6 +62,17 @@ export function StorefrontMain({
     <section id="matches-section" className="editorial-shell relative overflow-hidden border-t border-slate-200">
       <span className="editorial-watermark left-[-2rem] top-[18rem] rotate-[-90deg] hidden xl:block">SCENT</span>
 
+      <div className="relative z-10 mx-auto max-w-[1500px] px-5 pt-5 sm:px-8 lg:px-10 lg:pt-8">
+        <div className="group relative overflow-hidden rounded-[30px] border border-[#dbe6f0] bg-white shadow-[0_20px_65px_rgba(16,36,58,.08)]">
+          <img
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/d1638e11-c004-47cc-aaa6-41d9a4406630.png"
+            alt="Maria Perfumes editorial fragrance story"
+            className="block aspect-[16/7] h-auto w-full object-cover object-center transition duration-700 group-hover:scale-[1.008]"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-white/10" />
+        </div>
+      </div>
+
       <div className="relative z-10 mx-auto max-w-[1500px] px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
         <div className="grid items-end gap-10 border-b border-slate-200 pb-10 lg:grid-cols-[1.25fr_.75fr]">
           <div>
