@@ -154,6 +154,44 @@ export default function WorkshopPage() {
         </div>
       </section>
 
+
+      <section className="border-y border-[#f3d487]/10 bg-[#140000]">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-20">
+          <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+            <div>
+              <p className="text-[9px] font-bold uppercase tracking-[0.32em] text-[#f3d487]">Inside the experience</p>
+              <h2 className="mt-3 font-serif text-4xl font-semibold leading-[1.02] sm:text-5xl">
+                A creative break,
+                <span className="block text-[#f3d487]">made by you.</span>
+              </h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-7 text-white/60">
+              You are guided from the first fragrance note to your final bottle. Explore different scents, learn how they work together, experiment with blends and leave with a perfume you created yourself.
+            </p>
+          </div>
+
+          <div className="mt-11 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              ['01', 'Slow Down', 'Step away from the everyday rush and settle into a relaxed fragrance experience.'],
+              ['02', 'Explore', 'Smell, compare and understand the character of different fragrance notes.'],
+              ['03', 'Create', 'Follow guided blending steps and shape a fragrance around your own preferences.'],
+              ['04', 'Keep It', 'Finish your personal perfume and take your creation home with you.'],
+            ].map(([number, title, copy]) => (
+              <article key={number} className="group rounded-[24px] border border-[#f3d487]/12 bg-white/[0.035] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#f3d487]/30 hover:bg-white/[0.055]">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#f3d487]/45 text-[10px] font-bold text-[#f3d487]">
+                    {number}
+                  </span>
+                  <span className="h-px w-10 bg-[#f3d487]/30 transition-all duration-300 group-hover:w-16" />
+                </div>
+                <h3 className="mt-9 font-serif text-2xl font-semibold text-white">{title}</h3>
+                <p className="mt-3 text-xs leading-6 text-white/50">{copy}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="workshop" className="bg-[#100000]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-20">
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
@@ -167,13 +205,56 @@ export default function WorkshopPage() {
           </div>
 
           <div className="mt-9 grid gap-3 md:grid-cols-5">
-            {workshopCurriculum.map((step, i) => (
-              <div key={step} className="rounded-[20px] border border-[#f3d487]/12 bg-[#1d0505] p-5">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#f3d487]/45 text-[10px] font-bold text-[#f3d487]">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <h3 className="mt-10 min-h-12 font-serif text-lg font-semibold leading-tight text-white">{step}</h3>
-              </div>
+            {workshopCurriculum.map((step, i) => {
+              const details = [
+                'Start with the foundations of perfume and how a fragrance is structured.',
+                'Understand fragrance notes and how they influence the character of a scent.',
+                'Learn how different notes can be combined into a balanced blend.',
+                'Use what you have learned to create your own personal fragrance.',
+                'Bottle the finished creation and take your own perfume home.',
+              ][i]
+
+              return (
+                <div key={step} className="rounded-[20px] border border-[#f3d487]/12 bg-[#1d0505] p-5 transition duration-300 hover:-translate-y-1 hover:border-[#f3d487]/30">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#f3d487]/45 text-[10px] font-bold text-[#f3d487]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-8 min-h-12 font-serif text-lg font-semibold leading-tight text-white">{step}</h3>
+                  <p className="mt-3 text-[11px] leading-5 text-white/45">{details}</p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+
+      <section className="border-t border-[#f3d487]/10 bg-[#170000]">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-20">
+          <div className="max-w-2xl">
+            <p className="text-[9px] font-bold uppercase tracking-[0.32em] text-[#f3d487]">Need to know</p>
+            <h2 className="mt-3 font-serif text-4xl font-semibold text-white sm:text-5xl">Workshop FAQ.</h2>
+            <p className="mt-4 text-sm leading-7 text-white/55">
+              The essentials, without making you read a novel before smelling a perfume.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            {[
+              ['What happens in the workshop?', 'You learn perfume basics, understand fragrance notes, work through blending and create your own personal fragrance.'],
+              ['Do I get to make my own perfume?', 'Yes. The workshop is built around guided creation, so your final fragrance is the blend you make during the session.'],
+              ['Can I take my perfume home?', 'Yes. The final step of the workshop is to take your created perfume home with you.'],
+              ['Where is the workshop held?', upcomingWorkshop.location],
+              ['When is the next session?', upcomingWorkshop.day + ' · ' + upcomingWorkshop.date + ' · ' + upcomingWorkshop.time],
+              ['What is the price?', '₹' + upcomingWorkshop.pricePerPerson.toLocaleString('en-IN') + ' per person.'],
+            ].map(([question, answer]) => (
+              <details key={question} className="group rounded-[22px] border border-[#f3d487]/12 bg-[#1d0505] px-6 py-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg font-semibold text-white">
+                  {question}
+                  <span className="text-xl font-light text-[#f3d487] transition-transform duration-300 group-open:rotate-45">+</span>
+                </summary>
+                <p className="max-w-xl pt-4 text-xs leading-6 text-white/50">{answer}</p>
+              </details>
             ))}
           </div>
         </div>
