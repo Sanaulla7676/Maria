@@ -47,7 +47,7 @@ function ProductVisual({
       <div className="absolute inset-0 flex justify-center">
         <div className="relative h-full aspect-[9/16] max-w-full">
           <img
-            src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/68b3ce37-06f1-4cb2-8192-c830549bf3c4.jpg"
+            src="${MARIA_BOTTLE_IMAGE}"
             alt={name}
             className="absolute inset-0 h-full w-full object-cover"
             draggable={false}
