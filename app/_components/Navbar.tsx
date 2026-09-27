@@ -44,18 +44,18 @@ export function Navbar({
 
   return (
     <header className="maria-header sticky top-0 z-40">
-      <div className="mx-auto max-w-[1600px] px-3 py-2.5 sm:px-6 lg:px-8">
-        <div className="maria-nav-surface flex min-h-[72px] items-center justify-between gap-4 rounded-[24px] px-3 sm:min-h-[78px] sm:px-5 lg:px-7">
+      <div className="mx-auto max-w-[1600px] px-3 py-2 sm:px-6 lg:px-8">
+        <div className="maria-nav-surface flex min-h-[58px] items-center justify-between gap-4 rounded-[20px] px-3 sm:min-h-[64px] sm:px-5 lg:px-6">
           <Link
             href="/"
             aria-label="Maria Perfumes home"
-            className="maria-logo-shell group flex shrink-0 items-center gap-4 rounded-[20px] px-4 py-2.5 sm:px-5"
+            className="maria-logo-shell group flex shrink-0 items-center gap-4 rounded-[17px] px-4 py-2 sm:px-5"
           >
             <div>
-              <span className="block font-display text-[25px] font-extrabold uppercase leading-[.82] tracking-[0.11em] text-[#10243a] sm:text-[29px]">
+              <span className="block font-display text-[22px] font-extrabold uppercase leading-[.82] tracking-[0.11em] text-[#10243a] sm:text-[25px]">
                 Maria
               </span>
-              <span className="mt-1.5 block text-[7px] font-extrabold uppercase tracking-[0.48em] text-[#167bd1] sm:text-[8px]">
+              <span className="mt-1 block text-[6px] font-extrabold uppercase tracking-[0.48em] text-[#167bd1] sm:text-[7px]">
                 Perfumes
               </span>
             </div>
@@ -68,7 +68,7 @@ export function Navbar({
                   key={item.label}
                   href={item.href}
                   data-active={isActive(item.href)}
-                  className="maria-nav-link whitespace-nowrap py-3 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#10243a] transition hover:text-[#167bd1]"
+                  className="maria-nav-link whitespace-nowrap py-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#10243a] transition hover:text-[#167bd1]"
                 >
                   {item.label}
                 </Link>
