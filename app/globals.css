@@ -242,3 +242,103 @@ button,input,textarea,select { font: inherit; }
 }
 
 body.modal-active { overflow: hidden !important; }
+
+/* Approved Maria header treatment */
+.maria-header {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  background:
+    radial-gradient(circle at 3% 50%, rgba(61,137,230,.24), transparent 13rem),
+    radial-gradient(circle at 97% 46%, rgba(61,137,230,.20), transparent 15rem),
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(249,252,255,.96));
+}
+
+.maria-header::before,
+.maria-header::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(18px);
+}
+
+.maria-header::before {
+  left: -28px;
+  top: 14px;
+  width: 180px;
+  height: 78px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 18% 45%, rgba(34,113,211,.46) 0 12px, transparent 13px),
+    radial-gradient(circle at 33% 35%, rgba(95,155,226,.24) 0 28px, transparent 30px),
+    radial-gradient(circle at 68% 55%, rgba(61,137,230,.17) 0 38px, transparent 40px);
+}
+
+.maria-header::after {
+  right: -24px;
+  top: 0;
+  width: 260px;
+  height: 92px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 82% 38%, rgba(34,113,211,.42) 0 13px, transparent 14px),
+    radial-gradient(circle at 65% 56%, rgba(95,155,226,.24) 0 24px, transparent 26px),
+    radial-gradient(circle at 35% 38%, rgba(61,137,230,.18) 0 40px, transparent 42px);
+}
+
+.maria-nav-surface {
+  background: rgba(255,255,255,.90);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  border: 1px solid rgba(143,183,220,.34);
+  box-shadow:
+    0 16px 50px rgba(46,91,136,.10),
+    0 0 0 1px rgba(255,255,255,.55) inset,
+    0 0 36px rgba(70,146,224,.10);
+}
+
+.maria-logo-shell {
+  background:
+    linear-gradient(135deg, rgba(244,249,255,.94), rgba(255,255,255,.82));
+  box-shadow:
+    0 10px 28px rgba(77,129,177,.10),
+    inset 0 1px 0 rgba(255,255,255,.96);
+}
+
+.maria-cta {
+  background: linear-gradient(135deg, #f1eee5 0%, #ddd7c7 48%, #a69563 100%);
+  color: #fff;
+  box-shadow:
+    0 10px 24px rgba(93,81,47,.18),
+    inset 0 1px 0 rgba(255,255,255,.55);
+}
+
+.maria-cta:hover {
+  box-shadow:
+    0 14px 30px rgba(93,81,47,.22),
+    inset 0 1px 0 rgba(255,255,255,.62);
+  transform: translateY(-1px);
+}
+
+.maria-nav-link {
+  position: relative;
+}
+
+.maria-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 0;
+  height: 3px;
+  border-radius: 99px;
+  background: #167bd1;
+  transform: translateX(-50%);
+  transition: width .28s ease;
+}
+
+.maria-nav-link:hover::after,
+.maria-nav-link[data-active="true"]::after {
+  width: 30px;
+}
