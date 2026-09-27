@@ -114,6 +114,40 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
         </HorizontalScrollGallery>
       </section>
 
+      {/* LIVE STALL VIDEO */}
+      <section className="relative overflow-hidden border-t border-[#0d5b55]/10 bg-[#eef6f3] py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="mb-7 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="text-[9px] font-extrabold uppercase tracking-[0.30em] text-[#0b6a63]">Maria Live in Action</span>
+              <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight text-[#123d3a] sm:text-4xl">
+                See the experience, not just the stall.
+              </h2>
+            </div>
+            <p className="max-w-md text-xs leading-6 text-[#607875]">
+              A real glimpse of how guests discover, sample and create their Maria fragrance experience at a live event.
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-[28px] border border-[#0d5b55]/10 bg-black shadow-[0_28px_80px_rgba(20,76,70,.14)]">
+            <video
+              autoPlay
+              muted
+              playsInline
+              loop
+              preload="metadata"
+              controls={false}
+              className="block aspect-video h-auto w-full object-cover"
+            >
+              <source
+                src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/c773e119-170f-4d5c-b7ce-e9defb3d3f8f.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </div>
+        </div>
+      </section>
+
       {/* EVENT TYPES */}
       <section id="occasions" className="relative overflow-hidden border-y border-[#0d5b55]/10 bg-[#0e4f4a] py-16 text-white lg:py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
