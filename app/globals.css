@@ -374,3 +374,92 @@ body.modal-active { overflow: hidden !important; }
     transition: none;
   }
 }
+
+
+/* Live Event Stall visual system */
+.events-page {
+  --event-deep: #0e4f4a;
+  --event-green: #0b6a63;
+  --event-gold: #d6ae52;
+  --event-cream: #f4f0e7;
+}
+.events-page .events-nav-link {
+  position: relative;
+  transition: color .25s ease, transform .25s ease;
+}
+.events-page .events-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--event-gold);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .28s cubic-bezier(.16,1,.3,1);
+}
+.events-page .events-nav-link:hover {
+  color: var(--event-green);
+  transform: translateY(-1px);
+}
+.events-page .events-nav-link:hover::after {
+  transform: scaleX(1);
+}
+.events-page [data-live-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.events-page [data-live-reveal].live-reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.events-page .group:hover img,
+.events-page .group:hover video {
+  transform: scale(1.02);
+}
+.events-page section {
+  position: relative;
+}
+.events-page section::selection {
+  background: rgba(214,174,82,.28);
+}
+.events-page .event-card-glow {
+  position: relative;
+  overflow: hidden;
+}
+.events-page .event-card-glow::before {
+  content: "";
+  position: absolute;
+  inset: -30% auto -30% -20%;
+  width: 42%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+  transform: translateX(-140%) skewX(-14deg);
+  transition: transform .8s cubic-bezier(.16,1,.3,1);
+  pointer-events: none;
+}
+.events-page .event-card-glow:hover::before {
+  transform: translateX(430%) skewX(-14deg);
+}
+.events-page .event-ring {
+  animation: mariaEventFloat 9s ease-in-out infinite;
+}
+.events-page .event-ring-slow {
+  animation: mariaEventFloat 13s ease-in-out infinite reverse;
+}
+@keyframes mariaEventFloat {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(0,-12px,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .events-page [data-live-reveal],
+  .events-page .event-ring,
+  .events-page .event-ring-slow {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    transition: none;
+  }
+}
