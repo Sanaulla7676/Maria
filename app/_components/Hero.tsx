@@ -31,7 +31,7 @@ export function Hero() {
     <section
       id="video-hero"
       aria-label="Maria Perfumes hero video"
-      className="relative h-[calc(100svh-108px)] min-h-[72svh] w-full overflow-hidden bg-[#edf5fc] lg:h-[calc(100svh-112px)]"
+      className="relative h-[calc(100svh-88px)] min-h-[72svh] w-full overflow-hidden bg-[#edf5fc] lg:h-[calc(100svh-92px)]"
     >
       <div className="relative h-full w-full">
         <video
