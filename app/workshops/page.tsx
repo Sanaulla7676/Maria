@@ -184,28 +184,28 @@ export default function WorkshopPage() {
         <div className="space-y-4 px-3 pb-16 sm:px-5 lg:px-8">
           {[
             {
-              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/af2b5ae8-1c99-426e-92b9-52c746ac4f8a.jpg',
+              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/c8b017d9-6122-47b3-bdf9-a917d9cefec7.jpg',
               label: '01 / Take a break',
               title: 'Step away from the rush.',
               copy: 'Leave the noise of the day behind for a while. Sit down, explore fragrance and enjoy a creative experience at your own pace.',
               position: 'left bottom',
             },
             {
-              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/aedac0ed-e506-42a2-95d3-3cb2ef1e6f27.jpg',
+              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/77f12515-87fd-4972-b33e-c4a9abf38913.jpg',
               label: '02 / Learn',
               title: 'Guided from note to note.',
               copy: 'Our guidance helps you understand fragrance notes, compare scents and learn how different ingredients work together.',
               position: 'right top',
             },
             {
-              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/81a33ba8-1405-4d03-9aa3-0246e8502889.jpg',
+              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/cdf26932-036e-4b5c-9ffc-537785815ead.jpg',
               label: '03 / Create',
               title: 'Make your own perfume.',
               copy: 'Experiment with the notes you love, blend them with guidance and create a fragrance that feels personal to you.',
               position: 'right bottom',
             },
             {
-              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/4622ef49-fafc-4bd5-9145-842ba4048bd5.jpg',
+              image: 'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/da42d6a1-c578-46fd-9554-68238f1e5ec2.jpg',
               label: '04 / Take it home',
               title: 'A scent you created. Yours to keep.',
               copy: 'Finish your blend, bottle your creation and take your perfume home so you can enjoy the experience long after the workshop.',
