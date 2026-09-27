@@ -161,7 +161,7 @@ export function Hero() {
       <div className="relative z-10 pt-3 sm:pt-4">
         <div
           ref={stageRef}
-          className="hero-video-stage relative left-1/2 w-screen -translate-x-1/2 overflow-hidden rounded-[28px] border border-[#d7e5f1] bg-[#dbeaf8] shadow-[0_24px_85px_rgba(26,70,111,.14)]"
+          className="hero-video-stage relative left-0 w-full overflow-hidden rounded-[28px] border border-[#d7e5f1] bg-[#dbeaf8] shadow-[0_24px_85px_rgba(26,70,111,.14)]"
         >
           <div className="relative aspect-video w-full">
             <video
