@@ -167,6 +167,44 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
         </div>
       </section>
 
+      {/* INSTAGRAM QR */}
+      <section className="relative overflow-hidden border-t border-[#0d5b55]/10 bg-white py-16 lg:py-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 sm:px-8 md:grid-cols-[1fr_auto]">
+          <div className="max-w-xl">
+            <span className="text-[9px] font-extrabold uppercase tracking-[0.30em] text-[#0b6a63]">Follow the live experience</span>
+            <h2 className="mt-3 font-serif text-4xl font-semibold leading-[1.02] text-[#123d3a] sm:text-5xl">
+              See Maria Perfume Bar
+              <span className="block text-[#0b6a63]">behind the event.</span>
+            </h2>
+            <p className="mt-5 text-sm leading-7 text-[#5a6e6a]">
+              Scan the QR code to visit our Instagram, discover live-event moments, perfume experiences and the latest Maria Perfume Bar updates.
+            </p>
+            <a
+              href="https://instagram.com/maria_perfumebar_"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#0e4f4a] px-6 py-3 text-[10px] font-extrabold uppercase tracking-[0.17em] text-white shadow-[0_10px_30px_rgba(14,79,74,.18)] transition hover:-translate-y-0.5 hover:bg-[#0b6a63]"
+            >
+              @maria_perfumebar_ <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
+
+          <div className="group relative w-full max-w-[300px] justify-self-center rounded-[30px] border border-[#0d5b55]/10 bg-[#f7fbf8] p-4 shadow-[0_25px_65px_rgba(20,76,70,.12)] sm:p-5 md:justify-self-end">
+            <div className="overflow-hidden rounded-[22px] bg-white">
+              <img
+                src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/e2f7c174-8154-44c6-bf29-5120821e3879.png"
+                alt="Scan to follow Maria Perfume Bar on Instagram"
+                className="block h-auto w-full object-contain transition duration-500 group-hover:scale-[1.01]"
+                draggable={false}
+              />
+            </div>
+            <p className="mt-3 text-center text-[8px] font-extrabold uppercase tracking-[0.22em] text-[#0b6a63]">
+              Scan · Follow · Discover
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ENQUIRY */}
       <section id="event-enquiry" className="relative overflow-hidden bg-[#f4f0e7] px-0 py-20 lg:py-24">
         <Reveal className="text-center space-y-3 mb-10">
