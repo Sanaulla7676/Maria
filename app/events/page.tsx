@@ -40,8 +40,8 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       {/* NEW LIVE EVENT STALL HERO VIDEO — existing event content remains below */}
       <section id="live-stall" aria-label="Maria Perfumes live event stall hero video" className="relative h-[calc(100svh-66px)] min-h-[72svh] overflow-hidden bg-[#0e4f4a]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_15%,rgba(255,255,255,.14),transparent_24rem),radial-gradient(circle_at_82%_12%,rgba(214,174,82,.16),transparent_26rem)]" />
-        <div className="relative mx-auto flex h-full max-w-[1600px] flex-col justify-end px-5 pb-8 sm:px-8 lg:px-12">
-          <div className="group relative h-[58svh] min-h-[420px] overflow-hidden rounded-[30px] border border-white/15 bg-black shadow-[0_35px_100px_rgba(0,0,0,.30)] sm:h-[68svh] lg:h-[72svh]">
+        <div className="relative flex h-full w-full flex-col justify-end">
+          <div className="group relative h-full w-full overflow-hidden bg-black">
             <video
               autoPlay
               muted
@@ -53,7 +53,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
               <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/772e3639-f09b-45b6-8125-8e528496296a.mp4" type="video/mp4" />
             </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#063c38]/75 via-transparent to-transparent" />
-            <div className="absolute bottom-5 left-5 max-w-2xl sm:bottom-8 sm:left-8">
+            <div className="absolute bottom-8 left-6 max-w-2xl sm:bottom-12 sm:left-10 lg:left-14">
               <p className="text-[9px] font-extrabold uppercase tracking-[0.30em] text-[#efd488]">Maria Perfumes · Live Event Experience</p>
               <h1 className="mt-2 font-serif text-3xl font-semibold leading-[.98] text-white sm:text-5xl lg:text-6xl">Bring the fragrance experience to your event.</h1>
               <a href="#event-enquiry" className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#efd488]/70 bg-[#d6ae52] px-5 py-3 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#173b38] shadow-lg transition hover:-translate-y-0.5">
@@ -61,7 +61,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
               </a>
             </div>
           </div>
-          <span className="mx-auto mt-4 text-[8px] font-bold uppercase tracking-[0.3em] text-white/45">Scroll to explore</span>
+          <span className="absolute bottom-3 left-1/2 z-20 -translate-x-1/2 text-[8px] font-bold uppercase tracking-[0.3em] text-white/55">Scroll to explore</span>
         </div>
       </section>
 
