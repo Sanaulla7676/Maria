@@ -32,17 +32,8 @@ function getTextColor(hex: string) {
   return luminance > 0.64 ? "#17120f" : "#fff"
 }
 
-function ProductVisual({
-  image,
-  name,
-  family,
-}: {
-  image: string | null
-  name: string
-  family: string | null
-}) {
+function ProductVisual({ name }: { name: string }) {
   return (
-
     <div className="relative h-full w-full overflow-hidden bg-[#f4efe8]">
       <div className="absolute inset-0 flex justify-center">
         <div className="relative h-full aspect-[9/16] max-w-full">
@@ -59,27 +50,6 @@ function ProductVisual({
           </div>
         </div>
       </div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_25%,rgba(212,175,55,0.24),transparent_32%),radial-gradient(circle_at_75%_75%,rgba(111,29,47,0.55),transparent_40%)]" />
-      <div className="absolute inset-x-7 top-6 flex items-start justify-between">
-        <div className="text-[9px] uppercase tracking-[0.3em] text-champagne-300/80">Maria Perfumes</div>
-        <div className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[8px] uppercase tracking-[0.18em] text-white/60">Signature</div>
-      </div>
-      <div className="absolute inset-0 flex items-center justify-center pt-8">
-        <div className="relative h-[70%] w-[48%] min-w-[160px] max-w-[245px]">
-          <div className="absolute left-1/2 top-0 h-[17%] w-[36%] -translate-x-1/2 rounded-t-[18px] rounded-b-[8px] border border-[#d4af37]/35 bg-gradient-to-b from-[#2b261c] via-[#0c0b0a] to-[#3a2b16] shadow-2xl" />
-          <div className="absolute left-1/2 top-[13%] h-[11%] w-[46%] -translate-x-1/2 rounded-[12px] border border-[#d4af37]/25 bg-gradient-to-b from-[#3d301b] to-[#090909] shadow-xl" />
-          <div className="absolute inset-x-[13%] bottom-0 top-[20%] rounded-[18px] border border-white/10 bg-gradient-to-r from-black via-[#292014] to-[#090909] shadow-[0_30px_50px_rgba(0,0,0,0.5)]" />
-          <div className="absolute left-1/2 top-[43%] w-[66%] -translate-x-1/2 rounded-[8px] border border-[#9b6f1f]/50 bg-gradient-to-br from-[#f1cb75] via-[#d4af37] to-[#9f7621] px-3 py-5 text-center shadow-lg">
-            <div className="text-[8px] uppercase tracking-[0.25em] text-black/65">MARIA</div>
-            <div className="mt-2 font-serif text-sm font-bold leading-tight text-black/80 sm:text-base">{name}</div>
-            <div className="mt-2 text-[7px] uppercase tracking-[0.18em] text-black/60">Eau de Parfum</div>
-          </div>
-        </div>
-      </div>
-      <div className="absolute inset-x-7 bottom-6">
-        <div className="text-[9px] uppercase tracking-[0.22em] text-white/45">{family || "Signature fragrance"}</div>
-        <div className="mt-1 font-serif text-xl text-white">{name}</div>
-      </div>
     </div>
   )
 }
@@ -95,7 +65,6 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   if (!product) return <Modal open={isOpen} onClose={close} size="2xl" children={null} />
 
-  const image = MARIA_BOTTLE_IMAGE
   const accords = product.main_accords ?? []
   const notes = product.notes?.length ? product.notes : ["Signature Blend"]
   const gender = (product.gender || "Unisex").toLowerCase()
@@ -176,7 +145,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
                   transition={{ delay: 0.05, duration: 0.35 }}
                   className="relative aspect-[0.9] overflow-hidden rounded-[26px] bg-slate-100 shadow-inner"
                 >
-                  <ProductVisual image={image} name={product.name} family={product.family} />
+                  <ProductVisual name={product.name} />
                 </motion.div>
 
                 <section>
