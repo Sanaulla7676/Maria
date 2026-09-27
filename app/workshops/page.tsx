@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { ArrowRight, CheckCircle2, Copy, MapPin, ShieldCheck, Loader2 } from 'lucide-react'
 import { workshopCurriculum, upcomingWorkshop } from '@/lib/maria-business'
 import { Reveal } from '@/app/_components/ui/Reveal'
-import { ParallaxHero } from '@/app/_components/ui/ParallaxHero'
 import { HorizontalScrollGallery } from '@/app/_components/ui/HorizontalScrollGallery'
 
 export default function WorkshopPage() {
@@ -42,45 +41,42 @@ export default function WorkshopPage() {
   }
 
   return (
-    <main className="bg-white">
-      {/* PARALLAX HERO */}
-      <ParallaxHero video="/hero-video.mp4">
-        <div className="max-w-3xl mx-auto px-6 text-center space-y-5">
-          <span className="text-white font-semibold text-xs uppercase tracking-[0.3em] bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/50 inline-block text-wine-700">
-            Every Sunday · Bengaluru
-          </span>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-[#10243a] leading-tight">
-            Create a fragrance that is <span className="gold-text-gradient font-semibold">entirely yours</span>
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 font-light max-w-xl mx-auto leading-relaxed">
-            ₹{upcomingWorkshop.pricePerPerson.toLocaleString('en-IN')} per person. Learn perfume basics, fragrance notes and blending, then create your personal fragrance and take it home.
-          </p>
-          <div className="flex items-center justify-center gap-2 text-xs text-white">
-            <MapPin className="h-3.5 w-3.5" /> {upcomingWorkshop.location} · Next session {upcomingWorkshop.date} at {upcomingWorkshop.time}
-          </div>
-          <a href="#reserve" className="inline-flex items-center gap-2 gold-button-gradient text-white px-7 py-3.5 rounded-full shadow-xl hover:scale-105 transition text-xs font-bold uppercase tracking-wider">
+    <main className="min-h-screen bg-[#180000] text-white">
+      {/* CINEMATIC WORKSHOP HERO */}
+      <section className="relative overflow-hidden bg-[#170000]">
+        <div className="relative mx-auto w-full max-w-[1800px]">
+          <img
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/a419dd78-f24b-4e0e-a04a-45b4f600034c.png"
+            alt="Maria Perfumes perfume making workshop"
+            className="block h-auto w-full select-none object-contain"
+            draggable={false}
+          />
+          <a
+            href="#reserve"
+            className="absolute bottom-[7%] left-[7%] z-10 inline-flex items-center gap-2 rounded-full border border-[#f6d98b]/70 bg-[#f6d98b] px-6 py-3 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#2a0900] shadow-[0_12px_30px_rgba(0,0,0,.28)] transition hover:-translate-y-0.5 hover:bg-[#ffe9ae] sm:px-7 sm:py-3.5"
+          >
             Reserve Your Seat <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </div>
-      </ParallaxHero>
+      </section>
 
       {/* JOURNEY — horizontal scroll story */}
-      <section className="editorial-shell pt-20">
+      <section className="relative overflow-hidden bg-[#1a0000] pt-20">
         <Reveal className="text-center max-w-xl mx-auto space-y-3 mb-4 px-6">
-          <span className="text-wine-600 font-semibold text-xs uppercase tracking-[0.2em]">Workshop Journey</span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#10243a]">What you'll experience</h2>
-          <p className="text-sm text-slate-600 font-light">Scroll through the five stages of your Sunday session.</p>
+          <span className="font-semibold text-xs uppercase tracking-[0.2em] text-[#f2cf80]">Workshop Journey</span>
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white">What you'll experience</h2>
+          <p className="text-sm text-white/60 font-light">Learn, blend, create and take your fragrance home.</p>
         </Reveal>
         <HorizontalScrollGallery>
           {workshopCurriculum.map((step, i) => (
             <div
               key={step}
-              className="w-[78vw] sm:w-[380px] shrink-0 h-[55vh] max-h-[420px] bg-gradient-to-br from-white to-[#eef7ff] border border-wine-200 rounded-[2.5rem] p-10 flex flex-col justify-between shadow-2xl"
+              className="w-[78vw] sm:w-[380px] shrink-0 h-[55vh] max-h-[420px] bg-gradient-to-br from-[#2b0606] to-[#160000] border border-[#f2cf80]/20 rounded-[2.5rem] p-10 flex flex-col justify-between shadow-[0_24px_70px_rgba(0,0,0,.32)]"
             >
-              <span className="w-14 h-14 rounded-full wine-gradient border border-champagne-400/40 text-white font-serif font-bold text-xl flex items-center justify-center">
+              <span className="w-14 h-14 rounded-full border border-[#f2cf80]/50 bg-[#2a0707] text-[#f2cf80] font-serif font-bold text-xl flex items-center justify-center">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <h3 className="font-serif font-bold text-2xl sm:text-3xl text-[#10243a] leading-tight">{step}</h3>
+              <h3 className="font-serif font-bold text-2xl sm:text-3xl text-white leading-tight">{step}</h3>
             </div>
           ))}
         </HorizontalScrollGallery>
