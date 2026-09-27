@@ -22,6 +22,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
               ['Home', '/'],
               ['Live Stall', '#live-stall'],
               ['Services', '#services'],
+              ['How It Works', '#how-it-works'],
               ['Occasions', '#occasions'],
               ['Enquiry', '#event-enquiry'],
             ].map(([label, href]) => (
@@ -403,6 +404,13 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
           </Reveal>
         )}
       </section>
+
+      <div className="fixed bottom-5 right-5 z-[60] hidden items-center gap-2 rounded-full border border-[#d6ae52]/35 bg-[#0e4f4a]/96 p-2 shadow-[0_18px_50px_rgba(0,0,0,.18)] backdrop-blur-xl md:flex">
+        <span className="pl-3 pr-1 text-[8px] font-extrabold uppercase tracking-[0.15em] text-white/60">Planning an event?</span>
+        <a href="#event-enquiry" className="inline-flex items-center gap-2 rounded-full bg-[#efd488] px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.13em] text-[#173b38] transition hover:-translate-y-0.5">
+          Book Now <ArrowRight className="h-3 w-3" />
+        </a>
+      </div>
     </main>
   )
 }
