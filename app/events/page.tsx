@@ -148,6 +148,61 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
         </div>
       </section>
 
+
+      {/* REAL EVENT MOMENTS */}
+      <section className="relative overflow-hidden border-y border-[#0d5b55]/10 bg-[#eef6f3] py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="mb-9 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="text-[9px] font-extrabold uppercase tracking-[0.30em] text-[#0b6a63]">Real Maria Event Moments</span>
+              <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight text-[#123d3a] sm:text-4xl">
+                See the fragrance experience in action.
+              </h2>
+            </div>
+            <p className="max-w-lg text-xs leading-6 text-[#607875]">
+              Real event footage showing the people, energy and fragrance moments behind the Maria Perfume Bar experience.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {[
+              {
+                src: "https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/e9337b89-0094-487f-af64-d5b0abc5e327.mp4",
+                label: "01 · Fragrance discovery",
+              },
+              {
+                src: "https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/8b51ddd3-3bed-4080-b1e5-009530d4a9fa.mp4",
+                label: "02 · Live event moment",
+              },
+              {
+                src: "https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/c17a5a20-fa71-4c7d-b120-5fbf5a8abee0.mp4",
+                label: "03 · The Maria experience",
+              },
+            ].map((video) => (
+              <article key={video.src} className="group overflow-hidden rounded-[26px] border border-[#0d5b55]/10 bg-white shadow-[0_20px_60px_rgba(20,76,70,.10)]">
+                <div className="relative bg-[#071c1a]">
+                  <video
+                    autoPlay
+                    muted
+                    playsInline
+                    loop
+                    preload="metadata"
+                    controls={false}
+                    className="block aspect-[9/16] h-auto w-full object-contain"
+                  >
+                    <source src={video.src} type="video/mp4" />
+                  </video>
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/65 to-transparent" />
+                  <span className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-black/35 px-3 py-1.5 text-[8px] font-extrabold uppercase tracking-[0.18em] text-white backdrop-blur-md">
+                    {video.label}
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* EVENT TYPES */}
       <section id="occasions" className="relative overflow-hidden border-y border-[#0d5b55]/10 bg-[#0e4f4a] py-16 text-white lg:py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
