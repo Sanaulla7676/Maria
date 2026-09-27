@@ -1,7 +1,7 @@
 'use client'
 
 const HERO_VIDEO_URL =
-  'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/2b123a0a-6b16-492e-b890-8fe6d79e37da.mp4'
+  'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/86b1bff2-0651-42df-98fc-51815d0a6f2a.mp4'
 
 export function Hero() {
   return (
