@@ -1,23 +1,43 @@
-'use client'
+/* editorial product card */
+"use client"
 
-import { useState, useTransition } from 'react'
-import { Star } from 'lucide-react'
-import { toast } from 'sonner'
-import type { Product } from '@/lib/types'
-import { primaryImage, cheapestActiveVariant } from '@/lib/product-helpers'
-import { useUI } from '@/app/_components/ui/UIProvider'
-import { toggleWishlist } from '@/app/account/wishlist/actions'
-import { addToCart } from '@/lib/cart-actions'
-import { AddToCartButton } from '@/app/_components/ui/AddToCartButton'
+import { useState, useTransition } from "react"
+import { ArrowRight, Clock, Heart, Radar, Star } from "lucide-react"
+import { toast } from "sonner"
+import type { Product } from "@/lib/types"
+import { primaryImage, cheapestActiveVariant } from "@/lib/product-helpers"
+import { useUI } from "@/app/_components/ui/UIProvider"
+import { toggleWishlist } from "@/app/account/wishlist/actions"
+import { addToCart } from "@/lib/cart-actions"
+
+function ImageStage({ image, name }: { image: string | null; name: string }) {
+  if (image) return <img src={image} alt={name} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]" />
+  return (
+    <div className="absolute inset-0 overflow-hidden bg-[#eef7ff]">
+      <div className="absolute -left-16 top-10 h-72 w-72 rounded-full border-[64px] border-[#167bd1]/10" />
+      <div className="absolute right-[-12%] top-[-18%] h-[72%] w-[70%] rounded-bl-[55%] rounded-tl-[55%] bg-[#167bd1]" />
+      <div className="absolute right-[10%] top-[7%] h-[36%] w-[42%] rounded-bl-[50%] rounded-tr-[50%] bg-white/75" />
+      <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-white via-white/70 to-transparent" />
+      <div className="absolute inset-x-7 bottom-7">
+        <span className="text-[9px] font-bold uppercase tracking-[0.35em] text-wine-600">Maria Perfumes</span>
+        <div className="mt-2 max-w-[80%] font-display text-2xl font-extrabold uppercase leading-[0.92] tracking-[-0.05em] text-[#10243a] sm:text-3xl">{name}</div>
+      </div>
+    </div>
+  )
+}
 
 export function ProductCard({
   product,
   isLoggedIn,
   isWishlisted,
+  index,
+  featured = false,
 }: {
   product: Product
   isLoggedIn: boolean
   isWishlisted: boolean
+  index: number
+  featured?: boolean
 }) {
   const { open } = useUI()
   const [saved, setSaved] = useState(isWishlisted)
@@ -27,114 +47,84 @@ export function ProductCard({
   const variant = cheapestActiveVariant(product)
   const inStock = !!variant && variant.stock > 0
   const original = variant ? Number(variant.price) * 2 : null
+  const accords = product.main_accords?.slice(0, 3) ?? []
 
   const handleBookmark = () => {
-    if (!isLoggedIn) return open({ name: 'auth', mode: 'sign-in' })
+    if (!isLoggedIn) return open({ name: "auth", mode: "sign-in" })
     setSaved((v) => !v)
     startTransition(async () => {
       try {
         await toggleWishlist({ productId: product.id })
       } catch (e) {
         setSaved((v) => !v)
-        toast.error(e instanceof Error ? e.message : 'Could not update wishlist')
+        toast.error(e instanceof Error ? e.message : "Could not update wishlist")
       }
     })
   }
 
   const handleOrder = async () => {
-    if (!isLoggedIn) return open({ name: 'auth', mode: 'sign-in' })
+    if (!isLoggedIn) return open({ name: "auth", mode: "sign-in" })
     if (!variant || !inStock) return
     try {
       await addToCart(product.id, variant.id, 1)
-      toast.success(`${product.name} added to your bag`)
+      toast.success(product.name + " added to your bag")
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Could not add to bag')
+      toast.error(e instanceof Error ? e.message : "Could not add to bag")
       throw e
     }
   }
 
   return (
-    <div className="profile-card bg-white rounded-2xl border border-slate-200/80 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-      <div className="relative w-full h-48 sm:h-56 bg-slate-100 overflow-hidden">
-        {image ? (
-          <img
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500"
-            src={image}
-            alt={product.name}
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-2 wine-gradient text-champagne-200">
-            <span className="font-serif text-lg tracking-wide px-4 text-center">{product.name}</span>
-            <span className="text-[9px] uppercase tracking-widest text-champagne-400/80">Photo coming soon</span>
-          </div>
-        )}
-        {product.badge && (
-          <span className="absolute top-2 left-2 bg-emerald-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
-            {product.badge}
-          </span>
-        )}
-        <button
-          onClick={handleBookmark}
-          disabled={pending}
-          className="absolute top-2 right-2 w-7 h-7 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-slate-400 hover:text-champagne-600 transition shadow"
-        >
-          <Star className={`h-3.5 w-3.5 ${saved ? 'fill-champagne-500 text-champagne-500' : ''}`} />
+    <article className={"group relative overflow-hidden rounded-[28px] border border-[#dbe6f0] bg-white shadow-[0_16px_45px_rgba(16,36,58,.06)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(16,36,58,.12)] " + (featured ? "md:row-span-2" : "")}>
+      <div className={"relative overflow-hidden " + (featured ? "h-[360px] sm:h-[440px]" : "h-[260px] sm:h-[310px]")}>
+        <ImageStage image={image} name={product.name} />
+        <div className="absolute left-5 top-5 flex items-center gap-2">
+          <span className="font-display text-2xl font-extrabold tracking-[-0.06em] text-white drop-shadow-md">{String(index + 1).padStart(2, "0")}</span>
+          {product.badge && <span className="rounded-full bg-[#167bd1] px-3 py-1 text-[8px] font-extrabold uppercase tracking-[0.18em] text-white shadow-lg">{product.badge}</span>}
+        </div>
+        <button onClick={handleBookmark} disabled={pending} aria-label={"Save " + product.name} className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-white/90 text-[#10243a] shadow-lg backdrop-blur-sm transition hover:scale-105 hover:text-[#167bd1]">
+          <Heart className={"h-4 w-4 " + (saved ? "fill-[#167bd1] text-[#167bd1]" : "")} />
         </button>
-        {variant && (
-          <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md text-white text-[10px] px-2 py-0.5 rounded-md font-medium">
-            {variant.size_ml ? `${variant.size_ml}ml` : variant.label}
-          </div>
-        )}
+        {variant && <div className="absolute bottom-5 left-5 rounded-full bg-[#10243a]/88 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-white">{variant.size_ml ? variant.size_ml + "ml" : variant.label}</div>}
       </div>
 
-      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between space-y-3">
-        <div>
-          <span className="text-[9px] uppercase font-extrabold text-champagne-600 tracking-wider block">
-            {product.family || 'Signature Perfume'}
-          </span>
-          <h3 className="font-serif font-bold text-base text-slate-900 leading-snug line-clamp-1 mt-0.5">
-            {product.name}
-          </h3>
-          {product.review_count > 0 && (
-            <div className="flex items-center gap-1.5 mt-1 text-[11px]">
-              <span className="bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded text-[10px] flex items-center gap-0.5">
-                {product.rating.toFixed(1)} <Star className="h-2 w-2 fill-current" />
-              </span>
-              <span className="text-slate-400 text-[10px]">({product.review_count} reviews)</span>
-            </div>
-          )}
-          <p className="text-[11px] text-slate-500 mt-2 line-clamp-2 font-light leading-relaxed">
-            {product.description || (product.notes?.length ? product.notes.join(', ') : 'A signature Maria Perfumes composition.')}
-          </p>
+      <div className="p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[9px] font-extrabold uppercase tracking-[0.22em] text-wine-600">{product.family || "Signature Perfumes"}</p>
+            <h3 className="mt-1 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.04em] text-[#10243a] sm:text-3xl">{product.name}</h3>
+          </div>
+          {product.review_count > 0 && <div className="flex items-center gap-1 rounded-full bg-[#eef7ff] px-2.5 py-1 text-[9px] font-bold text-wine-700"><Star className="h-3 w-3 fill-current" />{product.rating.toFixed(1)}</div>}
         </div>
-        <div>
-          <div className="flex items-baseline gap-2 mt-2 pt-2 border-t border-slate-100">
-            {variant ? (
-              <>
-                <span className="text-base font-serif font-bold text-wine-900">₹{Number(variant.price).toLocaleString('en-IN')}</span>
-                {original && <span className="text-xs text-slate-400 line-through">₹{original.toLocaleString('en-IN')}</span>}
-                {!inStock && <span className="text-[10px] font-bold text-rose-600">Out of Stock</span>}
-              </>
-            ) : (
-              <span className="text-xs text-slate-400">Price on request</span>
-            )}
+
+        <p className="mt-4 line-clamp-3 text-[12px] leading-6 text-slate-500">{product.description || (product.notes?.length ? product.notes.join(", ") : "A signature Maria Perfumes composition.")}</p>
+
+        {accords.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {accords.map((accord) => <span key={accord.name} className="rounded-full border border-[#dbe6f0] bg-[#fbfdff] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[#526b83]">{accord.name}</span>)}
           </div>
-          <div className="grid grid-cols-2 gap-1.5 mt-3">
-            <button
-              onClick={() => open({ name: 'product', product })}
-              className="w-full border border-slate-200 hover:border-wine-800 text-slate-700 text-[11px] font-semibold py-2 rounded-xl text-center transition"
-            >
-              Details
+        )}
+
+        <div className="mt-6 border-t border-slate-100 pt-5">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-400">
+            {product.longevity_hours && <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-wine-500" />{product.longevity_hours}h longevity</span>}
+            {product.sillage && <span className="flex items-center gap-1.5"><Radar className="h-3.5 w-3.5 text-wine-500" />{product.sillage}</span>}
+          </div>
+
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <div className="flex items-end gap-2">
+              {variant ? <><span className="font-display text-2xl font-extrabold tracking-[-0.03em] text-[#10243a]">₹{Number(variant.price).toLocaleString("en-IN")}</span>{original && <span className="pb-0.5 text-xs text-slate-400 line-through">₹{original.toLocaleString("en-IN")}</span>}</> : <span className="font-display text-xl font-extrabold text-[#10243a]">Price on request</span>}
+            </div>
+            <button onClick={() => open({ name: "product", product })} className="inline-flex items-center gap-2.5 rounded-full border border-[#167bd1] bg-white px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#167bd1] transition hover:bg-[#167bd1] hover:text-white">
+              View Details <ArrowRight className="h-3.5 w-3.5" />
             </button>
-            <AddToCartButton
-              onAdd={handleOrder}
-              soldOut={!inStock}
-              idleLabel="Order"
-              className="w-full text-[11px] font-semibold py-2 rounded-xl shadow-sm disabled:opacity-50"
-            />
           </div>
+
+          <button onClick={handleOrder} disabled={!inStock} className="mt-3 w-full rounded-full bg-[#167bd1] py-2.5 text-[9px] font-extrabold uppercase tracking-[0.18em] text-white transition hover:bg-[#0b5da7] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400">
+            {inStock ? "Order Fragrance" : "Currently Unavailable"}
+          </button>
         </div>
       </div>
-    </div>
+    </article>
   )
 }
