@@ -3,9 +3,7 @@
 import { UIProvider } from '@/app/_components/ui/UIProvider'
 import { Navbar } from '@/app/_components/Navbar'
 import { Hero } from '@/app/_components/Hero'
-import { PillarsStory } from '@/app/_components/PillarsStory'
 import { BestSellersCarousel } from '@/app/_components/BestSellersCarousel'
-import { AboutCredentials } from '@/app/_components/AboutCredentials'
 import { EventStallsSection } from '@/app/_components/EventStallsSection'
 import { StorefrontMain } from '@/app/_components/StorefrontMain'
 import { SuccessStories } from '@/app/_components/SuccessStories'
@@ -41,9 +39,7 @@ export function StorefrontShell({
     <UIProvider>
       <Hero />
       <Navbar userEmail={userEmail} isOwnerUser={isOwnerUser} bagCount={cart.length} />
-      <PillarsStory />
       <BestSellersCarousel products={products} />
-      <AboutCredentials />
       <EventStallsSection />
       <StorefrontMain products={products} isLoggedIn={isLoggedIn} wishlistIds={wishlistIds} />
       <SuccessStories />
