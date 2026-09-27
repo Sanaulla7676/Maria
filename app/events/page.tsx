@@ -10,7 +10,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
   const submitted = (await searchParams).submitted === '1'
 
   return (
-    <main className="events-page min-h-screen overflow-hidden bg-[#f7fbf8] text-[#123d3a]">\n
+    <main className="events-page min-h-screen overflow-hidden bg-[#f7fbf8] text-[#123d3a]">
       <header className="sticky top-0 z-50 border-b border-[#0d5b55]/10 bg-[#f8fbf9]/92 backdrop-blur-xl">
         <div className="mx-auto flex h-[66px] max-w-[1560px] items-center justify-between px-4 sm:px-7 lg:px-10">
           <Link href="/" className="flex items-center gap-3" aria-label="Maria Perfumes home">
@@ -41,16 +41,16 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       <section id="live-stall" aria-label="Maria Perfumes live event stall hero video" className="relative h-[calc(100svh-66px)] min-h-[72svh] overflow-hidden bg-[#0e4f4a]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_15%,rgba(255,255,255,.14),transparent_24rem),radial-gradient(circle_at_82%_12%,rgba(214,174,82,.16),transparent_26rem)]" />
         <div className="relative mx-auto flex h-full max-w-[1600px] flex-col justify-end px-5 pb-8 sm:px-8 lg:px-12">
-          <div className="group relative overflow-hidden rounded-[30px] border border-white/15 bg-black shadow-[0_35px_100px_rgba(0,0,0,.30)]" data-live-reveal>
+          <div className="group relative h-[58svh] min-h-[420px] overflow-hidden rounded-[30px] border border-white/15 bg-black shadow-[0_35px_100px_rgba(0,0,0,.30)] sm:h-[68svh] lg:h-[72svh]">
             <video
               autoPlay
               muted
               playsInline
               loop
               preload="auto"
-              className="block h-full w-full object-cover object-center transition duration-[1800ms] ease-out"
+              className="absolute inset-0 block h-full w-full object-cover object-center transition duration-[1800ms] ease-out"
             >
-              <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/ea3c6a2a-5a7a-4117-9736-8fe6b535ea00.mp4" type="video/mp4" />
+              <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/772e3639-f09b-45b6-8125-8e528496296a.mp4" type="video/mp4" />
             </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#063c38]/75 via-transparent to-transparent" />
             <div className="absolute bottom-5 left-5 max-w-2xl sm:bottom-8 sm:left-8">
