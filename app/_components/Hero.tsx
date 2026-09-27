@@ -28,21 +28,37 @@ export function Hero() {
       gsap.set('.hero-story-label', { y: 22, opacity: 0 })
       gsap.set('.hero-story-title', { y: 34, opacity: 0 })
 
-      gsap.to(stage, {
-        scale: 0.985,
-        borderRadius: 34,
-        boxShadow: '0 34px 110px rgba(24, 71, 112, 0.20)',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top+=96',
-          end: '+=1150',
-          scrub: 1.1,
-          pin: stage,
-          pinSpacing: true,
-          anticipatePin: 1,
-        },
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top top+=84',
+        end: '+=1250',
+        pin: stage,
+        pinSpacing: false,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
       })
+
+      gsap.fromTo(
+        stage,
+        {
+          borderRadius: 28,
+          scale: 1,
+          boxShadow: '0 24px 80px rgba(26,70,111,.12)',
+        },
+        {
+          borderRadius: 34,
+          scale: 0.992,
+          boxShadow: '0 34px 120px rgba(26,70,111,.20)',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top+=84',
+            end: '+=1250',
+            scrub: 1.1,
+            invalidateOnRefresh: true,
+          },
+        },
+      )
 
       gsap.to('.hero-glow', {
         scale: 1.18,
@@ -51,7 +67,7 @@ export function Hero() {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=1150',
+          end: '+=1250',
           scrub: 1.2,
         },
       })
@@ -64,7 +80,7 @@ export function Hero() {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: card,
-            start: 'top 90%',
+            start: 'top 88%',
             toggleActions: 'play none none reverse',
           },
           delay: index * 0.06,
@@ -109,6 +125,8 @@ export function Hero() {
           },
         },
       )
+
+      ScrollTrigger.refresh()
     }, sectionRef)
 
     return () => ctx.revert()
@@ -130,48 +148,52 @@ export function Hero() {
       ref={sectionRef}
       id="video-hero"
       aria-label="Maria Perfumes hero story"
-      className="relative overflow-clip bg-[radial-gradient(circle_at_50%_8%,rgba(61,137,230,.15),transparent_32rem),linear-gradient(180deg,#f8fbff_0%,#ffffff_52%,#eef6fd_100%)]"
+      className="relative min-h-[180vh] overflow-clip bg-[radial-gradient(circle_at_50%_6%,rgba(61,137,230,.14),transparent_32rem),linear-gradient(180deg,#f8fbff_0%,#ffffff_52%,#eef6fd_100%)]"
     >
       <div className="pointer-events-none absolute inset-0">
         <div className="hero-glow absolute left-[18%] top-[8rem] h-[34rem] w-[34rem] rounded-full bg-[#167bd1]/[0.055] blur-3xl" />
-        <div className="absolute right-[-8rem] top-[26rem] h-[30rem] w-[30rem] rounded-full border border-[#167bd1]/[0.07]" />
-        <div className="absolute left-[-12rem] top-[58rem] text-[19vw] font-display font-extrabold uppercase tracking-[-0.09em] text-[#167bd1]/[0.035]">
+        <div className="absolute right-[-8rem] top-[28rem] h-[30rem] w-[30rem] rounded-full border border-[#167bd1]/[0.07]" />
+        <div className="absolute bottom-[5rem] left-[-12rem] text-[19vw] font-display font-extrabold uppercase tracking-[-0.09em] text-[#167bd1]/[0.035]">
           Maria
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-[1600px] px-3 pt-4 sm:px-5 sm:pt-5 lg:px-7 lg:pt-6">
+      <div className="relative z-10 pt-3 sm:pt-4">
         <div
           ref={stageRef}
-          className="group relative mx-auto h-[68vh] min-h-[470px] w-full max-w-[1510px] overflow-hidden rounded-[30px] border border-[#d7e5f1] bg-[#dbeaf8] shadow-[0_28px_90px_rgba(26,70,111,.15)]"
+          className="hero-video-stage relative left-1/2 w-screen -translate-x-1/2 overflow-hidden rounded-[28px] border border-[#d7e5f1] bg-[#dbeaf8] shadow-[0_24px_85px_rgba(26,70,111,.14)]"
         >
-          <video
-            ref={videoRef}
-            muted
-            playsInline
-            preload="auto"
-            autoPlay
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          >
-            <source src={HERO_VIDEO_URL} type="video/mp4" />
-          </video>
+          <div className="relative aspect-video w-full">
+            <video
+              ref={videoRef}
+              muted
+              playsInline
+              preload="auto"
+              autoPlay
+              className="absolute inset-0 h-full w-full object-contain bg-white"
+            >
+              <source src={HERO_VIDEO_URL} type="video/mp4" />
+            </video>
 
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081827]/18 via-transparent to-white/6" />
-          <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/35" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#081827]/12 via-transparent to-white/4" />
+            <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/45" />
 
-          <div className="pointer-events-none absolute inset-x-8 bottom-6 h-px origin-left bg-white/55 sm:inset-x-12 sm:bottom-8" />
+            <div className="pointer-events-none absolute bottom-[12%] left-6 right-6 sm:left-10 sm:right-10">
+              <div className="h-px w-full bg-white/45" />
+            </div>
+          </div>
         </div>
 
         <div
           ref={storyRef}
-          className="relative z-30 mx-auto -mt-[7vh] max-w-[1310px] px-1 pb-24 sm:px-4 lg:-mt-[10vh] lg:pb-32"
+          className="relative z-30 mx-auto -mt-[10vh] max-w-[1320px] px-4 pb-[20vh] sm:px-6 lg:-mt-[12vh] lg:px-8"
         >
           <div className="hero-story-label mb-4 flex items-center gap-3 pl-2 text-[9px] font-extrabold uppercase tracking-[0.28em] text-wine-600">
             <span className="h-2.5 w-2.5 rounded-full bg-[#167bd1]" />
             01 / The story begins
           </div>
 
-          <div className="hero-story-title grid gap-8 rounded-[32px] border border-[#d9e6f0] bg-white/96 p-6 shadow-[0_24px_85px_rgba(16,36,58,.12)] backdrop-blur-xl sm:p-8 lg:grid-cols-[1.18fr_.82fr] lg:p-10">
+          <div className="hero-story-title grid gap-8 rounded-[32px] border border-[#d9e6f0] bg-white p-6 shadow-[0_24px_85px_rgba(16,36,58,.13)] sm:p-8 lg:grid-cols-[1.18fr_.82fr] lg:p-10">
             <div>
               <div className="hero-story-divider mb-6 h-[3px] w-16 origin-left rounded-full bg-[#167bd1]" />
               <h1 className="max-w-4xl font-display text-5xl font-extrabold uppercase leading-[.85] tracking-[-0.065em] text-[#10243a] sm:text-6xl md:text-7xl lg:text-[6.4rem]">
