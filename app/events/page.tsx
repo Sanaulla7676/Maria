@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { Gift, Sparkles, Building2, Wand2, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { eventTypes, mariaServices } from '@/lib/maria-business'
 import { Reveal } from '@/app/_components/ui/Reveal'
-import { ParallaxHero } from '@/app/_components/ui/ParallaxHero'
 import { HorizontalScrollGallery } from '@/app/_components/ui/HorizontalScrollGallery'
 
 const serviceIcons = [Gift, Sparkles, Wand2, Building2]
@@ -30,31 +29,26 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
         </div>
       </section>
 
-      {/* PARALLAX HERO */}
-      <ParallaxHero video="/hero-video2.mp4">
-        <div className="max-w-4xl mx-auto px-6 text-center space-y-5">
-          <span className="text-white font-semibold text-xs uppercase tracking-[0.3em] bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/50 inline-block text-wine-700">
-            Maria Events &amp; Gifting
-          </span>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-white leading-tight">
-            Make your celebration <span className="gold-text-gradient font-semibold">smell unforgettable</span>
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 font-light max-w-xl mx-auto leading-relaxed">
-            Premium return gifts, customized fragrances and dedicated live perfume stalls for weddings, Haldi, birthdays and corporate events.
-          </p>
-          <div className="pt-2 flex flex-wrap justify-center gap-4 text-xs font-bold uppercase tracking-wider">
-            <a href="#event-enquiry" className="gold-button-gradient text-white px-7 py-3.5 rounded-full shadow-xl hover:scale-105 transition flex items-center gap-2">
-              Plan an Event <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-            <Link href="/shop" className="bg-white/90 backdrop-blur-sm text-wine-800 px-7 py-3.5 rounded-full border border-champagne-400/50 hover:border-champagne-400 transition">
-              Shop Signature Perfumes
-            </Link>
-          </div>
+      {/* HERO MESSAGE */}
+      <section className="relative overflow-hidden border-b border-[#0d5b55]/10 bg-[#f7fbf8]">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1fr_.8fr] lg:items-end lg:py-20">
+          <Reveal>
+            <span className="text-[9px] font-extrabold uppercase tracking-[0.30em] text-[#0b6a63]">Maria Events &amp; Gifting</span>
+            <h2 className="mt-3 font-serif text-4xl font-semibold leading-[1.01] text-[#123d3a] sm:text-5xl lg:text-6xl">
+              A fragrance experience people
+              <span className="block text-[#0b6a63]">remember after the event.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="max-w-xl text-sm leading-7 text-[#5a6e6a]">
+              Discover, sample, personalize and take home a scent experience built into your celebration. The stall becomes part of the event, not just another display counter.
+            </p>
+          </Reveal>
         </div>
-      </ParallaxHero>
+      </section>
 
       {/* SERVICES — horizontal scroll story */}
-      <section className="editorial-shell pt-20">
+      <section id="services" className="relative overflow-hidden bg-[#f7fbf8] pt-20 lg:pt-24">
         <Reveal className="text-center max-w-2xl mx-auto space-y-3 mb-4 px-6">
           <span className="text-wine-600 font-semibold text-xs uppercase tracking-[0.2em]">Maria Services</span>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#10243a]">Return-Gift Perfume Stalls</h2>
@@ -85,16 +79,16 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       </section>
 
       {/* EVENT TYPES */}
-      <section className="editorial-shell py-16 border-y border-champagne-500/20">
+      <section id="occasions" className="relative overflow-hidden border-y border-[#0d5b55]/10 bg-[#0e4f4a] py-16 text-white lg:py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <Reveal className="text-center space-y-3 mb-10">
+          <Reveal className="max-w-2xl space-y-3 mb-10">
             <span className="text-wine-600 font-semibold text-xs uppercase tracking-[0.2em]">Choose Your Occasion</span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-normal text-white">Every celebration, one signature scent</h2>
+            <h2 className="text-3xl sm:text-4xl font-serif font-semibold text-white">Every celebration, one signature scent.</h2>
           </Reveal>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
             {eventTypes.map((type, i) => (
               <Reveal key={type} delay={i * 0.06}>
-                <div className="bg-[#eef7ff] border border-wine-200 rounded-2xl py-6 text-center text-wine-700 font-serif font-semibold text-lg hover:border-champagne-400 hover:scale-105 transition-all">
+                <div className="group rounded-2xl border border-white/10 bg-white/[0.055] py-6 text-center font-serif text-lg font-semibold text-white shadow-[0_14px_40px_rgba(0,0,0,.10)] transition duration-500 hover:-translate-y-1 hover:border-[#efd488]/45 hover:bg-white/[0.09]">
                   {type}
                 </div>
               </Reveal>
@@ -104,7 +98,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       </section>
 
       {/* ENQUIRY */}
-      <section id="event-enquiry" className="max-w-4xl mx-auto px-6 lg:px-8 py-20">
+      <section id="event-enquiry" className="relative overflow-hidden bg-[#f4f0e7] px-0 py-20 lg:py-24">
         <Reveal className="text-center space-y-3 mb-10">
           <span className="text-wine-600 font-semibold text-xs uppercase tracking-[0.2em]">Request a Quotation</span>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-wine-950">
@@ -120,7 +114,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
             <CheckCircle2 className="h-5 w-5 shrink-0" /> Your event enquiry was submitted successfully.
           </Reveal>
         ) : (
-          <Reveal className="bg-white border border-slate-200/80 shadow-sm rounded-3xl p-8">
+          <Reveal className="rounded-[30px] border border-[#1d3936]/10 bg-white p-8 shadow-[0_25px_70px_rgba(38,61,57,.10)] sm:p-10">
             <form action="/api/events/enquiry" method="post" className="grid gap-4 sm:grid-cols-2 text-xs">
               <label className="space-y-1.5">
                 <span className="font-semibold text-slate-700 block">Name</span>
