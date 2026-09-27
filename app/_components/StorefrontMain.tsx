@@ -147,6 +147,30 @@ export function StorefrontMain({
           </button>
         </div>
 
+        <div className="mt-8 overflow-hidden rounded-[24px] border border-slate-200 bg-white">
+          <div className="flex items-center gap-4 overflow-x-auto px-4 py-3">
+            <div className="shrink-0 border-r border-slate-200 pr-5">
+              <div className="text-[8px] font-extrabold uppercase tracking-[0.22em] text-slate-400">Categories</div>
+              <div className="mt-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#10243a]">Curated by character</div>
+            </div>
+            <button
+              onClick={() => setFamily("all")}
+              className={"shrink-0 rounded-full px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.14em] transition " + (family === "all" ? "bg-[#167bd1] text-white" : "bg-[#eef7ff] text-[#526b83] hover:bg-[#dff0ff]")}
+            >
+              All Fragrances <span className="ml-1 opacity-70">{products.length}</span>
+            </button>
+            {families.slice(0, 9).map(([name, count]) => (
+              <button
+                key={name}
+                onClick={() => setFamily(name)}
+                className={"shrink-0 rounded-full border px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.12em] transition " + (family === name ? "border-[#167bd1] bg-[#167bd1] text-white" : "border-slate-200 bg-white text-[#526b83] hover:border-[#167bd1] hover:text-[#167bd1]")}
+              >
+                {name} <span className="ml-1 opacity-60">{count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="mt-10 flex items-center justify-between border-b border-slate-200 pb-5">
           <div>
             <span className="text-[9px] font-extrabold uppercase tracking-[0.26em] text-wine-600">01 · Curated collection</span>
