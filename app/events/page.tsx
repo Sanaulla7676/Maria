@@ -10,22 +10,58 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
   const submitted = (await searchParams).submitted === '1'
 
   return (
-    <main className="bg-white">
+    <main className="events-page min-h-screen overflow-hidden bg-[#f7fbf8] text-[#123d3a]">\n
+      <header className="sticky top-0 z-50 border-b border-[#0d5b55]/10 bg-[#f8fbf9]/92 backdrop-blur-xl">
+        <div className="mx-auto flex h-[66px] max-w-[1560px] items-center justify-between px-4 sm:px-7 lg:px-10">
+          <Link href="/" className="flex items-center gap-3" aria-label="Maria Perfumes home">
+            <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/68b3ce37-06f1-4cb2-8192-c830549bf3c4.jpg" alt="Maria Perfumes" className="h-12 w-11 rounded-lg object-contain" draggable={false} />
+            <span className="hidden text-[9px] font-extrabold uppercase tracking-[0.24em] text-[#184b47] sm:block">Live Event Stall</span>
+          </Link>
+          <nav className="hidden items-center gap-7 md:flex">
+            {[
+              ['Home', '/'],
+              ['Live Stall', '#live-stall'],
+              ['Services', '#services'],
+              ['Occasions', '#occasions'],
+              ['Enquiry', '#event-enquiry'],
+            ].map(([label, href]) => (
+              <a key={label} href={href} className="events-nav-link text-[10px] font-extrabold uppercase tracking-[0.17em] text-[#184b47]">
+                {label}
+              </a>
+            ))}
+          </nav>
+          <a href="#event-enquiry" className="inline-flex items-center gap-2 rounded-full bg-[#d6ae52] px-5 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#173b38] shadow-[0_10px_30px_rgba(214,174,82,.22)] transition hover:-translate-y-0.5 hover:bg-[#e4be63]">
+            Plan Your Stall <ArrowRight className="h-3 w-3" />
+          </a>
+        </div>
+      </header>
+
 
       {/* NEW LIVE EVENT STALL HERO VIDEO — existing event content remains below */}
-      <section aria-label="Maria Perfumes live event stall hero video" className="relative w-full overflow-hidden bg-white">
-        <div className="w-full">
-          <video
-            autoPlay
-            muted
-            playsInline
-            loop
-            preload="auto"
-            className="block aspect-video w-full object-cover object-center"
-            poster=""
-          >
-            <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/ea3c6a2a-5a7a-4117-9736-8fe6b535ea00.mp4" type="video/mp4" />
-          </video>
+      <section id="live-stall" aria-label="Maria Perfumes live event stall hero video" className="relative h-[calc(100svh-66px)] min-h-[72svh] overflow-hidden bg-[#0e4f4a]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_15%,rgba(255,255,255,.14),transparent_24rem),radial-gradient(circle_at_82%_12%,rgba(214,174,82,.16),transparent_26rem)]" />
+        <div className="relative mx-auto flex h-full max-w-[1600px] flex-col justify-end px-5 pb-8 sm:px-8 lg:px-12">
+          <div className="group relative overflow-hidden rounded-[30px] border border-white/15 bg-black shadow-[0_35px_100px_rgba(0,0,0,.30)]" data-live-reveal>
+            <video
+              autoPlay
+              muted
+              playsInline
+              loop
+              preload="auto"
+              className="block h-full w-full object-cover object-center transition duration-[1800ms] ease-out"
+            >
+              <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/ea3c6a2a-5a7a-4117-9736-8fe6b535ea00.mp4" type="video/mp4" />
+            </video>
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#063c38]/75 via-transparent to-transparent" />
+            <div className="absolute bottom-5 left-5 max-w-2xl sm:bottom-8 sm:left-8">
+              <p className="text-[9px] font-extrabold uppercase tracking-[0.30em] text-[#efd488]">Maria Perfumes · Live Event Experience</p>
+              <h1 className="mt-2 font-serif text-3xl font-semibold leading-[.98] text-white sm:text-5xl lg:text-6xl">Bring the fragrance experience to your event.</h1>
+              <a href="#event-enquiry" className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#efd488]/70 bg-[#d6ae52] px-5 py-3 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#173b38] shadow-lg transition hover:-translate-y-0.5">
+                Plan Your Stall <ArrowRight className="h-3 w-3" />
+              </a>
+            </div>
+          </div>
+          <span className="mx-auto mt-4 text-[8px] font-bold uppercase tracking-[0.3em] text-white/45">Scroll to explore</span>
         </div>
       </section>
 
@@ -48,9 +84,9 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       </section>
 
       {/* SERVICES — horizontal scroll story */}
-      <section id="services" className="relative overflow-hidden bg-[#f7fbf8] pt-20 lg:pt-24">
+      <section id="services" className="relative overflow-hidden bg-[#f7fbf8] py-20 lg:py-24">
         <Reveal className="text-center max-w-2xl mx-auto space-y-3 mb-4 px-6">
-          <span className="text-wine-600 font-semibold text-xs uppercase tracking-[0.2em]">Maria Services</span>
+          <span className="text-[#0b6a63] font-semibold text-xs uppercase tracking-[0.2em]">Maria Services</span>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#10243a]">Return-Gift Perfume Stalls</h2>
           <p className="text-sm text-slate-600 font-light">Scroll to explore how we bring the fragrance bar to your event.</p>
         </Reveal>
@@ -60,17 +96,17 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
             return (
               <div
                 key={service.title}
-                className="w-[78vw] sm:w-[420px] shrink-0 h-[60vh] max-h-[460px] bg-gradient-to-br from-white to-[#eef7ff] border border-wine-200 rounded-[2.5rem] p-10 flex flex-col justify-between shadow-2xl"
+                className="event-card-glow w-[78vw] shrink-0 rounded-[2rem] border border-[#0d5b55]/10 bg-white p-8 shadow-[0_20px_60px_rgba(20,76,70,.08)] transition duration-500 hover:-translate-y-2 sm:w-[420px] sm:rounded-[2.5rem] sm:p-10"
               >
                 <div>
-                  <span className="text-wine-500/70 font-serif text-sm">{String(i + 1).padStart(2, '0')}</span>
-                  <div className="w-14 h-14 rounded-2xl gold-button-gradient text-white flex items-center justify-center text-xl shadow-lg my-5">
+                  <span className="text-[#0b6a63]/70 font-serif text-sm">{String(i + 1).padStart(2, '0')}</span>
+                  <div className="w-14 h-14 rounded-2xl bg-[#0e4f4a] text-[#efd488] flex items-center justify-center text-xl shadow-lg my-5">
                     <Icon className="h-6 w-6" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-serif font-bold text-2xl text-[#10243a] mb-3">{service.title}</h3>
-                  <p className="text-sm text-slate-600 font-light leading-relaxed">{service.description}</p>
+                  <h3 className="font-serif font-bold text-2xl text-[#123d3a] mb-3">{service.title}</h3>
+                  <p className="text-sm text-[#607875] font-light leading-relaxed">{service.description}</p>
                 </div>
               </div>
             )
