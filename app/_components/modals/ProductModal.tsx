@@ -10,7 +10,7 @@ import { toast } from "sonner"
 import { useUI } from "@/app/_components/ui/UIProvider"
 import { Modal } from "@/app/_components/ui/Modal"
 import { AddToCartButton } from "@/app/_components/ui/AddToCartButton"
-import { primaryImage } from "@/lib/product-helpers"
+import { MARIA_BOTTLE_IMAGE } from "@/lib/product-helpers"
 import { addToCart } from "@/lib/cart-actions"
 
 const noteIcons = [Sparkles, Leaf, Droplet, Flame, Wind, Star]
@@ -41,12 +41,24 @@ function ProductVisual({
   name: string
   family: string | null
 }) {
-  if (image) {
-    return <img src={image} alt={name} className="h-full w-full object-cover" />
-  }
-
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#101321]">
+
+    <div className="relative h-full w-full overflow-hidden bg-[#f4efe8]">
+      <div className="absolute inset-0 flex justify-center">
+        <div className="relative h-full aspect-[9/16] max-w-full">
+          <img
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/68b3ce37-06f1-4cb2-8192-c830549bf3c4.jpg"
+            alt={name}
+            className="absolute inset-0 h-full w-full object-cover"
+            draggable={false}
+          />
+          <div className="absolute left-[27%] right-[27%] top-[66.5%] h-[8.4%] flex items-center justify-center overflow-hidden px-2">
+            <span className="max-w-full text-center text-[10px] font-semibold leading-tight text-[#171226] sm:text-[11px]">
+              {name}
+            </span>
+          </div>
+        </div>
+      </div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_25%,rgba(212,175,55,0.24),transparent_32%),radial-gradient(circle_at_75%_75%,rgba(111,29,47,0.55),transparent_40%)]" />
       <div className="absolute inset-x-7 top-6 flex items-start justify-between">
         <div className="text-[9px] uppercase tracking-[0.3em] text-champagne-300/80">Maria Perfumes</div>
@@ -83,7 +95,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   if (!product) return <Modal open={isOpen} onClose={close} size="2xl" children={null} />
 
-  const image = activeVariant?.image_url || primaryImage(product)
+  const image = MARIA_BOTTLE_IMAGE
   const accords = product.main_accords ?? []
   const notes = product.notes?.length ? product.notes : ["Signature Blend"]
   const gender = (product.gender || "Unisex").toLowerCase()
