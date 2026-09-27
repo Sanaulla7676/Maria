@@ -8,7 +8,6 @@ import type { Product } from "@/lib/types"
 import { primaryImage, cheapestActiveVariant } from "@/lib/product-helpers"
 import { useUI } from "@/app/_components/ui/UIProvider"
 import { toggleWishlist } from "@/app/account/wishlist/actions"
-import { addToCart } from "@/lib/cart-actions"
 
 function ImageStage({ image, name }: { image: string | null; name: string }) {
   if (image) return <img src={image} alt={name} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]" />
@@ -62,18 +61,6 @@ export function ProductCard({
     })
   }
 
-  const handleOrder = async () => {
-    if (!isLoggedIn) return open({ name: "auth", mode: "sign-in" })
-    if (!variant || !inStock) return
-    try {
-      await addToCart(product.id, variant.id, 1)
-      toast.success(product.name + " added to your bag")
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not add to bag")
-      throw e
-    }
-  }
-
   return (
     <article className={"group relative overflow-hidden rounded-[28px] border border-[#dbe6f0] bg-white shadow-[0_16px_45px_rgba(16,36,58,.06)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(16,36,58,.12)] " + (featured ? "md:row-span-2" : "")}>
       <div className={"relative overflow-hidden " + (featured ? "h-[360px] sm:h-[440px]" : "h-[260px] sm:h-[310px]")}>
@@ -119,10 +106,6 @@ export function ProductCard({
               View Details <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>
-
-          <button onClick={handleOrder} disabled={!inStock} className="mt-3 w-full rounded-full bg-[#167bd1] py-2.5 text-[9px] font-extrabold uppercase tracking-[0.18em] text-white transition hover:bg-[#0b5da7] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400">
-            {inStock ? "Order Fragrance" : "Currently Unavailable"}
-          </button>
         </div>
       </div>
     </article>
