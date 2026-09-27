@@ -72,12 +72,7 @@ export default function WorkshopPage() {
       <header className="sticky top-0 z-50 border-b border-[#f2cf80]/15 bg-[#120000]/90 backdrop-blur-xl">
         <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10">
           <Link href="/" className="group shrink-0" aria-label="Maria Perfumes home">
-            <div className="font-serif text-[25px] font-semibold leading-none tracking-[0.08em] text-[#f3d487]">
-              MARIA
-            </div>
-            <div className="mt-1 text-[7px] font-bold uppercase tracking-[0.5em] text-white/70">
-              PERFUMES
-            </div>
+            <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/68b3ce37-06f1-4cb2-8192-c830549bf3c4.jpg" alt="Maria Perfumes" className="h-[52px] w-[48px] object-contain rounded-lg" draggable={false} />
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -422,9 +417,9 @@ export default function WorkshopPage() {
 
       <footer className="border-t border-[#f3d487]/10 bg-[#120000]">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <div>
-            <div className="font-serif text-lg text-[#f3d487]">MARIA</div>
-            <div className="text-[7px] uppercase tracking-[0.45em] text-white/35">PERFUMES</div>
+          <div className="flex items-center gap-3">
+            <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/68b3ce37-06f1-4cb2-8192-c830549bf3c4.jpg" alt="Maria Perfumes" className="h-14 w-12 rounded-lg object-contain" draggable={false} />
+            <div className="text-[9px] uppercase tracking-[0.28em] text-white/45">Perfume Making Workshop</div>
           </div>
           <Link href="/" className="text-xs text-white/45 transition hover:text-white">← Back to Maria Perfumes</Link>
         </div>
