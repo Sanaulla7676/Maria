@@ -37,8 +37,8 @@ export function StorefrontShell({
 
   return (
     <UIProvider>
-      <Hero />
       <Navbar userEmail={userEmail} isOwnerUser={isOwnerUser} bagCount={cart.length} />
+      <Hero />
       <BestSellersCarousel products={products} />
       <EventStallsSection />
       <StorefrontMain products={products} isLoggedIn={isLoggedIn} wishlistIds={wishlistIds} />
