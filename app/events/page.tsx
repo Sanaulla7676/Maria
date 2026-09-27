@@ -12,6 +12,24 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
 
   return (
     <main className="bg-white">
+
+      {/* NEW LIVE EVENT STALL HERO VIDEO — existing event content remains below */}
+      <section aria-label="Maria Perfumes live event stall hero video" className="relative w-full overflow-hidden bg-white">
+        <div className="w-full">
+          <video
+            autoPlay
+            muted
+            playsInline
+            loop
+            preload="auto"
+            className="block aspect-video w-full object-cover object-center"
+            poster=""
+          >
+            <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/ea3c6a2a-5a7a-4117-9736-8fe6b535ea00.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </section>
+
       {/* PARALLAX HERO */}
       <ParallaxHero video="/hero-video2.mp4">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-5">
