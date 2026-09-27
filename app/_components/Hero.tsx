@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 
 const HERO_VIDEO_URL =
-  'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/86b1bff2-0651-42df-98fc-51815d0a6f2a.mp4'
+  'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/0585a269-73ca-4bb1-a982-b6d99ab3c628.mp4'
 
 export function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -12,18 +12,32 @@ export function Hero() {
     const video = videoRef.current
     if (!video) return
 
-    const play = () => {
+    const START_AT = 6
+
+    const playFromSixSeconds = () => {
       video.muted = true
+      if (video.duration && video.currentTime < START_AT) {
+        try { video.currentTime = START_AT } catch {}
+      }
       video.play().catch(() => {})
     }
 
-    play()
-    video.addEventListener('loadeddata', play)
-    video.addEventListener('canplay', play)
+    const restartFromSixSeconds = () => {
+      try { video.currentTime = START_AT } catch {}
+      video.play().catch(() => {})
+    }
+
+    playFromSixSeconds()
+    video.addEventListener('loadedmetadata', playFromSixSeconds)
+    video.addEventListener('loadeddata', playFromSixSeconds)
+    video.addEventListener('canplay', playFromSixSeconds)
+    video.addEventListener('ended', restartFromSixSeconds)
 
     return () => {
-      video.removeEventListener('loadeddata', play)
-      video.removeEventListener('canplay', play)
+      video.removeEventListener('loadedmetadata', playFromSixSeconds)
+      video.removeEventListener('loadeddata', playFromSixSeconds)
+      video.removeEventListener('canplay', playFromSixSeconds)
+      video.removeEventListener('ended', restartFromSixSeconds)
     }
   }, [])
 
@@ -40,7 +54,7 @@ export function Hero() {
           playsInline
           preload="auto"
           autoPlay
-          loop
+          loop={false}
           controls={false}
           className="absolute inset-x-0 top-0 h-full w-full object-cover object-center"
         >
