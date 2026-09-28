@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 
 const HERO_VIDEO_URL =
-  'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/0585a269-73ca-4bb1-a982-b6d99ab3c628.mp4'
+  'https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/75e29c60-4aca-434e-9cfd-5bdaa08e6537.mp4'
 
 export function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null)
