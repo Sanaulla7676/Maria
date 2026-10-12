@@ -6,7 +6,7 @@ export function TrustStrip() {
           <span className="flex items-center gap-1.5">
             <strong className="text-white font-bold">4.7</strong>
             <span className="text-champagne-400 tracking-tighter">★★★★★</span>
-            <span className="text-slate-400 font-light lowercase tracking-normal">(79 Google Reviews)</span>
+            <span className="hidden text-slate-400 font-light lowercase tracking-normal sm:inline">(79 Google Reviews)</span>
           </span>
         </div>
         <div className="flex items-center space-x-5">

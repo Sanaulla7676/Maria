@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Search, ShoppingBag, UserRound, LogOut } from 'lucide-react'
+import { Search, ShoppingBag, UserRound, LogOut, Menu, X } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { supabaseBrowser } from '@/lib/supabase/browser'
@@ -28,6 +28,7 @@ export function Navbar({
   const router = useRouter()
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   const signOut = async () => {
     await supabaseBrowser().auth.signOut()
@@ -87,7 +88,7 @@ export function Navbar({
             <a
               href="/#matches-section"
               aria-label="Search fragrances"
-              className="flex h-10 w-10 items-center justify-center rounded-full text-[#10243a] transition hover:bg-[#eef7ff] hover:text-[#167bd1]"
+              className="hidden h-10 w-10 items-center justify-center rounded-full text-[#10243a] transition hover:bg-[#eef7ff] hover:text-[#167bd1] sm:flex"
             >
               <Search className="h-[19px] w-[19px]" />
             </a>
@@ -169,14 +170,74 @@ export function Navbar({
             </button>
 
             <button
+              onClick={() => setMobileNavOpen((value) => !value)}
+              aria-label={mobileNavOpen ? 'Close navigation' : 'Open navigation'}
+              aria-expanded={mobileNavOpen}
+              aria-controls="maria-mobile-navigation"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-[#10243a] transition hover:bg-[#eef7ff] hover:text-[#167bd1] lg:hidden"
+            >
+              {mobileNavOpen ? <X className="h-[21px] w-[21px]" /> : <Menu className="h-[21px] w-[21px]" />}
+            </button>
+
+            <button
               onClick={() => open({ name: 'booking' })}
-              className="maria-cta hidden min-w-[210px] items-center justify-center rounded-full px-6 py-3.5 text-[9px] font-extrabold uppercase tracking-[0.18em] transition sm:flex"
+              className="maria-cta hidden min-w-[210px] items-center justify-center rounded-full px-6 py-3.5 text-[9px] font-extrabold uppercase tracking-[0.18em] transition lg:flex"
             >
               Book Stall / Store <span className="ml-2.5 text-base leading-none">→</span>
             </button>
           </div>
         </div>
       </div>
+
+      {mobileNavOpen && (
+        <nav
+          id="maria-mobile-navigation"
+          aria-label="Mobile navigation"
+          className="absolute left-3 right-3 top-full z-50 mt-1 rounded-2xl border border-[#dbe6f0] bg-white/95 p-2 shadow-[0_18px_50px_rgba(16,36,58,.16)] backdrop-blur-xl sm:left-6 sm:right-6 lg:hidden"
+        >
+          <div className="grid gap-1">
+            {navItems.map((item) =>
+              item.href.startsWith('/events') || item.href.startsWith('/workshops') ? (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setMobileNavOpen(false)}
+                  className="flex min-h-11 items-center justify-between rounded-xl px-4 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#10243a] transition hover:bg-[#eef7ff] hover:text-[#167bd1]"
+                >
+                  {item.label}
+                  <span aria-hidden="true" className="text-[#167bd1]">↗</span>
+                </Link>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setMobileNavOpen(false)}
+                  className="flex min-h-11 items-center justify-between rounded-xl px-4 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#10243a] transition hover:bg-[#eef7ff] hover:text-[#167bd1]"
+                >
+                  {item.label}
+                  <span aria-hidden="true" className="text-[#167bd1]">↗</span>
+                </a>
+              ),
+            )}
+            <a
+              href="/#matches-section"
+              onClick={() => setMobileNavOpen(false)}
+              className="flex min-h-11 items-center gap-3 rounded-xl border-t border-slate-100 px-4 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#167bd1]"
+            >
+              <Search className="h-4 w-4" /> Search fragrances
+            </a>
+            <button
+              onClick={() => {
+                setMobileNavOpen(false)
+                open({ name: 'booking' })
+              }}
+              className="maria-cta mt-1 flex min-h-11 w-full items-center justify-center rounded-full px-4 py-3 text-[9px] font-extrabold uppercase tracking-[0.18em]"
+            >
+              Book Stall / Store <span className="ml-2.5 text-base leading-none">→</span>
+            </button>
+          </div>
+        </nav>
+      )}
     </header>
   )
 }

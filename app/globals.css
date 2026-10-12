@@ -245,7 +245,8 @@ body.modal-active { overflow: hidden !important; }
 
 /* Approved Maria header treatment */
 .maria-header {
-  position: relative;
+  position: sticky;
+  top: 0;
   isolation: isolate;
   overflow: visible;
   background:

@@ -63,7 +63,7 @@ export function StorefrontMain({
       <span className="editorial-watermark left-[-2rem] top-[18rem] rotate-[-90deg] hidden xl:block">SCENT</span>
 
       <div className="relative z-10 mx-auto max-w-[1500px] px-5 pt-5 sm:px-8 lg:px-10 lg:pt-8">
-        <div className="group relative overflow-hidden rounded-[30px] border border-[#dbe6f0] bg-white shadow-[0_20px_65px_rgba(16,36,58,.08)]">
+        <div className="group relative overflow-hidden rounded-[22px] border border-[#dbe6f0] bg-white shadow-[0_20px_65px_rgba(16,36,58,.08)] sm:rounded-[30px]">
           <img
             src="https://d2ol7oe51mr4n9.cloudfront.net/user_35mtirXTBJzeOp1GtU8b1ixSM0D/d1638e11-c004-47cc-aaa6-41d9a4406630.png"
             alt="Maria Perfumes editorial fragrance story"
@@ -73,11 +73,11 @@ export function StorefrontMain({
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-[1500px] px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
+      <div className="relative z-10 mx-auto max-w-[1500px] px-4 py-10 sm:px-8 sm:py-16 lg:px-10 lg:py-20">
         <div className="grid items-end gap-10 border-b border-slate-200 pb-10 lg:grid-cols-[1.25fr_.75fr]">
           <div>
             <span className="editorial-kicker">Maria Perfumes · The Collection</span>
-            <h2 className="mt-5 max-w-5xl font-display text-6xl font-extrabold uppercase leading-[.86] tracking-[-0.065em] text-[#10243a] sm:text-7xl lg:text-[8rem]">
+            <h2 className="mt-5 max-w-5xl font-display text-[clamp(2.5rem,12vw,3.75rem)] font-extrabold uppercase leading-[.88] tracking-[-0.065em] text-[#10243a] sm:text-7xl lg:text-[8rem]">
               Find your
               <span className="block text-[#167bd1]">Signature</span>
             </h2>
@@ -194,7 +194,7 @@ export function StorefrontMain({
         </div>
 
         {curated.length > 0 ? (
-          <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[auto_auto]">
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[auto_auto]">
             {curated.map((product, i) => (
               <ProductCard
                 key={product.id}
@@ -223,7 +223,7 @@ export function StorefrontMain({
               <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">{remainder.length} more</span>
             </div>
 
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
               {remainder.map((product, i) => (
                 <ProductCard
                   key={product.id}
