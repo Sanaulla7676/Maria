@@ -67,47 +67,47 @@ export function ProductCard({
   }
 
   return (
-    <article className={"group relative overflow-hidden rounded-[28px] border border-[#dbe6f0] bg-white shadow-[0_16px_45px_rgba(16,36,58,.06)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(16,36,58,.12)] " + (featured ? "md:row-span-2" : "")}>
-      <div className={"relative overflow-hidden " + (featured ? "h-[360px] sm:h-[440px]" : "h-[260px] sm:h-[310px]")}>
+    <article className={"group relative overflow-hidden rounded-[28px] border border-[#dbe6f0] bg-white shadow-[0_16px_45px_rgba(16,36,58,.06)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(16,36,58,.12)] max-sm:rounded-[18px] " + (featured ? "md:row-span-2" : "")}>
+      <div className={"relative overflow-hidden " + (featured ? "h-[360px] max-sm:h-[190px] sm:h-[440px]" : "h-[260px] max-sm:h-[190px] sm:h-[310px]")}>
         <ImageStage name={product.name} />
-        <div className="absolute left-5 top-5 flex items-center gap-2">
-          <span className="font-display text-2xl font-extrabold tracking-[-0.06em] text-white drop-shadow-md">{String(index + 1).padStart(2, "0")}</span>
-          {product.badge && <span className="rounded-full bg-[#167bd1] px-3 py-1 text-[8px] font-extrabold uppercase tracking-[0.18em] text-white shadow-lg">{product.badge}</span>}
+        <div className="absolute left-5 top-5 flex items-center gap-2 max-sm:left-3 max-sm:top-3 max-sm:gap-1">
+          <span className="font-display text-2xl font-extrabold tracking-[-0.06em] text-white drop-shadow-md max-sm:text-xl">{String(index + 1).padStart(2, "0")}</span>
+          {product.badge && <span className="rounded-full bg-[#167bd1] px-3 py-1 text-[8px] font-extrabold uppercase tracking-[0.18em] text-white shadow-lg max-sm:px-2 max-sm:py-0.5 max-sm:text-[7px]">{product.badge}</span>}
         </div>
-        <button onClick={handleBookmark} disabled={pending} aria-label={"Save " + product.name} className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-white/90 text-[#10243a] shadow-lg backdrop-blur-sm transition hover:scale-105 hover:text-[#167bd1]">
+        <button onClick={handleBookmark} disabled={pending} aria-label={"Save " + product.name} className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-white/90 text-[#10243a] shadow-lg backdrop-blur-sm transition hover:scale-105 hover:text-[#167bd1] max-sm:right-3 max-sm:top-3 max-sm:h-8 max-sm:w-8">
           <Heart className={"h-4 w-4 " + (saved ? "fill-[#167bd1] text-[#167bd1]" : "")} />
         </button>
-        {variant && <div className="absolute bottom-5 left-5 rounded-full bg-[#10243a]/88 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-white">{variant.size_ml ? variant.size_ml + "ml" : variant.label}</div>}
+        {variant && <div className="absolute bottom-5 left-5 rounded-full bg-[#10243a]/88 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-white max-sm:bottom-3 max-sm:left-3 max-sm:px-2 max-sm:py-1 max-sm:text-[7px]">{variant.size_ml ? variant.size_ml + "ml" : variant.label}</div>}
       </div>
 
-      <div className="p-6 sm:p-7">
+      <div className="p-6 sm:p-7 max-sm:p-3">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-[9px] font-extrabold uppercase tracking-[0.22em] text-wine-600">{product.family || "Signature Perfumes"}</p>
-            <h3 className="mt-1 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.04em] text-[#10243a] sm:text-3xl">{product.name}</h3>
+            <h3 className="mt-1 font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.04em] text-[#10243a] sm:text-3xl max-sm:text-[15px]">{product.name}</h3>
           </div>
           {product.review_count > 0 && <div className="flex items-center gap-1 rounded-full bg-[#eef7ff] px-2.5 py-1 text-[9px] font-bold text-wine-700"><Star className="h-3 w-3 fill-current" />{product.rating.toFixed(1)}</div>}
         </div>
 
-        <p className="mt-4 line-clamp-3 text-[12px] leading-6 text-slate-500">{product.description || (product.notes?.length ? product.notes.join(", ") : "A signature Maria Perfumes composition.")}</p>
+        <p className="mt-4 line-clamp-3 text-[12px] leading-6 text-slate-500 max-sm:mt-2 max-sm:line-clamp-2 max-sm:text-[10px] max-sm:leading-4">{product.description || (product.notes?.length ? product.notes.join(", ") : "A signature Maria Perfumes composition.")}</p>
 
         {accords.length > 0 && (
-          <div className="mt-5 flex flex-wrap gap-2">
-            {accords.map((accord) => <span key={accord.name} className="rounded-full border border-[#dbe6f0] bg-[#fbfdff] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[#526b83]">{accord.name}</span>)}
+          <div className="mt-5 flex flex-wrap gap-2 max-sm:mt-3 max-sm:gap-1">
+            {accords.map((accord) => <span key={accord.name} className="rounded-full border border-[#dbe6f0] bg-[#fbfdff] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[#526b83] max-sm:px-1.5 max-sm:py-0.5 max-sm:text-[7px]">{accord.name}</span>)}
           </div>
         )}
 
-        <div className="mt-6 border-t border-slate-100 pt-5">
+        <div className="mt-6 border-t border-slate-100 pt-5 max-sm:mt-4 max-sm:pt-3">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-400">
-            {product.longevity_hours && <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-wine-500" />{product.longevity_hours}h longevity</span>}
-            {product.sillage && <span className="flex items-center gap-1.5"><Radar className="h-3.5 w-3.5 text-wine-500" />{product.sillage}</span>}
+            {product.longevity_hours && <span className="flex items-center gap-1.5 max-sm:text-[7px]"><Clock className="h-3.5 w-3.5 text-wine-500" />{product.longevity_hours}h longevity</span>}
+            {product.sillage && <span className="flex items-center gap-1.5 max-sm:text-[7px]"><Radar className="h-3.5 w-3.5 text-wine-500" />{product.sillage}</span>}
           </div>
 
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <div className="flex items-end gap-2">
+          <div className="mt-4 flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-stretch">
+            <div className="flex items-end gap-2 max-sm:items-center">
               {variant ? <><span className="font-display text-2xl font-extrabold tracking-[-0.03em] text-[#10243a]">₹{Number(variant.price).toLocaleString("en-IN")}</span>{original && <span className="pb-0.5 text-xs text-slate-400 line-through">₹{original.toLocaleString("en-IN")}</span>}</> : <span className="font-display text-xl font-extrabold text-[#10243a]">Price on request</span>}
             </div>
-            <button onClick={() => open({ name: "product", product })} className="inline-flex items-center gap-2.5 rounded-full border border-[#167bd1] bg-white px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#167bd1] transition hover:bg-[#167bd1] hover:text-white">
+            <button onClick={() => open({ name: "product", product })} className="inline-flex items-center gap-2.5 rounded-full border border-[#167bd1] bg-white px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#167bd1] transition hover:bg-[#167bd1] hover:text-white max-sm:w-full max-sm:justify-center max-sm:px-2 max-sm:py-2 max-sm:text-[8px]">
               View Details <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>
