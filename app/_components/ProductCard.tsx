@@ -106,7 +106,12 @@ export function ProductCard({
           <div className="mt-4 flex flex-col gap-3">
             <div className="flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-stretch">
               <div className="flex items-end gap-2 max-sm:items-center">
-                {variant ? <><span className="font-display text-2xl font-extrabold tracking-[-0.03em] text-[#10243a]">₹{Number(variant.price).toLocaleString("en-IN")}</span>{original && <span className="pb-0.5 text-xs text-slate-400 line-through">₹{original.toLocaleString("en-IN")}</span></> : <span className="font-display text-xl font-extrabold text-[#10243a]">Price on request</span>}
+                {variant ? (
+                  <span className="font-display text-2xl font-extrabold tracking-[-0.03em] text-[#10243a]">₹{Number(variant.price).toLocaleString("en-IN")}</span>
+                ) : (
+                  <span className="font-display text-xl font-extrabold text-[#10243a]">Price on request</span>
+                )}
+                {original ? <span className="pb-0.5 text-xs text-slate-400 line-through">₹{original.toLocaleString("en-IN")}</span> : null}
               </div>
               <button onClick={() => open({ name: "product", product })} className="inline-flex items-center gap-2.5 rounded-full border border-[#167bd1] bg-white px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#167bd1] transition hover:bg-[#167bd1] hover:text-white max-sm:w-full max-sm:justify-center max-sm:px-2 max-sm:py-2 max-sm:text-[8px]">
                 View Details <ArrowRight className="h-3.5 w-3.5" />
