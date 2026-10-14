@@ -10,7 +10,7 @@ import { toast } from "sonner"
 import { useUI } from "@/app/_components/ui/UIProvider"
 import { Modal } from "@/app/_components/ui/Modal"
 import { AddToCartButton } from "@/app/_components/ui/AddToCartButton"
-import { MARIA_BOTTLE_IMAGE, getVariantPrice } from "@/lib/product-helpers"
+import { MARIA_BOTTLE_IMAGE, getVariantPrice, primaryImage } from "@/lib/product-helpers"
 import { addToCart } from "@/lib/cart-actions"
 
 const noteIcons = [Sparkles, Leaf, Droplet, Flame, Wind, Star]
@@ -101,7 +101,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   if (!product) return <Modal open={isOpen} onClose={close} size="2xl" children={null} />
 
-  const image = MARIA_BOTTLE_IMAGE
+  const image = primaryImage(product) ?? MARIA_BOTTLE_IMAGE
   const accords = product.main_accords ?? []
   const notes = product.notes?.length ? product.notes : ["Signature Blend"]
   const gender = (product.gender || "Unisex").toLowerCase()
@@ -382,7 +382,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
               </div>
               <div className="ml-auto flex flex-wrap justify-end gap-2">
                 <button onClick={close} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300">Close</button>
-                <button type="button" onClick={handleWhatsAppBuyNow} disabled={!activeVariant} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-[#1da851] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                <button type="button" onClick={handleWhatsAppBuyNow} disabled={!activeVariant} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#167bd1] bg-[#167bd1] px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-[#1268b4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#167bd1] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
                   <MessageCircle className="h-4 w-4" /> Buy Now
                 </button>
                 <AddToCartButton onAdd={handleOrder} soldOut={!activeVariant || activeVariant.stock <= 0} idleLabel="Add to bag" className="min-w-[145px] rounded-xl px-5 py-2.5 font-semibold shadow-md disabled:opacity-50" />

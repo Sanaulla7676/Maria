@@ -135,7 +135,7 @@ export default function ProductDetail({ product, image }: { product: Product; im
         </div>
 
         <div className="flex flex-wrap items-center gap-3 mt-8">
-          <button type="button" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 font-semibold text-white transition hover:bg-[#1da851] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 disabled:opacity-50" onClick={handleWhatsAppBuyNow} disabled={!variant}>
+          <button type="button" className="inline-flex items-center justify-center gap-2 rounded-full border border-[#167bd1] bg-[#167bd1] px-5 py-3 font-semibold text-white transition hover:bg-[#1268b4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#167bd1] focus-visible:ring-offset-2 disabled:opacity-50" onClick={handleWhatsAppBuyNow} disabled={!variant}>
             <MessageCircle size={17} /> Buy Now on WhatsApp
           </button>
           <button className="btn btn-primary" onClick={handleAdd} disabled={pending || !inStock}>
