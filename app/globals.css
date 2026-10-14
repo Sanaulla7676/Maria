@@ -464,3 +464,17 @@ body.modal-active { overflow: hidden !important; }
     transition: none;
   }
 }
+
+
+/* Maria product cards: black, ivory and champagne-gold design system */
+.maria-product-title {
+  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: -.04em;
+}
+
+.maria-price-title {
+  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: -.035em;
+}

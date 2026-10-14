@@ -194,13 +194,12 @@ export function StorefrontMain({
         </div>
 
         {curated.length > 0 ? (
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[auto_auto]">
+          <div className="mt-6 grid grid-cols-2 items-stretch gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
             {curated.map((product, i) => (
               <ProductCard
                 key={product.id}
                 product={product}
                 index={i}
-                featured={i < 2}
                 isLoggedIn={isLoggedIn}
                 isWishlisted={wishlistIds.includes(product.id)}
               />
@@ -223,7 +222,7 @@ export function StorefrontMain({
               <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">{remainder.length} more</span>
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
+            <div className="mt-6 grid grid-cols-2 items-stretch gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
               {remainder.map((product, i) => (
                 <ProductCard
                   key={product.id}
