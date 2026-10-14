@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Star, Clock, Radar, Sun, Moon, Snowflake, Flower2, Leaf, Sparkles,
-  Droplet, Wind, Flame, Shirt, CalendarDays
+  Droplet, Wind, Flame, Shirt, CalendarDays, MessageCircle, Minus, Plus
 } from "lucide-react"
 import { toast } from "sonner"
 import { useUI } from "@/app/_components/ui/UIProvider"
@@ -89,9 +89,15 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
   const isOpen = modal?.name === "product"
   const product = modal?.name === "product" ? modal.product : null
 
-  const variants = product?.product_variants?.filter((v) => v.active) ?? []
+  const variants = product?.product_variants?.filter((v) => v.active).sort((a, b) => Number(a.price) - Number(b.price)) ?? []
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null)
+  const [quantity, setQuantity] = useState(1)
   const activeVariant = variants.find((v) => v.id === selectedVariantId) ?? variants[0] ?? null
+
+  useEffect(() => {
+    setSelectedVariantId(null)
+    setQuantity(1)
+  }, [product?.id])
 
   if (!product) return <Modal open={isOpen} onClose={close} size="2xl" children={null} />
 
@@ -107,12 +113,31 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
     }
     if (!activeVariant || activeVariant.stock <= 0) return
     try {
-      await addToCart(product.id, activeVariant.id, 1)
+      await addToCart(product.id, activeVariant.id, quantity)
       toast.success(product.name + " added to your bag")
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not add to bag")
       throw e
     }
+  }
+
+  const handleWhatsAppBuyNow = () => {
+    if (!activeVariant) {
+      toast.error("Please choose a perfume size first")
+      return
+    }
+    const unitPrice = Number(activeVariant.price)
+    const size = activeVariant.size_ml ? `${activeVariant.size_ml}ml` : activeVariant.label
+    const message = [
+      "Hello Maria Perfumes, I would like to place an order.",
+      `Product: ${product.name}`,
+      `Size: ${size}`,
+      `Quantity: ${quantity}`,
+      `Price per item: ₹${unitPrice.toLocaleString("en-IN")}`,
+      `Estimated total: ₹${(unitPrice * quantity).toLocaleString("en-IN")}`,
+      "Please confirm availability and delivery details."
+    ].join("\n")
+    window.location.assign(`https://wa.me/919916032291?text=${encodeURIComponent(message)}`)
   }
 
   return (
@@ -317,8 +342,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
                           <button
                             key={v.id}
                             onClick={() => setSelectedVariantId(v.id)}
-                            disabled={v.stock <= 0}
-                            className={"relative flex h-12 items-center gap-2 rounded-full border px-3 transition disabled:opacity-35 " + (isActive ? "border-wine-800 bg-wine-950 text-white shadow-md" : "border-slate-200 bg-white text-slate-700 hover:border-wine-300")}
+                            className={"relative flex h-12 items-center gap-2 rounded-full border px-3 transition " + (isActive ? "border-wine-800 bg-wine-950 text-white shadow-md" : "border-slate-200 bg-white text-slate-700 hover:border-wine-300")}
                           >
                             {v.image_url ? <img src={v.image_url} alt={v.label} className="h-8 w-8 rounded-full object-cover" /> : <div className={"flex h-8 w-8 items-center justify-center rounded-full text-[9px] font-bold " + (isActive ? "bg-white/15 text-champagne-300" : "bg-wine-950 text-white")}>{v.size_ml || v.label.charAt(0)}</div>}
                             <span className="text-[10px] font-bold">{v.size_ml ? v.size_ml + "ml" : v.label}</span>
@@ -329,22 +353,39 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
                     {activeVariant && <div className="mt-3 font-serif text-xl font-bold text-wine-900">₹{Number(activeVariant.price).toLocaleString("en-IN")}</div>}
                   </section>
                 )}
+
+                <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <h4 className="font-serif text-lg font-bold text-slate-950">Quantity</h4>
+                      <p className="mt-1 text-[10px] text-slate-500">Choose how many bottles you need</p>
+                    </div>
+                    <div className="flex items-center gap-3 rounded-full border border-slate-200 px-3 py-2">
+                      <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((current) => Math.max(1, current - 1))} disabled={quantity <= 1} className="flex h-6 w-6 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 disabled:opacity-30"><Minus className="h-3.5 w-3.5" /></button>
+                      <span aria-live="polite" className="min-w-5 text-center text-sm font-bold tabular-nums text-slate-900">{quantity}</span>
+                      <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((current) => Math.min(20, current + 1))} disabled={quantity >= 20} className="flex h-6 w-6 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 disabled:opacity-30"><Plus className="h-3.5 w-3.5" /></button>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-sm">
+                    <span className="text-slate-500">Estimated subtotal</span>
+                    <strong className="font-serif text-lg text-wine-900">₹{(Number(activeVariant?.price ?? 0) * quantity).toLocaleString("en-IN")}</strong>
+                  </div>
+                  <p className="mt-1 text-[10px] leading-5 text-slate-400">Final availability, delivery and total will be confirmed by Maria Perfumes on WhatsApp.</p>
+                </section>
               </div>
             </div>
 
-            <div className="sticky bottom-0 flex items-center justify-between gap-3 border-t border-slate-200 bg-white/95 px-6 py-4 backdrop-blur-xl sm:px-10">
+            <div className="sticky bottom-0 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-white/95 px-4 py-4 backdrop-blur-xl sm:px-10">
               <div className="hidden min-w-0 sm:block">
                 <div className="truncate text-sm font-bold text-slate-900">{product.name}</div>
                 <div className="text-[10px] uppercase tracking-[0.16em] text-slate-400">{product.family || "Signature fragrance"}</div>
               </div>
-              <div className="ml-auto flex gap-2">
-                <button onClick={close} className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300">Close</button>
-                <AddToCartButton
-                  onAdd={handleOrder}
-                  soldOut={!activeVariant || activeVariant.stock <= 0}
-                  idleLabel="Order Perfume"
-                  className="min-w-[165px] rounded-xl px-6 py-2.5 font-semibold shadow-md disabled:opacity-50"
-                />
+              <div className="ml-auto flex flex-wrap justify-end gap-2">
+                <button onClick={close} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300">Close</button>
+                <button type="button" onClick={handleWhatsAppBuyNow} disabled={!activeVariant} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-[#1da851] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                  <MessageCircle className="h-4 w-4" /> Buy Now
+                </button>
+                <AddToCartButton onAdd={handleOrder} soldOut={!activeVariant || activeVariant.stock <= 0} idleLabel="Add to bag" className="min-w-[145px] rounded-xl px-5 py-2.5 font-semibold shadow-md disabled:opacity-50" />
               </div>
             </div>
           </motion.div>

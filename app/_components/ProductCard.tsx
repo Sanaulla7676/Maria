@@ -2,7 +2,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { ArrowRight, Clock, Heart, Radar, Star } from "lucide-react"
+import { ArrowRight, Clock, Heart, Radar, ShoppingBag, Star } from "lucide-react"
 import { toast } from "sonner"
 import type { Product } from "@/lib/types"
 import { cheapestActiveVariant, MARIA_BOTTLE_IMAGE } from "@/lib/product-helpers"
@@ -103,12 +103,17 @@ export function ProductCard({
             {product.sillage && <span className="flex items-center gap-1.5 max-sm:text-[7px]"><Radar className="h-3.5 w-3.5 text-wine-500" />{product.sillage}</span>}
           </div>
 
-          <div className="mt-4 flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-stretch">
-            <div className="flex items-end gap-2 max-sm:items-center">
-              {variant ? <><span className="font-display text-2xl font-extrabold tracking-[-0.03em] text-[#10243a]">₹{Number(variant.price).toLocaleString("en-IN")}</span>{original && <span className="pb-0.5 text-xs text-slate-400 line-through">₹{original.toLocaleString("en-IN")}</span>}</> : <span className="font-display text-xl font-extrabold text-[#10243a]">Price on request</span>}
+          <div className="mt-4 flex flex-col gap-3">
+            <div className="flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-stretch">
+              <div className="flex items-end gap-2 max-sm:items-center">
+                {variant ? <><span className="font-display text-2xl font-extrabold tracking-[-0.03em] text-[#10243a]">₹{Number(variant.price).toLocaleString("en-IN")}</span>{original && <span className="pb-0.5 text-xs text-slate-400 line-through">₹{original.toLocaleString("en-IN")}</span></> : <span className="font-display text-xl font-extrabold text-[#10243a]">Price on request</span>}
+              </div>
+              <button onClick={() => open({ name: "product", product })} className="inline-flex items-center gap-2.5 rounded-full border border-[#167bd1] bg-white px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#167bd1] transition hover:bg-[#167bd1] hover:text-white max-sm:w-full max-sm:justify-center max-sm:px-2 max-sm:py-2 max-sm:text-[8px]">
+                View Details <ArrowRight className="h-3.5 w-3.5" />
+              </button>
             </div>
-            <button onClick={() => open({ name: "product", product })} className="inline-flex items-center gap-2.5 rounded-full border border-[#167bd1] bg-white px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#167bd1] transition hover:bg-[#167bd1] hover:text-white max-sm:w-full max-sm:justify-center max-sm:px-2 max-sm:py-2 max-sm:text-[8px]">
-              View Details <ArrowRight className="h-3.5 w-3.5" />
+            <button type="button" onClick={() => open({ name: "product", product })} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#167bd1] px-4 py-3 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white shadow-sm transition hover:bg-[#10243a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#167bd1] focus-visible:ring-offset-2">
+              <ShoppingBag className="h-4 w-4" /> Buy Now
             </button>
           </div>
         </div>

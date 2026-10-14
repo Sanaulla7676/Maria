@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Check, Heart, Minus, Plus, ShoppingBag } from 'lucide-react'
+import { Check, Heart, MessageCircle, Minus, Plus, ShoppingBag } from 'lucide-react'
 import { toast } from 'sonner'
 import type { Product } from '@/lib/types'
 import { addToCart } from '@/lib/cart-actions'
@@ -28,6 +28,25 @@ export default function ProductDetail({ product, image }: { product: Product; im
         toast.error(e instanceof Error ? e.message : 'Please sign in to add items to your bag')
       }
     })
+  }
+
+  const handleWhatsAppBuyNow = () => {
+    if (!variant) {
+      toast.error('Please choose a perfume size first')
+      return
+    }
+    const unitPrice = Number(variant.price)
+    const size = variant.size_ml ? `${variant.size_ml}ml` : variant.label
+    const message = [
+      'Hello Maria Perfumes, I would like to place an order.',
+      `Product: ${product.name}`,
+      `Size: ${size}`,
+      `Quantity: ${quantity}`,
+      `Price per item: ₹${unitPrice.toLocaleString('en-IN')}`,
+      `Estimated total: ₹${(unitPrice * quantity).toLocaleString('en-IN')}`,
+      'Please confirm availability and delivery details.'
+    ].join('\n')
+    window.location.assign(`https://wa.me/919916032291?text=${encodeURIComponent(message)}`)
   }
 
   const handleSave = () => {
@@ -82,7 +101,7 @@ export default function ProductDetail({ product, image }: { product: Product; im
 
         <div className="mt-6">
           <strong className="font-display text-3xl">₹{total.toLocaleString('en-IN')}</strong>
-          {variant && !inStock && <span className="ml-3 text-sm text-rose-600 font-semibold">Out of Stock</span>}
+          {variant && !inStock && <span className="ml-3 text-sm text-amber-700 font-semibold">Confirm availability on WhatsApp</span>}
         </div>
 
         {variants.length > 0 && (
@@ -93,8 +112,7 @@ export default function ProductDetail({ product, image }: { product: Product; im
                 <button
                   key={v.id}
                   onClick={() => setVariantId(v.id)}
-                  disabled={v.stock <= 0}
-                  className={`px-4 py-2.5 rounded-xl border text-sm text-center disabled:opacity-40 ${
+                  className={`px-4 py-2.5 rounded-xl border text-sm text-center ${
                     v.id === variantId ? 'border-[var(--wine)] bg-[color-mix(in_srgb,var(--wine)_8%,transparent)]' : 'border-[var(--line)]'
                   }`}
                 >
@@ -115,16 +133,14 @@ export default function ProductDetail({ product, image }: { product: Product; im
           </div>
         </div>
 
-        <div className="flex items-center gap-3 mt-8">
+        <div className="flex flex-wrap items-center gap-3 mt-8">
+          <button type="button" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 font-semibold text-white transition hover:bg-[#1da851] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 disabled:opacity-50" onClick={handleWhatsAppBuyNow} disabled={!variant}>
+            <MessageCircle size={17} /> Buy Now on WhatsApp
+          </button>
           <button className="btn btn-primary" onClick={handleAdd} disabled={pending || !inStock}>
             <ShoppingBag size={17} /> {inStock ? `Add to bag · ₹${total.toLocaleString('en-IN')}` : 'Sold Out'}
           </button>
-          <button
-            aria-label="Save fragrance"
-            onClick={handleSave}
-            disabled={pending}
-            className={`btn btn-ghost ${saved ? 'text-[var(--wine)] border-[var(--wine)]' : ''}`}
-          >
+          <button aria-label="Save fragrance" onClick={handleSave} disabled={pending} className={`btn btn-ghost ${saved ? 'text-[var(--wine)] border-[var(--wine)]' : ''}`}>
             <Heart fill={saved ? 'currentColor' : 'none'} size={19} />
           </button>
         </div>
