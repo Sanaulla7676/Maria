@@ -41,9 +41,9 @@ export default async function ShopPage() {
       <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product, index) => {
           const imageUrl = product.image?.image_url ?? MARIA_BOTTLE_IMAGE
-          const accords = product.main_accords?.length
-            ? product.main_accords.slice(0, 3)
-            : (product.notes ?? []).slice(0, 3).map((name, i) => ({ name, color: fallbackColors[i % fallbackColors.length], percent: 100 }))
+          const accords: { name: string; color?: string; percent?: number }[] = product.main_accords?.length
+            ? (product.main_accords as { name: string; color?: string; percent?: number }[]).slice(0, 3)
+            : ((product.notes as string[] | null) ?? []).slice(0, 3).map((name: string, i: number) => ({ name, color: fallbackColors[i % fallbackColors.length], percent: 100 }))
           const variant = product.variants[0]
 
           return (
@@ -61,7 +61,7 @@ export default async function ShopPage() {
                 <p className="text-[7px] font-extrabold uppercase tracking-[0.25em] text-[#76612f] sm:text-[9px] sm:tracking-[0.28em]">Signature Perfumes</p>
                 <h2 className="maria-product-title mt-1 line-clamp-2 text-[17px] font-bold uppercase leading-[0.98] tracking-[-0.035em] text-[#101015] sm:text-[23px]">{product.name}</h2>
                 <p className="mt-2 line-clamp-3 text-[9px] leading-[1.5] text-[#353239] sm:mt-3 sm:text-[12px] sm:leading-[1.55]">{product.description ?? ((product.notes ?? []).length ? product.notes.slice(0, 5).join(', ') : 'A Maria 40% pure-oil interpretation crafted for lasting wear.')}</p>
-                {accords.length > 0 && <div className="mt-3 flex flex-wrap gap-1 sm:mt-3.5 sm:gap-1.5">{accords.map(accord => <span key={accord.name} className="inline-flex min-w-0 items-center gap-1 rounded-full border border-[#e8e2d9] bg-white py-0.5 pl-0.5 pr-1.5 text-[7px] font-extrabold uppercase leading-none text-[#302a22] sm:gap-1.5 sm:pr-2.5 sm:text-[8px]"><span aria-hidden="true" className="h-5 w-5 shrink-0 rounded-full border border-black/5 sm:h-7 sm:w-7" style={{backgroundColor: accord.color || '#7b5232'}} /><span className="max-w-[68px] truncate sm:max-w-[82px]">{accord.name}</span></span>)}</div>}
+                {accords.length > 0 && <div className="mt-3 flex flex-wrap gap-1 sm:mt-3.5 sm:gap-1.5">{accords.map((accord: { name: string; color?: string }) => <span key={accord.name} className="inline-flex min-w-0 items-center gap-1 rounded-full border border-[#e8e2d9] bg-white py-0.5 pl-0.5 pr-1.5 text-[7px] font-extrabold uppercase leading-none text-[#302a22] sm:gap-1.5 sm:pr-2.5 sm:text-[8px]"><span aria-hidden="true" className="h-5 w-5 shrink-0 rounded-full border border-black/5 sm:h-7 sm:w-7" style={{backgroundColor: accord.color || '#7b5232'}} /><span className="max-w-[68px] truncate sm:max-w-[82px]">{accord.name}</span></span>)}</div>}
 
                 <div className="mt-3 flex items-center border-t border-[#e9e3d9] pt-3 sm:mt-4 sm:pt-4">
                   <div className="flex min-w-0 flex-1 items-center gap-1.5 pr-2 sm:gap-2.5 sm:pr-3"><Clock className="h-4 w-4 shrink-0 text-[#171717] sm:h-5 sm:w-5" /><div className="min-w-0"><p className="text-[8px] font-extrabold leading-none text-[#171717] sm:text-[10px]">{product.longevity_hours ? String(product.longevity_hours) + 'H' : 'LONG'}</p><p className="mt-1 text-[6px] font-bold uppercase tracking-wider text-[#363239] sm:text-[8px]">Longevity</p></div></div>
