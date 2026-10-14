@@ -5,6 +5,7 @@ import { Check, Heart, MessageCircle, Minus, Plus, ShoppingBag } from 'lucide-re
 import { toast } from 'sonner'
 import type { Product } from '@/lib/types'
 import { addToCart } from '@/lib/cart-actions'
+import { getVariantPrice } from '@/lib/product-helpers'
 import { toggleWishlist } from '@/app/account/wishlist/actions'
 
 export default function ProductDetail({ product, image }: { product: Product; image: string | null }) {
@@ -16,7 +17,7 @@ export default function ProductDetail({ product, image }: { product: Product; im
 
   const variant = variants.find((v) => v.id === variantId) ?? variants[0]
   const inStock = !!variant && variant.stock > 0
-  const total = (variant ? Number(variant.price) : 0) * quantity
+  const total = getVariantPrice(variant) * quantity
 
   const handleAdd = () => {
     if (!variant) return
@@ -35,7 +36,7 @@ export default function ProductDetail({ product, image }: { product: Product; im
       toast.error('Please choose a perfume size first')
       return
     }
-    const unitPrice = Number(variant.price)
+    const unitPrice = getVariantPrice(variant)
     const size = variant.size_ml ? `${variant.size_ml}ml` : variant.label
     const message = [
       'Hello Maria Perfumes, I would like to place an order.',
@@ -117,7 +118,7 @@ export default function ProductDetail({ product, image }: { product: Product; im
                   }`}
                 >
                   <div className="font-semibold">{v.size_ml ? `${v.size_ml}ml` : v.label}</div>
-                  <div className="text-xs text-black/50">₹{Number(v.price).toLocaleString('en-IN')}</div>
+                  <div className="text-xs text-black/50">₹{getVariantPrice(v).toLocaleString('en-IN')}</div>
                 </button>
               ))}
             </div>

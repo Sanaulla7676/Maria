@@ -5,7 +5,7 @@ import { useState, useTransition } from "react"
 import { ArrowRight, Clock, Heart, Radar, ShoppingBag, Star } from "lucide-react"
 import { toast } from "sonner"
 import type { Product } from "@/lib/types"
-import { cheapestActiveVariant, MARIA_BOTTLE_IMAGE } from "@/lib/product-helpers"
+import { cheapestActiveVariant, MARIA_BOTTLE_IMAGE, MARIA_VARIANT_PRICES } from "@/lib/product-helpers"
 import { useUI } from "@/app/_components/ui/UIProvider"
 import { toggleWishlist } from "@/app/account/wishlist/actions"
 
@@ -49,8 +49,6 @@ export function ProductCard({
   const [pending, startTransition] = useTransition()
 
   const variant = cheapestActiveVariant(product)
-  const inStock = !!variant && variant.stock > 0
-  const original = variant ? Number(variant.price) * 2 : null
   const accords = product.main_accords?.slice(0, 3) ?? []
 
   const handleBookmark = () => {
@@ -104,22 +102,20 @@ export function ProductCard({
           </div>
 
           <div className="mt-4 flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-stretch">
-              <div className="flex items-end gap-2 max-sm:items-center">
-                {variant ? (
-                  <span className="font-display text-2xl font-extrabold tracking-[-0.03em] text-[#10243a]">₹{Number(variant.price).toLocaleString("en-IN")}</span>
-                ) : (
-                  <span className="font-display text-xl font-extrabold text-[#10243a]">Price on request</span>
-                )}
-                {original ? <span className="pb-0.5 text-xs text-slate-400 line-through">₹{original.toLocaleString("en-IN")}</span> : null}
-              </div>
-              <button onClick={() => open({ name: "product", product })} className="inline-flex items-center gap-2.5 rounded-full border border-[#167bd1] bg-white px-4 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#167bd1] transition hover:bg-[#167bd1] hover:text-white max-sm:w-full max-sm:justify-center max-sm:px-2 max-sm:py-2 max-sm:text-[8px]">
-                View Details <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
-            <button type="button" onClick={() => open({ name: "product", product })} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#167bd1] px-4 py-3 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white shadow-sm transition hover:bg-[#10243a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#167bd1] focus-visible:ring-offset-2">
+            <button
+              type="button"
+              onClick={() => open({ name: "product", product })}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#167bd1] px-4 py-3.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white shadow-sm transition hover:bg-[#10243a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#167bd1] focus-visible:ring-offset-2"
+            >
               <ShoppingBag className="h-4 w-4" /> Buy Now
             </button>
+            <div className="rounded-2xl border border-[#e7c76b]/75 bg-[#fff8e7] px-3 py-3 text-center shadow-sm">
+              <p className="text-[8px] font-extrabold uppercase tracking-[0.2em] text-[#85621d]">Standard sizes · Every fragrance</p>
+              <p className="mt-1 font-display text-xl font-extrabold tracking-[-0.03em] text-[#10243a]">Prices from ₹600</p>
+              <div className="mt-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[9px] font-bold text-[#526b83]">
+                {MARIA_VARIANT_PRICES.map((size) => <span key={size.sizeMl}>{size.label} · ₹{size.price.toLocaleString("en-IN")}</span>)}
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ import { toast } from "sonner"
 import { useUI } from "@/app/_components/ui/UIProvider"
 import { Modal } from "@/app/_components/ui/Modal"
 import { AddToCartButton } from "@/app/_components/ui/AddToCartButton"
-import { MARIA_BOTTLE_IMAGE } from "@/lib/product-helpers"
+import { MARIA_BOTTLE_IMAGE, getVariantPrice } from "@/lib/product-helpers"
 import { addToCart } from "@/lib/cart-actions"
 
 const noteIcons = [Sparkles, Leaf, Droplet, Flame, Wind, Star]
@@ -89,7 +89,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
   const isOpen = modal?.name === "product"
   const product = modal?.name === "product" ? modal.product : null
 
-  const variants = product?.product_variants?.filter((v) => v.active).sort((a, b) => Number(a.price) - Number(b.price)) ?? []
+  const variants = product?.product_variants?.filter((v) => v.active).sort((a, b) => (a.size_ml ?? 999) - (b.size_ml ?? 999)) ?? []
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(1)
   const activeVariant = variants.find((v) => v.id === selectedVariantId) ?? variants[0] ?? null
@@ -126,7 +126,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
       toast.error("Please choose a perfume size first")
       return
     }
-    const unitPrice = Number(activeVariant.price)
+    const unitPrice = getVariantPrice(activeVariant)
     const size = activeVariant.size_ml ? `${activeVariant.size_ml}ml` : activeVariant.label
     const message = [
       "Hello Maria Perfumes, I would like to place an order.",
@@ -350,7 +350,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
                         )
                       })}
                     </div>
-                    {activeVariant && <div className="mt-3 font-serif text-xl font-bold text-wine-900">₹{Number(activeVariant.price).toLocaleString("en-IN")}</div>}
+                    {activeVariant && <div className="mt-3 font-serif text-xl font-bold text-wine-900">₹{getVariantPrice(activeVariant).toLocaleString("en-IN")}</div>}
                   </section>
                 )}
 
@@ -368,7 +368,7 @@ export function ProductModal({ isLoggedIn }: { isLoggedIn: boolean }) {
                   </div>
                   <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-sm">
                     <span className="text-slate-500">Estimated subtotal</span>
-                    <strong className="font-serif text-lg text-wine-900">₹{(Number(activeVariant?.price ?? 0) * quantity).toLocaleString("en-IN")}</strong>
+                    <strong className="font-serif text-lg text-wine-900">₹{(getVariantPrice(activeVariant) * quantity).toLocaleString("en-IN")}</strong>
                   </div>
                   <p className="mt-1 text-[10px] leading-5 text-slate-400">Final availability, delivery and total will be confirmed by Maria Perfumes on WhatsApp.</p>
                 </section>
