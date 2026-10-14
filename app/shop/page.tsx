@@ -40,7 +40,11 @@ export default async function ShopPage() {
 
       <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product, index) => {
-          const imageUrl = product.image?.image_url ?? MARIA_BOTTLE_IMAGE
+          const imageUrl = product.slug === 'tobacco-vanille'
+            ? '/products/tobacco-vanille-reference.jpg'
+            : product.slug === 'fucking-fabulous'
+              ? '/products/fucking-fabulous-reference.jpg'
+              : product.image?.image_url ?? MARIA_BOTTLE_IMAGE
           const accords: { name: string; color?: string; percent?: number }[] = product.main_accords?.length
             ? (product.main_accords as { name: string; color?: string; percent?: number }[]).slice(0, 3)
             : ((product.notes as string[] | null) ?? []).slice(0, 3).map((name: string, i: number) => ({ name, color: fallbackColors[i % fallbackColors.length], percent: 100 }))

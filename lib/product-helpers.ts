@@ -19,6 +19,8 @@ export function getVariantPrice(variant: Pick<Variant, 'size_ml' | 'label' | 'pr
 }
 
 export function primaryImage(product: Product): string | null {
+  if (product.slug === 'tobacco-vanille') return '/products/tobacco-vanille-reference.jpg'
+  if (product.slug === 'fucking-fabulous') return '/products/fucking-fabulous-reference.jpg'
   const sorted = [...(product.product_images ?? [])].sort((a, b) => a.sort_order - b.sort_order)
   return sorted[0]?.image_url ?? null
 }
