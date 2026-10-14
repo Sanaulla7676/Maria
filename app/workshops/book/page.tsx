@@ -13,7 +13,7 @@ export default function WorkshopBookPage() {
           <input name="name" required placeholder="Full name" /><input name="phone" required placeholder="WhatsApp / phone" />
           <input name="email" type="email" placeholder="Email" /><input name="participants" type="number" min="1" defaultValue="1" required />
           <textarea name="notes" className="full" rows={4} placeholder="Any preferences or notes?" />
-          <button className="button primary full" type="submit">Continue to UPI</button>
+          <button className="button primary full" type="submit">Continue to WhatsApp</button>
         </form></div>
       </div>
       <aside className="order-summary"><span className="kicker">Workshop includes</span><div className="product-benefits">{workshopCurriculum.map((item) => <span key={item}>• {item}</span>)}</div><hr/><div className="trust-note"><CalendarDays size={18}/> Every Sunday</div><div className="trust-note"><MapPin size={18}/> {workshopConfig.location}</div><div className="trust-note"><Users size={18}/> {workshopConfig.pricePerPerson.toLocaleString('en-IN')} INR per participant</div></aside>

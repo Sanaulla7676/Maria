@@ -33,8 +33,9 @@ export function BookingModal() {
     e.preventDefault()
     setLoading(true)
     try {
-      await submitEventEnquiry({ name, phone, eventType })
-      toast.success('Booking request submitted! Maria Perfumes will call/text you on +91 99160 32291 shortly.')
+      const result = await submitEventEnquiry({ name, phone, eventType })
+      toast.success('Opening WhatsApp to send your event booking request…')
+      window.location.assign(result.whatsappUrl)
       handleClose()
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Could not submit your request')

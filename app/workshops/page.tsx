@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, CheckCircle2, Copy, Loader2, MapPin, ShieldCheck } from 'lucide-react'
+import { ArrowRight, Loader2, MapPin, MessageCircle } from 'lucide-react'
 import { workshopCurriculum, upcomingWorkshop } from '@/lib/maria-business'
 
 const HERO_IMAGE =
@@ -15,7 +15,6 @@ export default function WorkshopPage() {
   const [people, setPeople] = useState(1)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
-  const [payment, setPayment] = useState<{ deepLink: string; upiId: string; amount: number } | null>(null)
 
   const total = useMemo(() => Math.max(1, people) * upcomingWorkshop.pricePerPerson, [people])
 
@@ -35,17 +34,15 @@ export default function WorkshopPage() {
 
       const res = await fetch('/api/workshops/book', {
         method: 'POST',
+        headers: { Accept: 'application/json' },
         body: form,
       })
 
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Could not reserve your spot')
 
-      setPayment({
-        deepLink: data.payment.deepLink,
-        upiId: data.payment.upiId,
-        amount: data.booking.amount,
-      })
+      if (typeof data.whatsappUrl !== 'string') throw new Error('Could not prepare your WhatsApp booking')
+      window.location.assign(data.whatsappUrl)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not reserve your spot')
     } finally {
@@ -362,54 +359,33 @@ export default function WorkshopPage() {
                 {upcomingWorkshop.date} · {upcomingWorkshop.time} · {upcomingWorkshop.location}
               </p>
 
-              {!payment ? (
-                <form onSubmit={submit} className="mt-8 space-y-3">
+              <form onSubmit={submit} className="mt-8 space-y-3">
                   <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="Name" className="w-full rounded-xl border border-black/10 bg-white px-5 py-3.5 text-sm text-black outline-none focus:border-[#b7894d] focus:ring-2 focus:ring-[#d8bb8b]/30" />
                   <input value={phone} onChange={(e) => setPhone(e.target.value)} required placeholder="WhatsApp / phone" className="w-full rounded-xl border border-black/10 bg-white px-5 py-3.5 text-sm text-black outline-none focus:border-[#b7894d] focus:ring-2 focus:ring-[#d8bb8b]/30" />
                   <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email (optional)" className="w-full rounded-xl border border-black/10 bg-white px-5 py-3.5 text-sm text-black outline-none focus:border-[#b7894d] focus:ring-2 focus:ring-[#d8bb8b]/30" />
                   <input value={people} onChange={(e) => setPeople(Math.max(1, Number(e.target.value) || 1))} type="number" min="1" placeholder="Number of people" className="w-full rounded-xl border border-black/10 bg-white px-5 py-3.5 text-sm text-black outline-none focus:border-[#b7894d] focus:ring-2 focus:ring-[#d8bb8b]/30" />
                   {error && <p className="text-sm text-red-600">{error}</p>}
                   <button disabled={busy} className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#24120c] px-6 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-[#f3d487] shadow-lg transition hover:-translate-y-0.5 disabled:opacity-60">
-                    {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                    Reserve · ₹{total.toLocaleString('en-IN')}
+                    {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageCircle className="h-4 w-4" />}
+                    Reserve on WhatsApp · ₹{total.toLocaleString('en-IN')}
                   </button>
-                </form>
-              ) : (
-                <div className="mt-8 flex items-center gap-3 rounded-2xl border border-emerald-600/20 bg-emerald-50 p-5 text-sm text-emerald-900">
-                  <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />
-                  <span>Booking captured. Complete UPI payment and keep the transaction reference.</span>
-                </div>
-              )}
+              </form>
             </div>
 
             <div className="rounded-[28px] bg-[#24120c] p-7 text-white shadow-[0_30px_80px_rgba(36,18,12,.22)] sm:p-9">
-              <p className="text-[9px] font-bold uppercase tracking-[0.32em] text-[#f3d487]">Payment</p>
-              <h3 className="mt-2 font-serif text-3xl font-semibold">UPI reservation</h3>
+              <p className="text-[9px] font-bold uppercase tracking-[0.32em] text-[#f3d487]">Direct booking</p>
+              <h3 className="mt-2 font-serif text-3xl font-semibold">Confirm on WhatsApp.</h3>
               <p className="mt-3 text-sm leading-6 text-white/55">
-                Pay the exact amount and keep your UTR/reference. Booking confirmation follows manual verification.
+                Submit your details to open a pre-filled message to Maria Perfumes. Review it and tap Send in WhatsApp; the team will confirm seat availability and next steps directly with you.
               </p>
-
-              {payment ? (
-                <>
-                  <div className="mt-7 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-4">
-                    <strong className="text-sm">{payment.upiId}</strong>
-                    <button type="button" onClick={() => navigator.clipboard?.writeText(payment.upiId)} className="text-[#f3d487]">
-                      <Copy className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <a href={payment.deepLink} className="mt-4 block rounded-full border border-[#f3d487]/55 px-5 py-3 text-center text-xs font-bold uppercase tracking-wider text-[#f3d487] transition hover:bg-[#f3d487] hover:text-[#24120c]">
-                    Pay ₹{payment.amount.toLocaleString('en-IN')} via UPI
-                  </a>
-                </>
-              ) : (
-                <p className="mt-7 rounded-xl border border-white/10 bg-white/5 p-4 text-xs leading-6 text-white/45">
-                  Your UPI payment link appears here once you submit the booking form.
-                </p>
-              )}
-
-              <div className="mt-7 flex items-center gap-2 text-[11px] text-white/35">
-                <ShieldCheck className="h-3.5 w-3.5" /> Manual verification protects the booking flow.
+              <div className="mt-7 space-y-3 rounded-xl border border-white/10 bg-white/5 p-4 text-xs leading-6 text-white/60">
+                <div className="flex items-center gap-2"><MessageCircle className="h-4 w-4 text-[#f3d487]" /> WhatsApp: +91 99160 32291</div>
+                <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-[#f3d487]" /> {upcomingWorkshop.location}</div>
+                <div className="border-t border-white/10 pt-3 text-white/45">No UPI payment is taken on this page. Confirm the booking directly with Maria.</div>
               </div>
+              <a href="https://wa.me/919916032291" className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition hover:bg-[#1da851]">
+                <MessageCircle className="h-4 w-4" /> Open WhatsApp
+              </a>
             </div>
           </div>
         </div>

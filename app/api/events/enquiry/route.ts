@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { eventTypes } from '@/lib/maria-business'
 import { createClient } from '@/lib/supabase/server'
+import { buildMariaWhatsAppUrl } from '@/lib/whatsapp'
 
 export async function POST(request: Request) {
   const form = await request.formData()
@@ -37,6 +38,19 @@ export async function POST(request: Request) {
   })
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  const origin = new URL(request.url).origin
-  return NextResponse.redirect(new URL('/events?submitted=1', origin), 303)
+  const whatsappMessage = [
+    'Hello Maria Perfumes, I would like to enquire about an event fragrance booking.',
+    `Name: ${name}`,
+    `Contact: ${phone}`,
+    email ? `Email: ${email}` : '',
+    `Event type: ${eventType}`,
+    eventDate ? `Event date: ${eventDate}` : '',
+    guestCountRaw ? `Estimated guests: ${guestCountRaw}` : '',
+    venue ? `Venue / city: ${venue}` : '',
+    customization ? `Customization: ${customization}` : '',
+    message ? `Additional details: ${message}` : '',
+    'Please confirm availability and share the next steps.',
+  ].filter(Boolean).join(String.fromCharCode(10))
+
+  return NextResponse.redirect(buildMariaWhatsAppUrl(whatsappMessage), 303)
 }

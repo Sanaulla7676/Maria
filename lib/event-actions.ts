@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { serviceOptions } from '@/lib/event-options'
+import { buildMariaWhatsAppUrl } from '@/lib/whatsapp'
 
 const enquirySchema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -28,5 +29,14 @@ export async function submitEventEnquiry(input: unknown) {
     status: 'new',
   })
   if (error) throw new Error(error.message)
-  return { ok: true }
+
+  const message = [
+    'Hello Maria Perfumes, I would like to enquire about an event booking.',
+    `Name: ${parsed.data.name}`,
+    `Contact: ${parsed.data.phone}`,
+    `Service: ${parsed.data.eventType}`,
+    'Please share availability and booking details.',
+  ].join(String.fromCharCode(10))
+
+  return { ok: true, whatsappUrl: buildMariaWhatsAppUrl(message) }
 }
